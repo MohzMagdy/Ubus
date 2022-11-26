@@ -3,6 +3,7 @@
 #include "normal.h"
 #include "special.h"
 #include "VIP.h"
+#include "people.h"
 #include <iostream>
 
 template<typename T>
@@ -22,7 +23,7 @@ public:
 
 template<typename Base, typename T>
 inline bool instanceof(const T* ptr) {
-	return dynamic_cast<const Base*>(ptr) != nullptr;
+	return dynamic_cast<const Base*>(ptr);
 }
 
 template<typename T>
@@ -57,15 +58,15 @@ void Priority_queue<T>::Enqueue(Node<T>* NP)
 	{
 		Rear->set_next(NP);
 		Rear = NP;
-		/*if ((instanceof<VIP>NP) && (instanceof<special>pr))
+		/*if ((instanceof<VIP>(NP)) && (instanceof<special>(pr)))
 		{
 			pr = NP;
 		}
-		else if ((instanceof<VIP>NP) && (instanceof<normal>pr))
+		else if ((instanceof<VIP>(NP)) && (instanceof<normal>(pr)))
 		{
 			pr = NP;
 		}
-		else if ((instanceof<special>NP) && (instanceof<normal>pr))
+		else if ((instanceof<special>(NP)) && (instanceof<normal>(pr)))
 		{
 			pr = NP;
 		}*/
@@ -89,13 +90,15 @@ int Priority_queue<T>::Dequeue()
 	else
 	{
 		Node<T>* helper = Front;
-		/*Node<T>* temp1,temp2,temp3 = Front;*/
+		/*Node<T>* temp1 = Front;
+		Node<T>* temp2 = Front;
+		Node<T>* temp3 = Front;*/
 		int valueF = Front->get_data();
 		Front = Front->get_next();
 
 		/*while (pr!=nullptr || temp1!=nullptr)
 		{
-			if (instanceof<VIP> temp1)
+			if (instanceof<VIP> (temp1))
 			{
 				pr = temp1;
 			}
@@ -103,7 +106,7 @@ int Priority_queue<T>::Dequeue()
 		}
 		while (pr!=nullptr || temp2!=nullptr)
 		{
-			if (instanceof<special> temp2)
+			if (instanceof<special> (temp2))
 			{
 				pr = temp2;
 			}
@@ -111,7 +114,7 @@ int Priority_queue<T>::Dequeue()
 		}
 		while (pr != nullptr || temp3 != nullptr)
 		{
-			if (instanceof<normal>temp3)
+			if (instanceof<normal> (temp3))
 			{
 				pr = temp3;
 			}
