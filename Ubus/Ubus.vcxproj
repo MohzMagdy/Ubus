@@ -127,8 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Buses.h" />
+    <ClInclude Include="Defs.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="normal.h" />
+    <ClInclude Include="Passengers.h" />
+    <ClInclude Include="priority queue.h" />
+    <ClInclude Include="special.h" />
+    <ClInclude Include="VIP.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

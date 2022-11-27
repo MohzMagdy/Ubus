@@ -13,12 +13,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="data structure">
+      <UniqueIdentifier>{b348769c-e869-4889-a39b-f886029d5015}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Node.h">
-      <Filter>Header Files</Filter>
+      <Filter>data structure</Filter>
     </ClInclude>
     <ClInclude Include="LinkedList.h">
+      <Filter>data structure</Filter>
+    </ClInclude>
+    <ClInclude Include="priority queue.h">
+      <Filter>data structure</Filter>
+    </ClInclude>
+    <ClInclude Include="VIP.h">
+      <Filter>data structure</Filter>
+    </ClInclude>
+    <ClInclude Include="normal.h">
+      <Filter>data structure</Filter>
+    </ClInclude>
+    <ClInclude Include="special.h">
+      <Filter>data structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Passengers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Defs.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Buses.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
