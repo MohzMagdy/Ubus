@@ -6,6 +6,7 @@ class Node
 private:
 	T data;
 	Node* next;
+	double pir;
 
 public:
 	Node();
@@ -14,6 +15,8 @@ public:
 	Node* get_next();
 	void set_data(T data);
 	void set_next(Node* next);
+	void set_priority(double pir);
+	double get_priority();
 };
 
 template<typename T>
@@ -51,4 +54,15 @@ template<typename T>
 void Node<T>::set_next(Node<T>* next)
 {
 	this->next = next;
+}
+
+template<typename T>
+void Node<T>::set_priority(double pir) {
+	this->pir = pir;
+}
+
+template<typename T>
+double Node<T>::get_priority()
+{
+	return pir;
 }

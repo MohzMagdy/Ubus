@@ -24,16 +24,7 @@
     <ClInclude Include="LinkedList.h">
       <Filter>data structure</Filter>
     </ClInclude>
-    <ClInclude Include="priority queue.h">
-      <Filter>data structure</Filter>
-    </ClInclude>
-    <ClInclude Include="VIP.h">
-      <Filter>data structure</Filter>
-    </ClInclude>
-    <ClInclude Include="normal.h">
-      <Filter>data structure</Filter>
-    </ClInclude>
-    <ClInclude Include="special.h">
+    <ClInclude Include="queue.h">
       <Filter>data structure</Filter>
     </ClInclude>
     <ClInclude Include="Passengers.h">
@@ -44,6 +35,9 @@
     </ClInclude>
     <ClInclude Include="Buses.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="priority_queue.h">
+      <Filter>data structure</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

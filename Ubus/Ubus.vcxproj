@@ -131,11 +131,9 @@
     <ClInclude Include="Defs.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Node.h" />
-    <ClInclude Include="normal.h" />
     <ClInclude Include="Passengers.h" />
-    <ClInclude Include="priority queue.h" />
-    <ClInclude Include="special.h" />
-    <ClInclude Include="VIP.h" />
+    <ClInclude Include="priority_queue.h" />
+    <ClInclude Include="queue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
