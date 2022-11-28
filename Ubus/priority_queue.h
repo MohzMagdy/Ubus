@@ -2,6 +2,8 @@
 #include "Node.h"
 #include <iostream>
 
+using namespace std;
+
 template<typename T>
 class priority_queue
 {

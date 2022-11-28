@@ -16,6 +16,9 @@
     <Filter Include="data structure">
       <UniqueIdentifier>{b348769c-e869-4889-a39b-f886029d5015}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Events">
+      <UniqueIdentifier>{006edc35-5f88-4d7f-a184-65e78363ec84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Node.h">
@@ -39,10 +42,34 @@
     <ClInclude Include="priority_queue.h">
       <Filter>data structure</Filter>
     </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadyEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="CancelEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="PromoteEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Company.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadyEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="CancelEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="PromoteEvent.cpp">
+      <Filter>Events</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

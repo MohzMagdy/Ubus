@@ -10,6 +10,7 @@ private:
 	double  Delivery_distance;
 	double cost;
 public :
+	Passengers() {};
 	Passengers(double Ready_day, double Ready_hour, double Ride_hour, double UnRide_hour, 
 		Passenger_Type Ptype, double  Delivery_distance, double cost) {
 		this->Ready_day = Ready_day;

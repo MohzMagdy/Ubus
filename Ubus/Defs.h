@@ -1,6 +1,13 @@
 #pragma once
 #include<iostream>
 
+enum Event_Type
+{
+	Ready,
+	Cancel,
+	Promote
+};
+
 enum class Passenger_Type{
 	N,	// Normal Passenger Type
 	S,	// Special Passenger Type

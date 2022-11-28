@@ -128,15 +128,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Buses.h" />
+    <ClInclude Include="CancelEvent.h" />
+    <ClInclude Include="Company.h" />
     <ClInclude Include="Defs.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Passengers.h" />
     <ClInclude Include="priority_queue.h" />
+    <ClInclude Include="PromoteEvent.h" />
     <ClInclude Include="queue.h" />
+    <ClInclude Include="ReadyEvent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CancelEvent.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PromoteEvent.cpp" />
+    <ClCompile Include="ReadyEvent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

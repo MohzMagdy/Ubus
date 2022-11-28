@@ -1,25 +1,37 @@
 #include <iostream>
+#include "priority_queue.h"
 #include "LinkedList.h"
-#include"priority_queue.h"
-#include"Node.h"
-#include"queue.h"
+#include "Company.h"
+#include "ReadyEvent.h"
+#include "CancelEvent.h"
+#include "PromoteEvent.h"
+#include "Defs.h"
+
 using namespace std;
 
 int main()
 {
-	priority_queue<int> pq;
-	Node<int>l(9);
-	Node<int>k(5);
-	Node<int>j(1);
-	l.set_priority(1);
-	k.set_priority(5);
-	j.set_priority(2);
-	pq.Enqueue(&l);
-	pq.Enqueue(&k);
-	pq.Enqueue(&j);
-	pq.printlist();
-	cout << pq.getcounter()<<endl;
-	pq.Dequeue();
-	pq.printlist();
-	cout << pq.getcounter()<<endl;
+	Company* pComp = new Company;
+
+	// Pick Event Type
+	cout << "Enter Event type: (0. Ready, 1. Cancel, 2. Promote): ";
+	int eType;
+	cin >> eType;
+
+	Event* pEvent = nullptr;
+	switch (eType) // Defines Event Type based on Selection
+	{
+	case Ready:
+		pEvent = new ReadyEvent(pComp);
+		break;
+	case Cancel:
+		pEvent = new CancelEvent(pComp);
+		break;
+	case Promote:
+		pEvent = new PromoteEvent(pComp);
+		break;
+	}
+	pEvent->Execute();
+	pComp->add_event(pEvent);
+
 }
