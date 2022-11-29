@@ -10,8 +10,9 @@ private:
 	Node<T>* Rear;
 public:
 	queue();
-	void Enqueue(Node<T>* NP);///inserts nodes form the end
-	int Dequeue();///deque from the beginning
+	~queue();
+	void Enqueue(T data);///inserts nodes form the end
+	T Dequeue();///deque from the beginning
 	bool isempty();///checks if queue is empty or not
 	void printlist();///print queue data
 };
@@ -22,6 +23,13 @@ queue<T>::queue()
 {
 	Front = nullptr;
 	Rear = nullptr;
+}
+
+template<typename T>
+queue<T>::~queue()
+{
+	while (!isempty())
+		Dequeue();
 }
 
 template<typename T>
@@ -38,8 +46,9 @@ bool queue<T>::isempty()
 }
 
 template<typename T>
-void queue<T>::Enqueue(Node<T>* NP)
+void queue<T>::Enqueue(T data)
 {
+	Node<T>* NP = new Node<T>(data);
 	if (isempty())
 	{
 		Front = Rear = NP;
@@ -52,23 +61,24 @@ void queue<T>::Enqueue(Node<T>* NP)
 }
 
 template<typename T>
-int queue<T>::Dequeue()
+T queue<T>::Dequeue()
 {
 	if (isempty())
 	{
 		cout << "The queue is empty" << endl;
-		return -1;
+		return NULL;
 	}
 	else if (Front == Rear)
 	{
+		T valueF = Front->get_data();
 		delete Front;
 		Front = Rear = nullptr;
-		return -1;
+		return valueF;
 	}
 	else
 	{
 		Node<T>* helper = Front;
-		int valueF = Front->get_data();
+		T valueF = Front->get_data();
 		Front = Front->get_next();
 		return valueF;
 

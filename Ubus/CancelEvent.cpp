@@ -3,10 +3,8 @@
 CancelEvent::CancelEvent(Company* pComp)
 {
 	this->pComp = pComp;
+	Execute();
 }
-
-void CancelEvent::getParameters()
-{}
 
 void CancelEvent::Execute()
 {

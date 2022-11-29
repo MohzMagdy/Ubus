@@ -9,9 +9,9 @@ enum Event_Type
 };
 
 enum class Passenger_Type{
-	N,	// Normal Passenger Type
-	S,	// Special Passenger Type
-	V	// VIP Passenger Type
+	NP,	// Normal Passenger Type
+	SP,	// Special Passenger Type
+	VP	// VIP Passenger Type
 };
 
 enum class Bus_Type {

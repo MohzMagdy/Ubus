@@ -6,9 +6,10 @@ class PromoteEvent :
 {
 private:
     Company* pComp = nullptr;
+    int ID;
+
 public:
     PromoteEvent(Company*);
-    void getParameters();
     void Execute();
 };
 

@@ -4,20 +4,21 @@
 #include<iostream>
 class Passengers {
 private: 
-	double Ready_day, Ready_hour; // this type will be drivan from class of time that will be drivan from simulation file
-	double Ride_hour, UnRide_hour;// this type will be drivan from class of time // this type will be drivan from class of time 
 	Passenger_Type Ptype;
+	double Ready_day, Ready_hour; // this type will be drivan from class of time that will be drivan from simulation file
+	int ID;
+	double Ride_hour, UnRide_hour;// this type will be drivan from class of time // this type will be drivan from class of time 
 	double  Delivery_distance;
 	double cost;
 public :
-	Passengers() {};
-	Passengers(double Ready_day, double Ready_hour, double Ride_hour, double UnRide_hour, 
-		Passenger_Type Ptype, double  Delivery_distance, double cost) {
+	Passengers(Passenger_Type Ptype, double Ready_day, double Ready_hour, int ID,
+		double Ride_hour, double UnRide_hour, double  Delivery_distance, double cost) {
+		this->Ptype = Ptype;
 		this->Ready_day = Ready_day;
 		this->Ready_hour = Ready_hour;
+		this->ID = ID;
 		this->Ride_hour = Ride_hour;
 		this->UnRide_hour = UnRide_hour;
-		this->Ptype = Ptype;
 		this->Delivery_distance = Delivery_distance;
 		this->cost = cost;
 	}
@@ -67,5 +68,8 @@ public :
 	}
 	double get_Cost() {
 		return cost;
+	}
+	int get_ID() {
+		return ID;
 	}
 };

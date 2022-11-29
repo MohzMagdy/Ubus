@@ -8,7 +8,6 @@ private:
     Company* pComp = nullptr;
 public:
     CancelEvent(Company*);
-    void getParameters();
     void Execute();
 };
 
