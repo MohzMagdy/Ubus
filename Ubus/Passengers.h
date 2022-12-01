@@ -7,22 +7,20 @@ private:
 	Passenger_Type Ptype;
 	double Ready_day, Ready_hour; // this type will be drivan from class of time that will be drivan from simulation file
 	int ID;
-	double Ride_hour, UnRide_hour;// this type will be drivan from class of time // this type will be drivan from class of time 
+	double Ride_hour;// this type will be drivan from class of time // this type will be drivan from class of time 
 	double  Delivery_distance;
 	double cost;
-public :
+public:
 	Passengers(Passenger_Type Ptype, double Ready_day, double Ready_hour, int ID,
-		double Ride_hour, double UnRide_hour, double  Delivery_distance, double cost) {
+		double Ride_hour, double  Delivery_distance, double cost) {
 		this->Ptype = Ptype;
 		this->Ready_day = Ready_day;
 		this->Ready_hour = Ready_hour;
 		this->ID = ID;
 		this->Ride_hour = Ride_hour;
-		this->UnRide_hour = UnRide_hour;
 		this->Delivery_distance = Delivery_distance;
 		this->cost = cost;
 	}
-
 	/// seters
 	void Set_readytime(double RD, double RH) {
 		Ready_day = RD;
@@ -30,9 +28,6 @@ public :
 	}
 	void Set_Ride_houre( double rH){
 		Ride_hour = rH;
-	}
-	void Set_Unride_Hour(double UrH){
-		UnRide_hour = UrH;
 	}
 	void Set_passanger_type(Passenger_Type pT) {
 		Ptype = pT;
@@ -43,9 +38,6 @@ public :
 	void Set_Cost( double costt){
 		cost = costt;
 	}
-
-
-
 	/// getters 
 	double get_readyday() {
 		return Ready_day;
@@ -56,9 +48,6 @@ public :
 
 	double get_Ride_houre() {
 		return Ride_hour;
-	}
-	double get_Unride_Hour() {
-		return UnRide_hour;
 	}
 	Passenger_Type  get_passanger_type() {
 		return Ptype;

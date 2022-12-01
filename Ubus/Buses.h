@@ -7,7 +7,7 @@ private :
 	double Checkup_time_HS; /// time class 
 	double Bus_speed; 
 	double DI; /// time classs
-	
+public:
 	Buses(Bus_Type bType,int BC,double Checkup_time_HS,double Bus_speed , double DI) {
 		this->bType = bType;
 		this->BC = BC;

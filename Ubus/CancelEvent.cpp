@@ -1,16 +1,15 @@
 #include "CancelEvent.h"
+#include "Company.h"
 
-CancelEvent::CancelEvent(Company* pComp)
+CancelEvent::CancelEvent(Company* pComp,int ID)
 {
 	this->pComp = pComp;
+	this->ID = ID;
 	Execute();
 }
 
 void CancelEvent::Execute()
 {
-	// TEMPORARY: ID should be loaded from file
-	cout << "Enter ID: ";
-	cin >> this->ID;
 
 	Passengers* pPass = pComp->find_passenger(ID);
 	if (pPass == nullptr)

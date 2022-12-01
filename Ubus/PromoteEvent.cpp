@@ -1,19 +1,16 @@
 #include "PromoteEvent.h"
 #include "Defs.h"
+#include "Company.h"
 
-PromoteEvent::PromoteEvent(Company* pComp)
+PromoteEvent::PromoteEvent(Company* pComp,int ID)
 {
+	this->ID = ID;
 	this->pComp = pComp;
 	Execute();
 }
 
 void PromoteEvent::Execute()
 {
-	// TEMPORARY: ID should be loaded from file
-	cout << "Enter ID: ";
-	cin >> this->ID;
-
-	// Find user with ID
 	Passengers* pPass = pComp->find_passenger(ID);
 	if (pPass == nullptr)
 	{

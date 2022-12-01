@@ -1,6 +1,6 @@
 #pragma once
 #include "Event.h"
-#include "Company.h"
+class Company;
 class CancelEvent :
     public Event
 {
@@ -10,7 +10,7 @@ private:
     int ID;
 
 public:
-    CancelEvent(Company*);
+    CancelEvent(Company*,int);
     void Execute();
 };
 

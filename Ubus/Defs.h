@@ -14,7 +14,7 @@ enum class Passenger_Type{
 	VP	// VIP Passenger Type
 };
 
-enum class Bus_Type {
+enum Bus_Type {
 	NB,	// Normal Bus
 	SB,	// Special Bus
 	VB	// VIP Bus
