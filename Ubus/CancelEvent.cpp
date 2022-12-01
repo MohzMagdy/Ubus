@@ -11,7 +11,7 @@ CancelEvent::CancelEvent(Company* pComp,int ID)
 void CancelEvent::Execute()
 {
 
-	Passengers* pPass = pComp->find_passenger(ID);
+	pPass = pComp->find_passenger(ID);
 	if (pPass == nullptr)
 	{
 		cout << "No passenger with this ID" << endl;
@@ -19,23 +19,6 @@ void CancelEvent::Execute()
 	else
 	{
 		// TEMPORARY: Should check if passenger is not riding before canceling
-		// Deleting passenger by going over the queue and dequeuing the found passenger without enqueuing it back
-		bool found = false;
-		int passenger_count = pComp->get_passenger_count();
-		Passengers* pHelper;
-
-		for (int i = 0; i < passenger_count; i++) // Loop goes over whole queue to keep the order unchanged
-		{
-			pHelper = pComp->Dequeue_passenger();
-			if (!found && pHelper == pPass)
-			{
-				delete pHelper;
-				found = true;
-			}
-			else
-			{
-				pComp->Enqueue_passenger(pHelper);
-			}
-		}
+		pComp->delete_passenger(pPass);
 	}
 }

@@ -17,13 +17,13 @@ void PromoteEvent::Execute()
 		cout << "No passenger with this ID" << endl;
 	}
 	else {
-		if (pPass->get_passanger_type() == Passenger_Type::VP)
+		if (this->pPass->get_passanger_type() == Passenger_Type::VP)
 		{
 			cout << "Passenger is already VIP" << endl;
 		}
 		else
 		{
-			pPass->Set_passanger_type(Passenger_Type::VP);
+			this->pPass->Set_passanger_type(Passenger_Type::VP);
 		}
 	}
 }
