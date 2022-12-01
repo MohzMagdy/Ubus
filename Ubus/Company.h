@@ -193,6 +193,8 @@ public:
 				double cost = stod(loadedData[i + 7]);
 				ReadyEvent* e = new ReadyEvent(this, pType, pDay,pHour, id, LT, distance, cost);
 				add_event(e);
+				cout << "Current Time: " << pDay << ":" << pHour << endl;
+				cout << "Added a Ready Event" << endl;
 				i += 7;
 			}
 			else if (loadedData[i+1] == "X") {
@@ -205,6 +207,7 @@ public:
 				int pDay = stoi(loadedData[i + 2].substr(0, colonidx));
 				int pHour = stoi(loadedData[i + 2].substr(colonidx + 1, loadedData[i + 2].size() - colonidx));
 				int id = stoi(loadedData[i + 3]);
+				cout << "Current Time: " << pDay << ":" << pHour << endl;
 				CancelEvent* c = new CancelEvent(this, id);
 				add_event(c);
 				i += 3;
@@ -220,6 +223,7 @@ public:
 				int pHour = stoi(loadedData[i + 2].substr(colonidx + 1, loadedData[i + 2].size() - colonidx));
 				int id = stoi(loadedData[i + 3]);
 				double extraMoney = stod(loadedData[i + 4]);
+				cout << "Current Time: " << pDay << ":" << pHour << endl;
 				PromoteEvent* p = new PromoteEvent(this, id);
 				add_event(p);
 				i += 4;

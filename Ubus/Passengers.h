@@ -49,7 +49,7 @@ public:
 	double get_Ride_houre() {
 		return Ride_hour;
 	}
-	Passenger_Type  get_passanger_type() {
+	Passenger_Type get_passanger_type() {
 		return Ptype;
 	}
 	double get_Delivery_distance() {
