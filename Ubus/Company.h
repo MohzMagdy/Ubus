@@ -7,11 +7,13 @@
 
 class Company {
 private:
-	LinkedList<Event*> pEvents;
+	queue<Event*> pEvents;
 	queue<Passengers*> pPassengers;
-	LinkedList<Buses*> pBuses;
+	queue<Buses*> pBuses;
 
+	int event_count = 0;
 	int passenger_count = 0;
+	int bus_count = 0;
 
 public:
 	Company() {}; // Default Constructor
@@ -31,7 +33,8 @@ public:
 	// Add functions
 	void add_event(Event* pEvent)
 	{
-		pEvents.insert_end(pEvent);
+		pEvents.Enqueue(pEvent);
+		event_count++;
 	}
 
 	void add_passenger(Passengers* pPass)
@@ -42,7 +45,8 @@ public:
 
 	void add_bus(Buses* pBus)
 	{
-		pBuses.insert_end(pBus);
+		pBuses.Enqueue(pBus);
+		bus_count++;
 	}
 
 	// Functions
@@ -64,5 +68,27 @@ public:
 		}
 
 		return pPass;
+	}
+
+	Event* find_passenger_ReadyEvent(Passengers* pPass)
+	{
+		bool found = false;
+		Event* pEvent = nullptr;
+		Event* pHelper;
+		for (int i = 0; i < event_count; i++)
+		{
+			pHelper = pEvents.Dequeue();
+			// if(!found && pHelper->)
+		}
+	}
+
+	void Enqueue_passenger(Passengers* pPass)
+	{
+		pPassengers.Enqueue(pPass);
+	}
+
+	Passengers* Dequeue_passenger()
+	{
+		return pPassengers.Dequeue();
 	}
 };

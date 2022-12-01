@@ -6,6 +6,9 @@ class CancelEvent :
 {
 private:
     Company* pComp = nullptr;
+
+    int ID;
+
 public:
     CancelEvent(Company*);
     void Execute();
