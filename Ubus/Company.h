@@ -8,24 +8,26 @@
 #include "ReadyEvent.h"
 #include "PromoteEvent.h"
 #include "CancelEvent.h"
+#include "UI.h"
 #include <sstream>
 #include <string>
 #include <fstream>
+
 
 class Company {
 private:
 	queue<Event*> pEvents;
 	queue<Passengers*> pPassengers;
 	queue<Buses*> pBuses;
-
+	UI* pUI;
 	int event_count = 0;
 	int passenger_count = 0;
 	int bus_count = 0;
 
 public:
 	Company() {
+		pUI = new UI();
 		File_IO_Loading();
-	
 	}; // Default Constructor
 	~Company() // Destructor
 	{ // TEMPORARY: Should delete all pointers in lists

@@ -16,6 +16,7 @@ int main()
 	bool exit = false;
 	while (!exit)
 	{
+
 	}
 
 	delete pComp;

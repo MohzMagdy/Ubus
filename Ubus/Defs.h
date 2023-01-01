@@ -19,3 +19,9 @@ enum Bus_Type {
 	SB,	// Special Bus
 	VB	// VIP Bus
 };
+
+enum Mode {
+	Interactive,
+	Step,
+	Silent,
+};
