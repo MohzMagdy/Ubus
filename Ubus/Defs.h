@@ -8,7 +8,7 @@ enum Event_Type
 	Promote
 };
 
-enum class Passenger_Type{
+enum  Passenger_Type{
 	NP,	// Normal Passenger Type
 	SP,	// Special Passenger Type
 	VP	// VIP Passenger Type

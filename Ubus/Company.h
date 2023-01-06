@@ -70,7 +70,7 @@ public:
 		for (int i = 0; i < passenger_count; i++) // Loop goes over whole queue to keep the order unchanged
 		{
 			pHelper = pPassengers.Dequeue();
-			if (!found && pHelper->get_ID() == ID)
+			if (!found && pHelper->Get_ID() == ID)
 			{
 				pPass = pHelper;
 				found = true;

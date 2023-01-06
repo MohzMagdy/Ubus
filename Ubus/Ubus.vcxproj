@@ -143,8 +143,10 @@
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Buses.cpp" />
     <ClCompile Include="CancelEvent.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Passengers.cpp" />
     <ClCompile Include="PromoteEvent.cpp" />
     <ClCompile Include="ReadyEvent.cpp" />
     <ClCompile Include="Time.cpp" />

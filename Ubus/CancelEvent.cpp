@@ -19,7 +19,7 @@ void CancelEvent::Execute()
 	else
 	{
 		// TEMPORARY: Should check if passenger is not riding before canceling
-		cout << "Passenger with ID: " << pPass->get_ID() << " is Cancelled" << endl;
+		cout << "Passenger with ID: " << pPass->Get_ID() << " is Cancelled" << endl;
 		pComp->delete_passenger(pPass);
 	}
 }

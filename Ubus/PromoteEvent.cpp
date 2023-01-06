@@ -23,7 +23,7 @@ void PromoteEvent::Execute()
 		}
 		else
 		{
-			cout << "Passenger With ID " << pPass->get_ID() << " is VIP Now" << endl;
+			cout << "Passenger With ID " << pPass->Get_ID() << " is VIP Now" << endl;
 			pPass->Set_passanger_type(Passenger_Type::VP);
 		}
 	}

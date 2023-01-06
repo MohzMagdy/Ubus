@@ -60,13 +60,13 @@
     <ClInclude Include="Buses.h">
       <Filter>Simulation Components</Filter>
     </ClInclude>
-    <ClInclude Include="Passengers.h">
-      <Filter>Simulation Components</Filter>
-    </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Time.h">
+      <Filter>Simulation Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Passengers.h">
       <Filter>Simulation Components</Filter>
     </ClInclude>
   </ItemGroup>
@@ -87,6 +87,12 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="Time.cpp">
+      <Filter>Simulation Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Passengers.cpp">
+      <Filter>Simulation Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Buses.cpp">
       <Filter>Simulation Components</Filter>
     </ClCompile>
   </ItemGroup>
