@@ -19,6 +19,12 @@
     <Filter Include="Events">
       <UniqueIdentifier>{006edc35-5f88-4d7f-a184-65e78363ec84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{7d273ba2-b93c-44ee-9a9c-e152375886e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulation Components">
+      <UniqueIdentifier>{103e4b2c-e4ab-4883-8d50-83c94ac9ad61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Node.h">
@@ -30,14 +36,8 @@
     <ClInclude Include="queue.h">
       <Filter>data structure</Filter>
     </ClInclude>
-    <ClInclude Include="Passengers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Defs.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Buses.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="priority_queue.h">
       <Filter>data structure</Filter>
@@ -57,8 +57,17 @@
     <ClInclude Include="Company.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Buses.h">
+      <Filter>Simulation Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Passengers.h">
+      <Filter>Simulation Components</Filter>
+    </ClInclude>
     <ClInclude Include="UI.h">
-      <Filter>Header Files</Filter>
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Simulation Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -75,7 +84,10 @@
       <Filter>Events</Filter>
     </ClCompile>
     <ClCompile Include="UI.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Simulation Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

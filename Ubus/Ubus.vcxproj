@@ -139,6 +139,7 @@
     <ClInclude Include="PromoteEvent.h" />
     <ClInclude Include="queue.h" />
     <ClInclude Include="ReadyEvent.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +147,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PromoteEvent.cpp" />
     <ClCompile Include="ReadyEvent.cpp" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
