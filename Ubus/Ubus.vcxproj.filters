@@ -54,9 +54,6 @@
     <ClInclude Include="PromoteEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
-    <ClInclude Include="Company.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Buses.h">
       <Filter>Simulation Components</Filter>
     </ClInclude>
@@ -67,6 +64,9 @@
       <Filter>Simulation Components</Filter>
     </ClInclude>
     <ClInclude Include="Passengers.h">
+      <Filter>Simulation Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Company.h">
       <Filter>Simulation Components</Filter>
     </ClInclude>
   </ItemGroup>
@@ -93,6 +93,9 @@
       <Filter>Simulation Components</Filter>
     </ClCompile>
     <ClCompile Include="Buses.cpp">
+      <Filter>Simulation Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Company.cpp">
       <Filter>Simulation Components</Filter>
     </ClCompile>
   </ItemGroup>

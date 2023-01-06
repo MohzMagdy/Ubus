@@ -8,6 +8,7 @@ class queue
 private:
 	Node<T>* Front;
 	Node<T>* Rear;
+	int count;
 public:
 	queue();
 	~queue();
@@ -15,6 +16,7 @@ public:
 	T Dequeue();///deque from the beginning
 	bool isempty();///checks if queue is empty or not
 	void printlist();///print queue data
+	int getcounter();
 };
 
 
@@ -29,7 +31,7 @@ template<typename T>
 queue<T>::~queue()
 {
 	while (!isempty())
-		Dequeue();
+		Dequeue(); // THIS DOES NOT DELETE THE ITEMS
 }
 
 template<typename T>
@@ -58,6 +60,7 @@ void queue<T>::Enqueue(T data)
 		Rear->set_next(NP);
 		Rear = NP;
 	}
+	count++;
 }
 
 template<typename T>
@@ -73,6 +76,7 @@ T queue<T>::Dequeue()
 		T valueF = Front->get_data();
 		delete Front;
 		Front = Rear = nullptr;
+		count--;
 		return valueF;
 	}
 	else
@@ -80,8 +84,8 @@ T queue<T>::Dequeue()
 		Node<T>* helper = Front;
 		T valueF = Front->get_data();
 		Front = Front->get_next();
+		count--;
 		return valueF;
-
 	}
 }
 template<typename T>
@@ -94,4 +98,10 @@ void queue<T>::printlist()
 		temp = temp->get_next();
 	}
 	cout << endl;
+}
+
+template<typename T>
+int queue<T>::getcounter()
+{
+	return count;
 }

@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="Buses.cpp" />
     <ClCompile Include="CancelEvent.cpp" />
+    <ClCompile Include="Company.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Passengers.cpp" />
     <ClCompile Include="PromoteEvent.cpp" />

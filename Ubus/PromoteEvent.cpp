@@ -11,20 +11,15 @@ PromoteEvent::PromoteEvent(Company* pComp,int ID)
 
 void PromoteEvent::Execute()
 {
-	Passengers* pPass = pComp->find_passenger(ID);
+	Passengers* pPass = pComp->pWaitNorm_find(ID);
 	if (pPass == nullptr)
 	{
-		cout << "No passenger with this ID" << endl;
+		cout << "No Waiting Normal passenger with this ID" << endl;
 	}
-	else {
-		if (pPass->get_passanger_type() == Passenger_Type::VP)
-		{
-			cout << "Passenger is already VIP" << endl;
-		}
-		else
-		{
-			cout << "Passenger With ID " << pPass->Get_ID() << " is VIP Now" << endl;
-			pPass->Set_passanger_type(Passenger_Type::VP);
-		}
+	else 
+	{
+		cout << "Passenger With ID " << pPass->Get_ID() << " is VIP Now" << endl;
+		pPass->Set_passanger_type(Passenger_Type::VP);
+		pComp->promoteNorm(pPass);
 	}
 }

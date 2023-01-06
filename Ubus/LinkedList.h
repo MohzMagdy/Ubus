@@ -9,23 +9,26 @@ class LinkedList
 {
 private:
 	Node<T>* head;
-
+	int count;
 public:
 	LinkedList();
 	~LinkedList();
+	Node<T>* get_head();
 	void delete_all(); // Deletes all nodes
 	void print_list(); // Prints all elements
 	void insert_end(Node<T>* newNodePtr); // Inserts a node at the end
 	void insert_end(T data); // Inserts a node at the end
-	void delete_first(); // Deletes the first node
+	T delete_first(); // Deletes the first node
 	void delete_node(T data); // Deletes the first node with the given data
 	Node<T>* find(T data); // Returns a pointer to the node with the given data
+	int getcounter();
 };
 
 template<typename T>
 LinkedList<T>::LinkedList()
 {
 	head = nullptr;
+	count = 0;
 }
 
 template<typename T>
@@ -35,12 +38,19 @@ LinkedList<T>::~LinkedList()
 }
 
 template<typename T>
+Node<T>* LinkedList<T>::get_head()
+{
+	return head;
+}
+
+template<typename T>
 void LinkedList<T>::delete_all()
 {
 	while (head)
 	{
 		delete_first();
 	}
+	count = 0;
 }
 
 template<typename T>
@@ -74,6 +84,7 @@ void LinkedList<T>::insert_end(Node<T>* newNodePtr)
 
 		p->set_next(newNodePtr);
 	}
+	count++;
 }
 
 template<typename T>
@@ -96,15 +107,19 @@ void LinkedList<T>::insert_end(T data)
 
 		p->set_next(newNodePtr);
 	}
+	count++;
 }
 
 template<typename T>
-void LinkedList<T>::delete_first()
+T LinkedList<T>::delete_first()
 {
-	if (!head) return; // In case list is empty
+	if (!head) return NULL; // In case list is empty
+	T data = head->get_data();
 	Node<T>* p = head->get_next();
 	delete head;
 	head = p;
+	count--;
+	return data;
 }
 
 template<typename T>
@@ -123,6 +138,7 @@ void LinkedList<T>::delete_node(T data)
 		{
 			pPrev->set_next(p->get_next());
 			delete p;
+			count--;
 			return;
 		}
 		pPrev = p;
@@ -143,4 +159,10 @@ Node<T>* LinkedList<T>::find(T data)
 		p = p->get_next();
 	}
 	return nullptr;
+}
+
+template<typename T>
+int LinkedList<T>::getcounter()
+{
+	return count;
 }

@@ -18,5 +18,5 @@ void ReadyEvent::Execute() // Creates passenger and adds it to passenger list
 {
 	pPass = new Passengers(Ptype, Ready_day, Ready_hour, ID, Ride_hour,
 		Delivery_distance, cost);
-	pComp->add_passenger(pPass);
+	pComp->add_ready(pPass);
 }

@@ -11,15 +11,14 @@ CancelEvent::CancelEvent(Company* pComp,int ID)
 void CancelEvent::Execute()
 {
 
-	pPass = pComp->find_passenger(ID);
+	pPass = pComp->pWaitNorm_find(ID);
 	if (pPass == nullptr)
 	{
-		cout << "No passenger with this ID" << endl;
+		cout << "No waiting normal passenger with this ID" << endl;
 	}
 	else
 	{
-		// TEMPORARY: Should check if passenger is not riding before canceling
 		cout << "Passenger with ID: " << pPass->Get_ID() << " is Cancelled" << endl;
-		pComp->delete_passenger(pPass);
+		pComp->pWaitNorm_delete(pPass);
 	}
 }
