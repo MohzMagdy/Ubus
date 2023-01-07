@@ -127,8 +127,12 @@ template<typename T>
 void LinkedList<T>::delete_node(T data)
 {
 	if (!head) return; // In case list is empty
-	if (head->get_data() == data) // In case data is at head
+	if (head->get_data() == data) {
 		delete_first();
+		return;
+
+	} // In case data is at head
+		
 
 	Node<T>* p = head->get_next();
 	Node<T>* pPrev = head;

@@ -123,15 +123,12 @@ T priority_queue<T>::Dequeue()
 		cout << "The queue is empty" << endl;
 		c -= 1;
 
-
 	}
 	else if (Front == Rear)
 	{
 		delete Front;
 		Front = Rear = nullptr;
 		c -= 1;
-
-
 	}
 	else
 	{
@@ -140,7 +137,6 @@ T priority_queue<T>::Dequeue()
 		Front = Front->get_next();
 		c -= 1;
 		return valueF;
-
 	}
 
 }

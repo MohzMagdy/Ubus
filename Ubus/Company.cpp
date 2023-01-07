@@ -327,15 +327,14 @@ void Company::CheckAutopromotion() {
 		Passengers* pPass = pHelper->get_data();
 		int totaltime = Timestep.Gettotalhours();
 		int totalreadytime= pPass->Get_ready_Time().Gettotalhours();
+		pHelper = pHelper->get_next();
 		if ((totaltime - totalreadytime) > 0) {
 			Time limt = (this->Timestep - pPass->Get_ready_Time());
-	
 			if (Autopromotionlimit < limt) {
 				promoteNorm(pPass);
-				cout << AutopromotionNumber++;
+				cout << "the normal passanger with " << pPass->Get_ID() << " is auto promoted to vip"<<endl;
 			}
 		}
-		pHelper= pHelper->get_next();
 	}
 }
 

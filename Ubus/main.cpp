@@ -21,6 +21,7 @@ int main()
 
 	delete pComp;
 
+
 }
 
 
