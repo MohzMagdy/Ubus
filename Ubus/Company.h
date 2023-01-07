@@ -38,6 +38,9 @@ private:
 	UI* pUI;
 
 	Time Timestep;
+	Time Autopromotionlimit;
+	int  AutopromotionNumber;
+
 public:
 	Company();
 	~Company();
@@ -52,7 +55,7 @@ public:
 	
 	void File_IO_Loading();
 
-	void maxqs();
-
 	void simulate();
+	void maxqs();
+	void CheckAutopromotion();
 };

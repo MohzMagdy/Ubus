@@ -118,7 +118,7 @@ void Company::File_IO_Loading() {
 			index += 1;
 		}
 	}
-
+	Autopromotionlimit.Setdays(stoi(loadedData[13])); Autopromotionlimit.Sethours(0);
 	Buses** nBuses = new Buses * [stoi(loadedData[0])];
 	Buses** sBuses = new Buses * [stoi(loadedData[1])];
 	Buses** vBuses = new Buses * [stoi(loadedData[2])];
@@ -200,6 +200,15 @@ void Company::File_IO_Loading() {
 	}
 }
 
+void Company::simulate()
+{
+	while (true)
+	{
+		Timestep = Timestep + 1;
+
+	}
+}
+
 void Company::maxqs()
 {
 	priority_queue<Passengers*> tempvip = pWaitVIP;
@@ -215,11 +224,16 @@ void Company::maxqs()
 	}
 }
 
-void Company::simulate()
-{
-	while (true)
+void Company::CheckAutopromotion() {
+	Node<Passengers*>* pHelper = pWaitNorm.get_head();
+	int passenger_count = pWaitNorm.getcounter();
+	while (pHelper!=NULL)
 	{
-		Timestep = Timestep + 1;
-
+		Passengers* pPass = pHelper->get_data();
+		Time limt = (this->Timestep.operator-(pPass->Get_ready_Time()));
+		if (Autopromotionlimit <= limt) {
+			promoteNorm(pPass);
+			AutopromotionNumber++;
+		}
 	}
 }
