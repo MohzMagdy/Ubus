@@ -47,7 +47,8 @@ private:
 public:
 	Company();
 	~Company();
-
+	bool checkexitstatus();
+	void simulate();
 	
 
 	
@@ -62,7 +63,7 @@ public:
 	
 	void File_IO_Loading();
 
-	void simulate();
+	
 	void maxqs();
 	void CheckAutopromotion();
 	bool Isworkinghours();

@@ -11,6 +11,47 @@ Company::~Company() // Destructor
 { // TEMPORARY: Should delete all pointers in lists
 	delete& pEvents;
 }
+bool Company::checkexitstatus() {
+	return(
+	pWaitVIP.isempty() &&
+	pWaitSp.isempty() &&
+	pWaitNorm.isempty() &&
+	pDelivered.isempty() &&
+	//pEmptyVIP.isempty() &&
+	//pEmptySp.isempty() &&
+	//pEmptyNorm.isempty() &&
+	pMoving.isempty() &&
+	pCheckupVIP.isempty() &&
+	pCheckupSp.isempty() &&
+	pCheckupNorm.isempty());
+}
+
+
+void Company::simulate()
+{
+	while (true)
+	{
+		Timestep = Timestep + 1;
+
+
+
+
+
+
+
+		if (checkexitstatus())
+		{
+			break;
+		}
+	}
+
+	
+}
+
+
+
+
+
 
 // Add functions
 void Company::add_event(Event* pEvent)
@@ -256,14 +297,6 @@ void Company::File_IO_Loading() {
 	}
 }
 
-void Company::simulate()
-{
-	while (true)
-	{
-		Timestep = Timestep + 1;
-
-	}
-}
 
 void Company::maxqs()
 {

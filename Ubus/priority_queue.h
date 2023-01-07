@@ -19,6 +19,7 @@ public:
 	bool isempty();///checks if queue is empty or not
 	void printlist();///print queue data
 	int getcounter();///get number of data in queue
+	void Peek(T& data) const;/// get the front data without delete from the qeue
 };
 
 template<typename T>
@@ -158,4 +159,14 @@ void priority_queue<T>::printlist()
 template<typename T>
 int priority_queue<T>::getcounter() {
 	return c;
+}
+
+template<typename T>
+void priority_queue<T>::Peek(T& data) const
+{
+	if (isempty()) {
+		data = nullptr;
+		return;
+	}
+	data = Front->get_data();
 }

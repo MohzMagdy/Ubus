@@ -22,6 +22,7 @@ public:
 	void delete_node(T data); // Deletes the first node with the given data
 	Node<T>* find(T data); // Returns a pointer to the node with the given data
 	int getcounter();
+	bool isempty();
 };
 
 template<typename T>
@@ -165,4 +166,9 @@ template<typename T>
 int LinkedList<T>::getcounter()
 {
 	return count;
+}
+template<typename T>
+bool LinkedList<T>::isempty() {
+	if (head == nullptr) return true;
+	else return false;
 }
