@@ -66,4 +66,6 @@ public:
 	void maxqs();
 	void CheckAutopromotion();
 	bool Isworkinghours();
+
+
 };

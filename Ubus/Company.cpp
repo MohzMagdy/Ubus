@@ -72,7 +72,7 @@ void Company::add_ready(Passengers* pPass)
 	switch (PT)
 	{
 	case VP:
-		pWaitVIP.Enqueue(pPass);
+		pWaitVIP.Enqueue(pPass, pPass->calcPriority());
 		break;
 	case SP:
 		pWaitSp.Enqueue(pPass);
@@ -135,8 +135,10 @@ void Company::pWaitNorm_delete(Passengers* pPass)
 void Company::promoteNorm(Passengers* pPass)
 {
 	pWaitNorm.delete_node(pPass);
-	pWaitVIP.Enqueue(pPass);
+	pWaitVIP.Enqueue(pPass, pPass->calcPriority());
 }
+
+
 
 
 // Loading File

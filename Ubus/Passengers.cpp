@@ -49,3 +49,9 @@ void Passengers::Set_MaxW(int x, int y)
 	MaxW.Setdays(x);
 	MaxW.Sethours(y);
 }
+
+
+double Passengers::calcPriority()
+{
+	return (Ready_Time.Gettotalhours()*10 + Delivery_distance + cost);
+}

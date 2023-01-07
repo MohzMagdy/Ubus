@@ -14,7 +14,7 @@ private:
 public:
 	priority_queue();
 	void Enqueue(Node<T>* NP);///inserts nodes according to its priority
-	void Enqueue(T item);///inserts item according to its priority
+	void Enqueue(T item, double pir);///inserts item according to its priority
 	T Dequeue();///deque from the beginning
 	bool isempty();///checks if queue is empty or not
 	void printlist();///print queue data
@@ -79,7 +79,7 @@ void priority_queue<T>::Enqueue(Node<T>* NP)
 }
 
 template<typename T>
-void priority_queue<T>::Enqueue(T item)
+void priority_queue<T>::Enqueue(T item, double pir)
 {
 	Node<T>* NP = new Node<T>(item);
 	if (isempty())
