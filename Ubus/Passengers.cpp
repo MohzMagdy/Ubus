@@ -30,6 +30,11 @@ Time Passengers::Get_UnRide_Time(){return UnRide_Time;}
 double Passengers::Get_Delivery_distance(){return Delivery_distance;}
 double Passengers::Get_Cost(){return cost;}
 
+int Passengers::Get_MaxW()
+{
+	return MaxW;
+}
+
 void Passengers::Set_passanger_type(Passenger_Type pT){this->Ptype = pT;}
 void Passengers::Set_readytime(Time t){this->Ready_Time = t;}
 void Passengers::Set_id(int id){this->ID = id;}
@@ -37,3 +42,8 @@ void Passengers::Set_Ride_Time(Time rH){this->Ride_Time = rH;}
 void Passengers::Set_UnRide_Time(Time unrH){this->UnRide_Time = unrH;}
 void Passengers::Set_Delivery_distance(double Deldist){this->Delivery_distance = Deldist;}
 void Passengers::Set_Cost(double costt){this->cost = costt;}
+
+void Passengers::Set_Max(int x)
+{
+	MaxW = x;
+}
