@@ -90,6 +90,7 @@ void Company::promoteNorm(Passengers* pPass)
 	pWaitVIP.Enqueue(pPass);
 }
 
+
 // Loading File
 void Company::File_IO_Loading() {
 	ifstream File;
@@ -196,5 +197,29 @@ void Company::File_IO_Loading() {
 			add_event(p);
 			i += 4;
 		}
+	}
+}
+
+void Company::maxqs()
+{
+	priority_queue<Passengers*> tempvip = pWaitVIP;
+	queue<Passengers*> tempsp = pWaitSp;
+	LinkedList<Passengers*> tempnorm = pWaitNorm;
+	while (tempvip.isempty()!=true)
+	{
+		Passengers* helpertoday=tempvip.Dequeue();
+		if (helpertoday->Get_MaxW()==Timestep)
+		{
+			helpertoday;
+		}
+	}
+}
+
+void Company::simulate()
+{
+	while (true)
+	{
+		Timestep = Timestep + 1;
+
 	}
 }
