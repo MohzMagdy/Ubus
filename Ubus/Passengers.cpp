@@ -11,13 +11,12 @@ Passengers::Passengers()
 	Delivery_distance=0;
 	cost = 0;
 }
-Passengers::Passengers(Passenger_Type Ptype, Time Ready_Time, int ID, Time Ride_Time, Time UnRide_Time, double Delivery_distance, double cost)
+Passengers::Passengers(Passenger_Type Ptype, Time Ready_Time, int ID, Time Ride_Time, double Delivery_distance, double cost)
 {
 	this->Ptype = Ptype;
 	this->Ready_Time = Ready_Time;
 	this->ID= ID;
 	this ->Ride_Time = Ride_Time;
-	this-> UnRide_Time = UnRide_Time;
 	this -> Delivery_distance = Delivery_distance;
 	this-> cost = cost;
 }

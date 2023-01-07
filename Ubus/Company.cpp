@@ -92,7 +92,7 @@ void Company::promoteNorm(Passengers* pPass)
 
 // Loading File
 void Company::File_IO_Loading() {
-	ifstream File;
+	/*ifstream File;
 	string dataline;
 	int dataElementsCount = 0;
 	File.open("input.txt");
@@ -195,6 +195,62 @@ void Company::File_IO_Loading() {
 			PromoteEvent* p = new PromoteEvent(this, id);
 			add_event(p);
 			i += 4;
+		}
+	}*/
+	ifstream File;
+	File.open("input.txt");
+	int noNbus, noSbus, noVbus;
+	File >> noNbus >> noSbus >> noVbus;
+	int sNBus, sSBus, sVBus;
+	File >> sNBus >> sSBus >> sVBus;
+	int cNBus, cSBus, cVBus;
+	File >> cNBus >> cSBus >> cVBus;
+
+	int noCheckup, cdNBus, cdSBus, cdVBus;
+
+	File >> noCheckup >> cdNBus >> cdSBus >> cdVBus;
+	
+	int autoprom, maxW;
+
+	File >> autoprom >> maxW;
+
+	
+
+	for (int i = 0; i < noNbus; i++) {
+		Buses* n = new Buses(Bus_Type::NB, cNBus, Time(cdNBus), sNBus, i);
+		add_empty_bus(n);
+	}
+	for (int i = 0; i < noSbus; i++) {
+		Buses* n = new Buses(Bus_Type::SB, cSBus, Time(cdSBus), sSBus, i);
+		add_empty_bus(n);
+	}
+	for (int i = 0; i < noVbus; i++) {
+		Buses* n = new Buses(Bus_Type::VB, cVBus, Time(cdVBus), sVBus, i);
+		add_empty_bus(n);
+	}
+	autoPromotion = Time();
+	autoPromotion.Setdays(autoprom);
+	autoPromotion.Sethours(0);
+
+	MaxW = Time(maxW);
+	int numEvents;
+
+	File >> numEvents;
+
+	for (int i = 0; i < numEvents; i++) {
+		char EventType;
+		File >> EventType;
+		if (EventType == 'R') {
+			ReadyEvent* R = new ReadyEvent(this);
+			R->Load(File);
+		}
+		else if(EventType == 'P') {
+			PromoteEvent* P = new PromoteEvent(this);
+			P->Load(File);
+		}
+		else {
+			CancelEvent* C = new CancelEvent(this);
+			C->Load(File);
 		}
 	}
 }

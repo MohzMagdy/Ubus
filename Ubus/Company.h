@@ -12,6 +12,7 @@
 #include <sstream>
 #include <string>
 #include <fstream>
+#include <time.h>
 #include "priority_queue.h"
 
 
@@ -36,9 +37,16 @@ private:
 
 	UI* pUI;
 
+	Time autoPromotion;
+	Time MaxW;
+
 public:
 	Company();
 	~Company();
+
+	
+
+	
 
 	void add_event(Event* PEvent);
 	void add_ready(Passengers* pPass);

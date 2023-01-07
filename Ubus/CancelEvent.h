@@ -1,16 +1,21 @@
 #pragma once
 #include "Event.h"
+#include <sstream>
+#include <fstream>
+
 class Company;
 class CancelEvent :
     public Event
 {
 private:
     Company* pComp = nullptr;
-
+    Time EventTime;
     int ID;
 
 public:
-    CancelEvent(Company*,int);
+    CancelEvent(Company*);
+    CancelEvent(Company*,int,Time);
     void Execute();
+    void Load(std::ifstream&);
 };
 

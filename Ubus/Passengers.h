@@ -13,8 +13,7 @@ private:
 	double cost;
 public:
 	Passengers();// no parameter constructor 
-	Passengers(Passenger_Type Ptype, Time Ready_Time, int ID, Time Ride_Time, 
-		Time UnRide_Time, double  Delivery_distance, double cost);//  constructor with parameter 
+	Passengers(Passenger_Type Ptype, Time Ready_Time, int ID, Time Ride_Time, double  Delivery_distance, double cost);//  constructor with parameter 
 	/// parmeters geters 
 	Passenger_Type get_passanger_type();
 	Time Get_ready_Time();
