@@ -38,7 +38,6 @@ private:
 
 	UI* pUI;
 
-	Time autoPromotion;
 	Time MaxW;
 	Time Timestep;
 	Time Autopromotionlimit;

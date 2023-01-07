@@ -5,6 +5,8 @@ using namespace std;
 Company::Company() {
 	pUI = new UI();
 	File_IO_Loading();
+	AutopromotionNumber = 0;
+	simulate();
 }; // Default Constructor
 
 Company::~Company() // Destructor
@@ -29,14 +31,21 @@ bool Company::checkexitstatus() {
 
 void Company::simulate()
 {
+	//Passengers *py;
+	//pWaitVIP.Peek(py);
+	//cout <<py->Get_ID()<<endl;
+
+
+
 	while (true)
 	{
 		Timestep = Timestep + 1;
 
 
-
-
-
+		if (Isworkinghours()) {
+			CheckAutopromotion();
+		}
+		
 
 
 		if (checkexitstatus())
@@ -47,8 +56,6 @@ void Company::simulate()
 
 	
 }
-
-
 
 
 
@@ -270,9 +277,9 @@ void Company::File_IO_Loading() {
 		Buses* n = new Buses(Bus_Type::VB, cVBus, Time(cdVBus), sVBus, i);
 		add_empty_bus(n);
 	}
-	autoPromotion = Time();
-	autoPromotion.Setdays(autoprom);
-	autoPromotion.Sethours(0);
+	Autopromotionlimit = Time();
+	Autopromotionlimit.Setdays(autoprom);
+	Autopromotionlimit.Sethours(0);
 
 	MaxW = Time(maxW);
 	int numEvents;
@@ -315,15 +322,20 @@ void Company::maxqs()
 
 void Company::CheckAutopromotion() {
 	Node<Passengers*>* pHelper = pWaitNorm.get_head();
-	int passenger_count = pWaitNorm.getcounter();
 	while (pHelper!=NULL)
 	{
 		Passengers* pPass = pHelper->get_data();
-		Time limt = (this->Timestep.operator-(pPass->Get_ready_Time()));
-		if (Autopromotionlimit <= limt) {
-			promoteNorm(pPass);
-			AutopromotionNumber++;
+		int totaltime = Timestep.Gettotalhours();
+		int totalreadytime= pPass->Get_ready_Time().Gettotalhours();
+		if ((totaltime - totalreadytime) > 0) {
+			Time limt = (this->Timestep - pPass->Get_ready_Time());
+	
+			if (Autopromotionlimit < limt) {
+				promoteNorm(pPass);
+				cout << AutopromotionNumber++;
+			}
 		}
+		pHelper= pHelper->get_next();
 	}
 }
 
