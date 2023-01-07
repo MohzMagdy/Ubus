@@ -293,3 +293,13 @@ void Company::CheckAutopromotion() {
 		}
 	}
 }
+
+bool Company::Isworkinghours()
+{
+	if (this->Timestep.operator>=(Time(Timestep.Getdays(), 4)) &&
+		this->Timestep.operator<=(Time(Timestep.Getdays(), 22)))
+	{
+		return true;
+	}
+	else { return false; }
+}

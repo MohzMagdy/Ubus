@@ -65,4 +65,5 @@ public:
 	void simulate();
 	void maxqs();
 	void CheckAutopromotion();
+	bool Isworkinghours();
 };

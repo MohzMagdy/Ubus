@@ -121,28 +121,29 @@ T priority_queue<T>::Dequeue()
 	{
 		cout << "The queue is empty" << endl;
 		c -= 1;
-		return -1;
-		
+
+
 	}
 	else if (Front == Rear)
 	{
 		delete Front;
 		Front = Rear = nullptr;
 		c -= 1;
-		return -1;
-		
+
+
 	}
 	else
 	{
 		Node<T>* helper = Front;
-		T valueF = Front;
+		T valueF = Front->get_data();
 		Front = Front->get_next();
 		c -= 1;
 		return valueF;
-		
+
 	}
-	
+
 }
+
 template<typename T>
 void priority_queue<T>::printlist()
 {

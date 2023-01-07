@@ -73,7 +73,7 @@ T queue<T>::Dequeue()
 	}
 	else if (Front == Rear)
 	{
-		T valueF = Front;
+		T valueF = Front->get_data();
 		delete Front;
 		Front = Rear = nullptr;
 		count--;
@@ -88,6 +88,7 @@ T queue<T>::Dequeue()
 		return valueF;
 	}
 }
+
 template<typename T>
 void queue<T>::printlist()
 {
