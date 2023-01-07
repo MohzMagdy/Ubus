@@ -307,17 +307,19 @@ void Company::File_IO_Loading() {
 
 void Company::maxqs()
 {
-	priority_queue<Passengers*> tempvip = pWaitVIP;
-	queue<Passengers*> tempsp = pWaitSp;
+	/*queue<Passengers*> tempsp = pWaitSp;
 	LinkedList<Passengers*> tempnorm = pWaitNorm;
-	while (tempvip.isempty()!=true)
+	Node<Passengers*>* sphead = tempsp.ReturnFront();
+	while (sphead != NULL)
 	{
-		Passengers* helpertoday=tempvip.Dequeue();
-		if (helpertoday->Get_MaxW()==Timestep)
+		if (sphead->get_data()->Get_MaxW() == Timestep)
 		{
-			helpertoday;
+			Passengers* helper = pWaitsp_find(sphead->get_data()->Get_ID());
+			pWaitNorm_delete(helper);
+			break;
 		}
-	}
+		sphead = sphead->get_next();
+	}*/
 }
 
 void Company::CheckAutopromotion() {

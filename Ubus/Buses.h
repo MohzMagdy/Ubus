@@ -1,6 +1,9 @@
 #pragma once
 #include"Defs.h"
 #include"Time.h"
+#include "queue.h"
+#include "Passengers.h"
+
 class Buses {
 private :
 	Bus_Type bType;
@@ -8,6 +11,8 @@ private :
 	Time Checkup_time_HS;
 	double Bus_speed; 
 	Time DI;
+	queue<Passengers*> passineside;
+	int currentaboarding;
 public:
 	Buses();// no parameter constructor 
 	Buses(Bus_Type bType, int BC, Time Checkup_time_HS, double Bus_speed, Time DI);// constructor with parameters
@@ -23,4 +28,5 @@ public:
 	void Set_Check_point(Time cH);
 	void Set_bus_speed(double BS);
 	void  set_Delivery_interval(Time DIN);
+	void passenger_aboard(Passengers* rider);
 };

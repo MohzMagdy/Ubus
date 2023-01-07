@@ -28,3 +28,15 @@ Buses::Buses()
 	void Buses::Set_Check_point(Time cH) {Checkup_time_HS = cH;}
 	void Buses::Set_bus_speed(double BS) {Bus_speed = BS;}
 	void Buses::set_Delivery_interval(Time DIN) {DI = DIN;}
+
+	void Buses::passenger_aboard(Passengers* rider)
+	{
+		if (currentaboarding <= BC)
+		{
+			passineside.Enqueue(rider);
+		}
+		else
+		{
+			cout << "unable to aboard" << endl;
+		}
+	}

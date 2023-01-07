@@ -1,6 +1,7 @@
 #pragma once
 #include "Node.h"
 #include <iostream>
+using namespace std;
 
 template<typename T>
 class queue
@@ -18,6 +19,8 @@ public:
 	void printlist();///print queue data
 	int getcounter();
 	void Peek(T& data) const;/// get the front data without delete from the qeue
+	Node<T>* ReturnFront(); /// returns front node
+	void delete_data(T& data);/// deletes specific data
 };
 
 
@@ -116,4 +119,38 @@ void queue<T>::Peek(T& data) const
 		return;
 	}
 	data = Front->get_data();
+}
+
+template<typename T>
+inline Node<T>* queue<T>::ReturnFront()
+{
+	return Front;
+}
+
+template<typename T>
+inline void queue<T>::delete_data(T& data)
+{
+	if (isempty())
+	{
+		return;
+	}
+	if (Front->get_data() == data)
+	{
+		Dequeue();
+	}
+	Node<T>* p = Front->get_next();
+	Node<T>* pPrev = Front;
+
+	while (p)
+	{
+		if (p->get_data() == data)
+		{
+			pPrev->set_next(p->get_next());
+			delete p;
+			count--;
+			return;
+		}
+		pPrev = p;
+		p = p->get_next();
+	}
 }
