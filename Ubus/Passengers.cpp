@@ -10,16 +10,18 @@ Passengers::Passengers()
 	UnRide_Time.Setdays(0); UnRide_Time.Sethours(0);
 	Delivery_distance=0;
 	cost = 0;
+	MaxW = 0;
 }
-Passengers::Passengers(Passenger_Type Ptype, Time Ready_Time, int ID, Time Ride_Time, Time UnRide_Time, double Delivery_distance, double cost)
+Passengers::Passengers(Passenger_Type Ptype, Time Ready_Time, int ID, Time Ride_Time, Time UnRide_Time, double Delivery_distance, double cost, int MaxW)
 {
 	this->Ptype = Ptype;
 	this->Ready_Time = Ready_Time;
 	this->ID= ID;
 	this ->Ride_Time = Ride_Time;
 	this-> UnRide_Time = UnRide_Time;
-	this -> Delivery_distance = Delivery_distance;
+	this -> Delivery_distance = Delivery_distance;	
 	this-> cost = cost;
+	this->MaxW = MaxW;
 }
 
 Passenger_Type Passengers::get_passanger_type(){return Ptype;}
@@ -30,7 +32,7 @@ Time Passengers::Get_UnRide_Time(){return UnRide_Time;}
 double Passengers::Get_Delivery_distance(){return Delivery_distance;}
 double Passengers::Get_Cost(){return cost;}
 
-int Passengers::Get_MaxW()
+Time Passengers::Get_MaxW()
 {
 	return MaxW;
 }
@@ -43,7 +45,8 @@ void Passengers::Set_UnRide_Time(Time unrH){this->UnRide_Time = unrH;}
 void Passengers::Set_Delivery_distance(double Deldist){this->Delivery_distance = Deldist;}
 void Passengers::Set_Cost(double costt){this->cost = costt;}
 
-void Passengers::Set_Max(int x)
+void Passengers::Set_MaxW(int x, int y)
 {
-	MaxW = x;
+	MaxW.Setdays(x);
+	MaxW.Sethours(y);
 }

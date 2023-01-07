@@ -13,6 +13,7 @@
 #include <string>
 #include <fstream>
 #include "priority_queue.h"
+#include "Time.h"
 
 
 class Company {
@@ -36,6 +37,7 @@ private:
 
 	UI* pUI;
 
+	Time Timestep;
 public:
 	Company();
 	~Company();
@@ -49,4 +51,8 @@ public:
 	void promoteNorm(Passengers* pPass);
 	
 	void File_IO_Loading();
+
+	void maxqs();
+
+	void simulate();
 };

@@ -73,7 +73,7 @@ T queue<T>::Dequeue()
 	}
 	else if (Front == Rear)
 	{
-		T valueF = Front->get_data();
+		T valueF = Front;
 		delete Front;
 		Front = Rear = nullptr;
 		count--;
