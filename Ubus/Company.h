@@ -14,6 +14,7 @@
 #include <fstream>
 #include <time.h>
 #include "priority_queue.h"
+#include "Time.h"
 
 
 class Company {
@@ -39,6 +40,9 @@ private:
 
 	Time autoPromotion;
 	Time MaxW;
+	Time Timestep;
+	Time Autopromotionlimit;
+	int  AutopromotionNumber;
 
 public:
 	Company();
@@ -57,4 +61,8 @@ public:
 	void promoteNorm(Passengers* pPass);
 	
 	void File_IO_Loading();
+
+	void simulate();
+	void maxqs();
+	void CheckAutopromotion();
 };

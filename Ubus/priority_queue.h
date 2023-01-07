@@ -15,7 +15,7 @@ public:
 	priority_queue();
 	void Enqueue(Node<T>* NP);///inserts nodes according to its priority
 	void Enqueue(T item);///inserts item according to its priority
-	int Dequeue();///deque from the beginning
+	T Dequeue();///deque from the beginning
 	bool isempty();///checks if queue is empty or not
 	void printlist();///print queue data
 	int getcounter();///get number of data in queue
@@ -115,7 +115,7 @@ void priority_queue<T>::Enqueue(T item)
 }
 
 template<typename T>
-int priority_queue<T>::Dequeue()
+T priority_queue<T>::Dequeue()
 {
 	if (isempty())
 	{
@@ -135,7 +135,7 @@ int priority_queue<T>::Dequeue()
 	else
 	{
 		Node<T>* helper = Front;
-		int valueF = Front->get_data();
+		T valueF = Front;
 		Front = Front->get_next();
 		c -= 1;
 		return valueF;
