@@ -3,6 +3,7 @@
 #include"Time.h"
 #include "queue.h"
 #include "Passengers.h"
+#include"priority_queue.h"
 
 class Buses {
 private :
@@ -12,7 +13,8 @@ private :
 	double Bus_speed; 
 	Time DI;
 	queue<Passengers*> passineside;
-	int currentaboarding;
+	int currentaboarding =0;
+	priority_queue<Passengers*> pPass;
 public:
 	Buses();// no parameter constructor 
 	Buses(Bus_Type bType, int BC, Time Checkup_time_HS, double Bus_speed, Time DI);// constructor with parameters
@@ -29,4 +31,6 @@ public:
 	void Set_bus_speed(double BS);
 	void  set_Delivery_interval(Time DIN);
 	void passenger_aboard(Passengers* rider);
+	void passenger_peek(Passengers* ridertopeek);
+	void passenger_Deqeue(Passengers* ridertodeque);
 };

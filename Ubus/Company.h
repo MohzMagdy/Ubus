@@ -35,6 +35,9 @@ private:
 	queue<Buses*> pCheckupVIP;
 	queue<Buses*> pCheckupSp;
 	queue<Buses*> pCheckupNorm;
+	queue<Passengers*> pDeliveredVIP;
+	queue<Passengers*> pDeliveredSp;
+	queue<Passengers*> pDeliveredNorm;
 
 	UI* pUI;
 
@@ -66,4 +69,8 @@ public:
 	void maxqs();
 	void CheckAutopromotion();
 	bool Isworkinghours();
+	void deliver_passengers();
+	void LoadVIP();
+
+	void Setbustomovinglist();
 };

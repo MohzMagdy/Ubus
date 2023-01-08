@@ -39,4 +39,13 @@ Buses::Buses()
 		{
 			cout << "unable to aboard" << endl;
 		}
+		currentaboarding++;
+	}
+
+	void Buses::passenger_peek(Passengers* ridertopeek)	
+	{	this->pPass.Peek(ridertopeek);}
+
+	void Buses::passenger_Deqeue(Passengers* ridertodeque)
+	{
+		ridertodeque = pPass.Dequeue();
 	}

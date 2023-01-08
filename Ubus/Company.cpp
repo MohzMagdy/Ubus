@@ -1,4 +1,4 @@
-#include "Company.h"
+﻿#include "Company.h"
 
 using namespace std;
 
@@ -31,22 +31,16 @@ bool Company::checkexitstatus() {
 
 void Company::simulate()
 {
-	//Passengers *py;
-	//pWaitVIP.Peek(py);
-	//cout <<py->Get_ID()<<endl;
-
-
-
 	while (true)
 	{
 		Timestep = Timestep + 1;
 
-
 		if (Isworkinghours()) {
 			CheckAutopromotion();
 		}
-		
 
+		/*deliver_passengers();*/
+		
 
 		if (checkexitstatus())
 		{
@@ -349,3 +343,73 @@ bool Company::Isworkinghours()
 	}
 	else { return false; }
 }
+
+
+
+//// delevier passengers not completed yet
+
+//void Company::deliver_passengers() {
+//	Buses*pBus = nullptr;
+//	Passengers*pPass = nullptr ;
+//
+//	while (!pMoving.isempty())
+//	{
+//		pBus = pMoving.Dequeue();
+//		pBus->passenger_peek(pPass); 
+//		while (pPass!=nullptr)
+//		{
+//			int readytime = pPass->Get_ready_Time().Gettotalhours();
+//			int nowtimestep = this->Timestep.Gettotalhours();
+//			if (nowtimestep - readytime > 0) {
+//				Time TimeFromStartTheJurnyUntillNow = (this->Timestep - pPass->Get_ready_Time());
+//				double deliverytime = ((pPass->Get_Delivery_distance() / pBus->get_bus_speed()) +  (pPass->Get_totalRideUnride_Time()));
+//				double TimeFromStartTheJurnyUntillNo = double (TimeFromStartTheJurnyUntillNow.Gettotalhours());
+//
+//				if (TimeFromStartTheJurnyUntillNo >= deliverytime)
+//				{
+//					pBus->passenger_Deqeue(pPass);
+//					Passenger_Type PT = pPass->get_passanger_type();
+//					switch (PT)
+//					{
+//					case VP:
+//					pDeliveredVIP.Enqueue(pPass);
+//						break;
+//					case SP:
+//						pDeliveredSp.Enqueue(pPass);
+//						break;
+//					case NP:
+//						pDeliveredNorm.Enqueue(pPass);
+//						break;
+//					}
+//				}
+//			}
+//			
+//		}
+//
+//	}
+//}
+
+
+
+
+////////////////////  منيكة كود 
+//void Company::LoadVIP() {
+//	Passengers* pPass = nullptr;
+//	Buses* pBus = nullptr;
+//	while (!pWaitVIP.isempty())
+//	{
+//		pPass = pWaitVIP.Dequeue();
+//		pEmptyVIP.Peek(pBus);
+//		pBus->passenger_aboard(pPass);
+//	}
+//}
+
+//void Company::Setbustomovinglist() {
+//
+//pMoving.Enqueue(pEmptyVIP.Dequeue());
+//pMoving.Enqueue(pEmptyVIP.Dequeue());
+//
+//;}
+
+
+

@@ -126,9 +126,10 @@ T priority_queue<T>::Dequeue()
 	}
 	else if (Front == Rear)
 	{
-		delete Front;
+		T valueF = Front->get_data();
 		Front = Rear = nullptr;
 		c -= 1;
+		return valueF;
 	}
 	else
 	{
@@ -162,6 +163,7 @@ void priority_queue<T>::Peek(T& data)
 {
 	if (isempty()) {
 		data = nullptr;
+		return;
 	}
 	data = Front->get_data();
 }
