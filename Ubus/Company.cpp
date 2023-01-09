@@ -39,8 +39,10 @@ void Company::simulate()
 			CheckAutopromotion();
 		}
 
+		/*ExecuteDeliveryFailure();*/
 		/*deliver_passengers();*/
 		
+
 
 		if (checkexitstatus())
 		{
@@ -393,6 +395,7 @@ bool Company::Isworkinghours()
 
 
 ////////////////////  منيكة كود 
+// 
 //void Company::LoadVIP() {
 //	Passengers* pPass = nullptr;
 //	Buses* pBus = nullptr;
@@ -413,3 +416,45 @@ bool Company::Isworkinghours()
 
 
 
+//// bouns Delivery failure
+
+//void Company::ExecuteDeliveryFailure() {
+//	double probability = 0; // probability of dropping a buses
+//	int numtodrop = 0;
+//
+//	if (pMoving.getcounter() == 0) {
+//		return;
+//	}
+//
+//	if ((rand() % 100) < probability) {
+//		numtodrop = rand() % this->pMoving.getcounter() + 1;
+//		for (int i = 0; i < numtodrop; i++) {
+//			this->DropBus();
+//		}
+//	}
+//
+//}
+//void Company::DropBus() {
+//
+//	Buses* pBus;
+//	pBus = pMoving.Dequeue();
+//
+//	Passengers* pPass = nullptr;
+//	Bus_Type BT = pBus->get_bus_type();
+//	switch (BT)
+//	{
+//	case VB:
+//		pBus->passenger_Deqeue(pPass);
+//		while (pPass!=nullptr) {this->pWaitVIP.Enqueue(pPass);}
+//		break;
+//	case SB:
+//		pBus->passenger_Deqeue(pPass);
+//		while (pPass != nullptr) {this->pWaitSp.Enqueue(pPass);}
+//		break;
+//	case NB:
+//		pBus->passenger_Deqeue(pPass);
+//		while (pPass != nullptr) {this->pWaitNorm.insert_end(pPass);}
+//		break;
+//	}
+//	this->MoveToCheckUp(pBus);
+//}

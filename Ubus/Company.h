@@ -73,4 +73,6 @@ public:
 	void LoadVIP();
 
 	void Setbustomovinglist();
+	void ExecuteDeliveryFailure();
+	void DropBus();
 };
