@@ -120,8 +120,10 @@ T priority_queue<T>::Dequeue()
 {
 	if (isempty())
 	{
+		T valueF = nullptr;
 		cout << "The queue is empty" << endl;
 		c -= 1;
+		return valueF;
 
 	}
 	else if (Front == Rear)
