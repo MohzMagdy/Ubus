@@ -37,6 +37,8 @@ void Company::simulate()
 
 		if (Isworkinghours()) {
 			CheckAutopromotion();
+			/*Timestep = 0;*/ 
+			maxqs();
 		}
 
 		/*ExecuteDeliveryFailure();*/
@@ -48,6 +50,7 @@ void Company::simulate()
 		{
 			break;
 		}
+		increaseMaxWforall(); /// Tifa IDK how your code works tbh :D
 	}
 
 	
@@ -262,24 +265,25 @@ void Company::File_IO_Loading() {
 	
 
 	for (int i = 0; i < noNbus; i++) {
-		Buses* n = new Buses(Bus_Type::NB, cNBus, Time(cdNBus), sNBus, i);
+		Buses* n = new Buses(Bus_Type::NB, cNBus, Time(cdNBus), sNBus, i,5); ///MUST BE CHANGED TO BUS SIZE
 		add_empty_bus(n);
 	}
 	for (int i = 0; i < noSbus; i++) {
-		Buses* n = new Buses(Bus_Type::SB, cSBus, Time(cdSBus), sSBus, i);
+		Buses* n = new Buses(Bus_Type::SB, cSBus, Time(cdSBus), sSBus, i,5); ///MUST BE CHANGED TO BUS SIZE
 		add_empty_bus(n);
 	}
 	for (int i = 0; i < noVbus; i++) {
-		Buses* n = new Buses(Bus_Type::VB, cVBus, Time(cdVBus), sVBus, i);
+		Buses* n = new Buses(Bus_Type::VB, cVBus, Time(cdVBus), sVBus, i,5); ///MUST BE CHANGED TO BUS SIZE
 		add_empty_bus(n);
 	}
 	Autopromotionlimit = Time();
 	Autopromotionlimit.Setdays(autoprom);
 	Autopromotionlimit.Sethours(0);
 
-	MaxW = Time(maxW);
+	/*MaxW = Time(maxW);*/
+	MaxW = 0;
 	int numEvents;
-
+	
 	File >> numEvents;
 
 	for (int i = 0; i < numEvents; i++) {
@@ -303,24 +307,80 @@ void Company::File_IO_Loading() {
 
 void Company::maxqs()
 {
-	/*queue<Passengers*> tempsp = pWaitSp;
+	queue<Passengers*> tempsp = pWaitSp;
 	LinkedList<Passengers*> tempnorm = pWaitNorm;
 	Node<Passengers*>* sphead = tempsp.ReturnFront();
-	while (sphead != NULL)
+	Node<Passengers*>* norhead = tempnorm.get_head();
+	while (sphead != nullptr)
 	{
 		if (sphead->get_data()->Get_MaxW() == Timestep)
 		{
-			Passengers* helper = pWaitsp_find(sphead->get_data()->Get_ID());
-			pWaitNorm_delete(helper);
-			break;
+			Node<Buses*>* assistant=pEmptySp.ReturnFront();
+			if (assistant->get_data()->isfull() == false)
+			{
+				assistant->get_data()->passenger_aboard(sphead->get_data());
+				cout << "Passenger with ID " << sphead->get_data()->Get_ID() << " Aboarded the bus " << endl;
+				break;
+			}
+			else
+			{
+				while (assistant->get_data()->isfull()==true && assistant->get_next()!=nullptr)
+				{
+					assistant = assistant->get_next();
+				}
+				if (assistant->get_data()->isfull()==true)
+				{
+					cout << "No bus is available" << endl;
+				}
+				else
+				{
+					assistant->get_data()->passenger_aboard(sphead->get_data());
+					cout << "Passenger with ID " << sphead->get_data()->Get_ID() << " Aboarded the bus " << endl;
+					break;
+				}
+				
+			}
 		}
 		sphead = sphead->get_next();
-	}*/
+	}
+	while (norhead != nullptr)
+	{
+		if (norhead->get_data()->Get_MaxW() == Timestep)
+		{
+			Node<Buses*>* assistant = pEmptyNorm.ReturnFront();
+			if (assistant->get_data()->isfull() == false)
+			{
+				assistant->get_data()->passenger_aboard(norhead->get_data());
+				cout << "Passenger with ID " << norhead->get_data()->Get_ID() << " Aboarded the bus " << endl;
+				break;
+			}
+			else
+			{
+				while (assistant->get_data()->isfull() == true && assistant->get_next() != nullptr)
+				{
+					assistant = assistant->get_next();
+				}
+				if (assistant->get_data()->isfull() == true)
+				{
+					cout << "No bus is available" << endl;
+				}
+				else
+				{
+					assistant->get_data()->passenger_aboard(norhead->get_data());
+					cout << "Passenger with ID " << norhead->get_data()->Get_ID() << " Aboarded the bus " << endl;
+					break;
+				}
+
+			}
+		}
+		norhead = norhead->get_next();
+	}
 }
+
 
 void Company::CheckAutopromotion() {
 	Node<Passengers*>* pHelper = pWaitNorm.get_head();
-	while (pHelper!=NULL)
+	while (pHelper != NULL)
 	{
 		Passengers* pPass = pHelper->get_data();
 		int totaltime = Timestep.Gettotalhours();
@@ -344,6 +404,22 @@ bool Company::Isworkinghours()
 		return true;
 	}
 	else { return false; }
+}
+
+void Company::increaseMaxWforall()
+{
+	Node<Passengers*>* pHelperNor = pWaitNorm.get_head();
+	Node<Passengers*>* pHelpersp = pWaitSp.ReturnFront();
+	while (pHelperNor->get_next()!=nullptr)
+	{
+		pHelperNor->get_data()->increaseMaxwhr();
+		pHelperNor = pHelperNor->get_next();
+	}
+	while (pHelpersp->get_next()!=nullptr)
+	{
+		pHelpersp->get_data()->increaseMaxwhr();
+		pHelpersp = pHelpersp->get_next();
+	}
 }
 
 

@@ -30,4 +30,5 @@ public:
 	void Set_Delivery_distance(double Deldist);
 	void Set_Cost(double costt);
 	void Set_MaxW(int x, int y);
+	void increaseMaxwhr();
 };

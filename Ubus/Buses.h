@@ -17,7 +17,7 @@ private :
 	priority_queue<Passengers*> pPass;
 public:
 	Buses();// no parameter constructor 
-	Buses(Bus_Type bType, int BC, Time Checkup_time_HS, double Bus_speed, Time DI);// constructor with parameters
+	Buses(Bus_Type bType, int BC, Time Checkup_time_HS, double Bus_speed, Time DI, int currentaboarding);// constructor with parameters
 	/// parmeters getters 
 	Bus_Type get_bus_type();
 	int get_bus_capacity();
@@ -33,4 +33,6 @@ public:
 	void passenger_aboard(Passengers* rider);
 	void passenger_peek(Passengers* ridertopeek);
 	void passenger_Deqeue(Passengers* ridertodeque);
+
+	bool isfull();
 };

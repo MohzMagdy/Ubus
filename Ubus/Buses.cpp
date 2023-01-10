@@ -8,13 +8,15 @@ Buses::Buses()
 	Checkup_time_HS.Setdays(0); Checkup_time_HS.Sethours(0);
 	Bus_speed = 0;
 	DI.Setdays(0); DI.Sethours(0);
+	currentaboarding = 0;
 }
-	Buses::Buses(Bus_Type bType, int BC, Time Checkup_time_HS, double Bus_speed, Time DI) {
+	Buses::Buses(Bus_Type bType, int BC, Time Checkup_time_HS, double Bus_speed, Time DI, int currentaboarding) {
 		this->bType = bType;
 		this->BC = BC;
 		this->Checkup_time_HS = Checkup_time_HS;
 		this->Bus_speed = Bus_speed;
 		this->DI = DI;
+		this->currentaboarding = currentaboarding;
 	}
 
 	Bus_Type Buses:: get_bus_type() {return bType;}
@@ -48,4 +50,15 @@ Buses::Buses()
 	void Buses::passenger_Deqeue(Passengers* ridertodeque)
 	{
 		ridertodeque = pPass.Dequeue();
+	}
+
+	bool Buses::isfull()
+	{
+		bool x = false;
+		if (currentaboarding>=BC)
+		{
+			x = true;
+			return true;
+		}
+		return x;
 	}
