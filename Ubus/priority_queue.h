@@ -13,8 +13,8 @@ private:
 	int c = 0;
 public:
 	priority_queue();
-	void Enqueue(Node<T>* NP);///inserts nodes according to its priority
-	void Enqueue(T item, double pir);///inserts item according to its priority
+	void Enqueue(Node<T>* R);///inserts nodes according to its priority
+	void Enqueue(T item);///inserts item according to its priority
 	T Dequeue();///deque from the beginning
 	bool isempty();///checks if queue is empty or not
 	void printlist();///print queue data
@@ -43,8 +43,11 @@ bool priority_queue<T>::isempty()
 }
 
 template<typename T>
-void priority_queue<T>::Enqueue(Node<T>* NP)
+void priority_queue<T>::Enqueue(Node<T>* R)
 {
+	Node<T>* NP = new Node<T>;
+	NP->set_data(R->get_data());
+	NP->set_priority(R->get_priority());
 	if (isempty())
 	{
 		Front = Rear =  NP;
@@ -59,7 +62,7 @@ void priority_queue<T>::Enqueue(Node<T>* NP)
 		else
 		{
 			Node<T>* temp=Front;
-			if (NP->get_priority()>Front->get_priority())
+			if (NP->get_priority()>=Front->get_priority())
 			{
 				NP->set_next(Front);
 				Front = NP;
@@ -82,7 +85,38 @@ template<typename T>
 void priority_queue<T>::Enqueue(T item, double pir)
 {
 	Node<T>* NP = new Node<T>(item);
-	Enqueue(NP);;
+	
+	if (isempty())
+	{
+		Front = Rear = NP;
+	}
+	else
+	{
+		if (Rear->get_priority() > NP->get_priority())
+		{
+			Rear->set_next(NP);
+			Rear = NP;
+		}
+		else
+		{
+			Node<T>* temp = Front;
+			if (NP->get_priority() > Front->get_priority())
+			{
+				NP->set_next(Front);
+				Front = NP;
+			}
+			else
+			{
+				while (temp->get_priority() > NP->get_priority())
+				{
+					temp = temp->get_next();
+				}
+				temp->set_next(NP);
+			}
+
+		}
+	}
+	c++;
 }
 
 template<typename T>
@@ -90,8 +124,10 @@ T priority_queue<T>::Dequeue()
 {
 	if (isempty())
 	{
+		T valueF = nullptr;
 		cout << "The queue is empty" << endl;
 		c -= 1;
+		return valueF;
 
 	}
 	else if (Front == Rear)
@@ -133,6 +169,7 @@ void priority_queue<T>::Peek(T& data)
 {
 	if (isempty()) {
 		data = nullptr;
+		return;
 	}
 	data = Front->get_data();
 }

@@ -35,6 +35,9 @@ private:
 	queue<Buses*> pCheckupVIP;
 	queue<Buses*> pCheckupSp;
 	queue<Buses*> pCheckupNorm;
+	queue<Passengers*> pDeliveredVIP;
+	queue<Passengers*> pDeliveredSp;
+	queue<Passengers*> pDeliveredNorm;
 
 	UI* pUI;
 
@@ -42,7 +45,7 @@ private:
 	Time Timestep;
 	Time Autopromotionlimit;
 	int  AutopromotionNumber;
-
+	
 public:
 	Company();
 	~Company();
@@ -62,10 +65,16 @@ public:
 	
 	void File_IO_Loading();
 
-	
-	void maxqs();
+	void increaseMaxWforall(); /// Still need to add VIP passengers
+	void maxqs(); /// passengers aren't removed from the queue
 	void CheckAutopromotion();
 	bool Isworkinghours();
+	void deliver_passengers();
+	void LoadVIP();
+
+	void Setbustomovinglist();
+	void ExecuteDeliveryFailure();
+	void DropBus();
 
 	void boardPassengers();
 	void boardVIP();

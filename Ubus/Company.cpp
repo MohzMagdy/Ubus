@@ -1,4 +1,4 @@
-#include "Company.h"
+﻿#include "Company.h"
 
 using namespace std;
 
@@ -31,28 +31,27 @@ bool Company::checkexitstatus() {
 
 void Company::simulate()
 {
-	//Passengers *py;
-	//pWaitVIP.Peek(py);
-	//cout <<py->Get_ID()<<endl;
-
-
-
 	while (true)
 	{
 		Timestep = Timestep + 1;
 
-
 		if (Isworkinghours()) {
 			boardPassengers();
 			CheckAutopromotion();
+			/*Timestep = 0; */
+			maxqs();
 		}
 		
+		/*ExecuteDeliveryFailure();*/
+		/*deliver_passengers();*/
+		
 
-
+		
 		if (checkexitstatus())
 		{
 			break;
 		}
+		/*increaseMaxWforall();*/ /// Tifa IDK how your code works tbh :D
 	}
 
 	
@@ -269,15 +268,15 @@ void Company::File_IO_Loading() {
 	
 
 	for (int i = 0; i < noNbus; i++) {
-		Buses* n = new Buses(Bus_Type::NB, cNBus, Time(cdNBus), sNBus, i);
+		Buses* n = new Buses(Bus_Type::NB, cNBus, Time(cdNBus), sNBus, i,5); ///MUST BE CHANGED TO BUS SIZE
 		add_empty_bus(n);
 	}
 	for (int i = 0; i < noSbus; i++) {
-		Buses* n = new Buses(Bus_Type::SB, cSBus, Time(cdSBus), sSBus, i);
+		Buses* n = new Buses(Bus_Type::SB, cSBus, Time(cdSBus), sSBus, i,5); ///MUST BE CHANGED TO BUS SIZE
 		add_empty_bus(n);
 	}
 	for (int i = 0; i < noVbus; i++) {
-		Buses* n = new Buses(Bus_Type::VB, cVBus, Time(cdVBus), sVBus, i);
+		Buses* n = new Buses(Bus_Type::VB, cVBus, Time(cdVBus), sVBus, i,5); ///MUST BE CHANGED TO BUS SIZE
 		add_empty_bus(n);
 	}
 	Autopromotionlimit = Time();
@@ -285,8 +284,9 @@ void Company::File_IO_Loading() {
 	Autopromotionlimit.Sethours(0);
 
 	MaxW = Time(maxW);
+	
 	int numEvents;
-
+	
 	File >> numEvents;
 
 	for (int i = 0; i < numEvents; i++) {
@@ -310,24 +310,80 @@ void Company::File_IO_Loading() {
 
 void Company::maxqs()
 {
-	/*queue<Passengers*> tempsp = pWaitSp;
+	queue<Passengers*> tempsp = pWaitSp;
 	LinkedList<Passengers*> tempnorm = pWaitNorm;
 	Node<Passengers*>* sphead = tempsp.ReturnFront();
-	while (sphead != NULL)
+	Node<Passengers*>* norhead = tempnorm.get_head();
+	while (sphead != nullptr)
 	{
 		if (sphead->get_data()->Get_MaxW() == Timestep)
 		{
-			Passengers* helper = pWaitsp_find(sphead->get_data()->Get_ID());
-			pWaitNorm_delete(helper);
-			break;
+			Node<Buses*>* assistant=pEmptySp.ReturnFront();
+			if (assistant->get_data()->isfull() == false)
+			{
+				assistant->get_data()->passenger_aboard(sphead->get_data());
+				cout << "Passenger with ID " << sphead->get_data()->Get_ID() << " Aboarded the bus " << endl;
+				break;
+			}
+			else
+			{
+				while (assistant->get_data()->isfull()==true && assistant->get_next()!=nullptr)
+				{
+					assistant = assistant->get_next();
+				}
+				if (assistant->get_data()->isfull()==true)
+				{
+					cout << "No bus is available" << endl;
+				}
+				else
+				{
+					assistant->get_data()->passenger_aboard(sphead->get_data());
+					cout << "Passenger with ID " << sphead->get_data()->Get_ID() << " Aboarded the bus " << endl;
+					break;
+				}
+				
+			}
 		}
 		sphead = sphead->get_next();
-	}*/
+	}
+	while (norhead != nullptr)
+	{
+		if (norhead->get_data()->Get_MaxW() == Timestep)
+		{
+			Node<Buses*>* assistant = pEmptyNorm.ReturnFront();
+			if (assistant->get_data()->isfull() == false)
+			{
+				assistant->get_data()->passenger_aboard(norhead->get_data());
+				cout << "Passenger with ID " << norhead->get_data()->Get_ID() << " Aboarded the bus " << endl;
+				break;
+			}
+			else
+			{
+				while (assistant->get_data()->isfull() == true && assistant->get_next() != nullptr)
+				{
+					assistant = assistant->get_next();
+				}
+				if (assistant->get_data()->isfull() == true)
+				{
+					cout << "No bus is available" << endl;
+				}
+				else
+				{
+					assistant->get_data()->passenger_aboard(norhead->get_data());
+					cout << "Passenger with ID " << norhead->get_data()->Get_ID() << " Aboarded the bus " << endl;
+					break;
+				}
+
+			}
+		}
+		norhead = norhead->get_next();
+	}
 }
+
 
 void Company::CheckAutopromotion() {
 	Node<Passengers*>* pHelper = pWaitNorm.get_head();
-	while (pHelper!=NULL)
+	while (pHelper != NULL)
 	{
 		Passengers* pPass = pHelper->get_data();
 		int totaltime = Timestep.Gettotalhours();
@@ -352,6 +408,136 @@ bool Company::Isworkinghours()
 		return true;
 	}
 	else { return false; }
+}
+
+void Company::increaseMaxWforall()
+{
+	Node<Passengers*>* pHelperNor = pWaitNorm.get_head();
+	Node<Passengers*>* pHelpersp = pWaitSp.ReturnFront();
+	while (pHelperNor!=nullptr)
+	{
+		pHelperNor->get_data()->increaseMaxwhr();
+		pHelperNor = pHelperNor->get_next();
+	}
+	while (pHelpersp!=nullptr)
+	{
+		pHelpersp->get_data()->increaseMaxwhr();
+		pHelpersp = pHelpersp->get_next();
+	}
+}
+
+
+
+//// delevier passengers not completed yet
+
+//void Company::deliver_passengers() {
+//	Buses*pBus = nullptr;
+//	Passengers*pPass = nullptr ;
+//
+//	while (!pMoving.isempty())
+//	{
+//		pBus = pMoving.Dequeue();
+//		pBus->passenger_peek(pPass); 
+//		while (pPass!=nullptr)
+//		{
+//			int readytime = pPass->Get_ready_Time().Gettotalhours();
+//			int nowtimestep = this->Timestep.Gettotalhours();
+//			if (nowtimestep - readytime > 0) {
+//				Time TimeFromStartTheJurnyUntillNow = (this->Timestep - pPass->Get_ready_Time());
+//				double deliverytime = ((pPass->Get_Delivery_distance() / pBus->get_bus_speed()) +  (pPass->Get_totalRideUnride_Time()));
+//				double TimeFromStartTheJurnyUntillNo = double (TimeFromStartTheJurnyUntillNow.Gettotalhours());
+//
+//				if (TimeFromStartTheJurnyUntillNo >= deliverytime)
+//				{
+//					pBus->passenger_Deqeue(pPass);
+//					Passenger_Type PT = pPass->get_passanger_type();
+//					switch (PT)
+//					{
+//					case VP:
+//					pDeliveredVIP.Enqueue(pPass);
+//						break;
+//					case SP:
+//						pDeliveredSp.Enqueue(pPass);
+//						break;
+//					case NP:
+//						pDeliveredNorm.Enqueue(pPass);
+//						break;
+//					}
+//				}
+//			}
+//			
+//		}
+//
+//	}
+//}
+
+
+
+
+////////////////////  منيكة كود 
+// 
+//void Company::LoadVIP() {
+//	Passengers* pPass = nullptr;
+//	Buses* pBus = nullptr;
+//	while (!pWaitVIP.isempty())
+//	{
+//		pPass = pWaitVIP.Dequeue();
+//		pEmptyVIP.Peek(pBus);
+//		pBus->passenger_aboard(pPass);
+//	}
+//}
+
+//void Company::Setbustomovinglist() {
+//
+//pMoving.Enqueue(pEmptyVIP.Dequeue());
+//pMoving.Enqueue(pEmptyVIP.Dequeue());
+//
+//;}
+
+
+
+//// bouns Delivery failure
+
+//void Company::ExecuteDeliveryFailure() {
+//	double probability = 0; // probability of dropping a buses
+//	int numtodrop = 0;
+//
+//	if (pMoving.getcounter() == 0) {
+//		return;
+//	}
+//
+//	if ((rand() % 100) < probability) {
+//		numtodrop = rand() % this->pMoving.getcounter() + 1;
+//		for (int i = 0; i < numtodrop; i++) {
+//			this->DropBus();
+//		}
+//	}
+//
+//}
+//void Company::DropBus() {
+//
+//	Buses* pBus;
+//	pBus = pMoving.Dequeue();
+//
+//	Passengers* pPass = nullptr;
+//	Bus_Type BT = pBus->get_bus_type();
+//	switch (BT)
+//	{
+//	case VB:
+//		pBus->passenger_Deqeue(pPass);
+//		while (pPass!=nullptr) {this->pWaitVIP.Enqueue(pPass);}
+//		break;
+//	case SB:
+//		pBus->passenger_Deqeue(pPass);
+//		while (pPass != nullptr) {this->pWaitSp.Enqueue(pPass);}
+//		break;
+//	case NB:
+//		pBus->passenger_Deqeue(pPass);
+//		while (pPass != nullptr) {this->pWaitNorm.insert_end(pPass);}
+//		break;
+//	}
+//	this->MoveToCheckUp(pBus);
+//}
 }
 
 

@@ -15,12 +15,12 @@ private:
     Passenger_Type Ptype;
     int ID;
     double  Delivery_distance;
-    Time Ride_Hour;
+    double totalRideUnride_Time;
     double cost;
 
 public:
     ReadyEvent(Company*);
-    ReadyEvent(Company*,Passenger_Type,Time,int,double, Time, double);
+    ReadyEvent(Company*,Passenger_Type,Time,int,double, double, double);
     void Execute();
     void Load(std::ifstream&);
 };
