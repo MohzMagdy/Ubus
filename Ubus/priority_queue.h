@@ -15,6 +15,7 @@ public:
 	priority_queue();
 	void Enqueue(Node<T>* R);///inserts nodes according to its priority
 	void Enqueue(T item);///inserts item according to its priority
+	void Enqueue(T item, double pir);
 	T Dequeue();///deque from the beginning
 	bool isempty();///checks if queue is empty or not
 	void printlist();///print queue data
@@ -85,38 +86,14 @@ template<typename T>
 void priority_queue<T>::Enqueue(T item, double pir)
 {
 	Node<T>* NP = new Node<T>(item);
-	
-	if (isempty())
-	{
-		Front = Rear = NP;
-	}
-	else
-	{
-		if (Rear->get_priority() > NP->get_priority())
-		{
-			Rear->set_next(NP);
-			Rear = NP;
-		}
-		else
-		{
-			Node<T>* temp = Front;
-			if (NP->get_priority() > Front->get_priority())
-			{
-				NP->set_next(Front);
-				Front = NP;
-			}
-			else
-			{
-				while (temp->get_priority() > NP->get_priority())
-				{
-					temp = temp->get_next();
-				}
-				temp->set_next(NP);
-			}
+	Enqueue(NP);
+}
 
-		}
-	}
-	c++;
+template<typename T>
+void priority_queue<T>::Enqueue(T item)
+{
+	Node<T>* NP = new Node<T>(item);
+	Enqueue(NP);
 }
 
 template<typename T>

@@ -87,7 +87,9 @@ T queue<T>::Dequeue()
 	{
 		Node<T>* helper = Front;
 		T valueF = Front->get_data();
-		Front = Front->get_next();
+		helper = Front->get_next();
+		delete Front;
+		Front = helper;
 		count--;
 		return valueF;
 	}

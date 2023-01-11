@@ -39,7 +39,7 @@ void Company::simulate()
 			boardPassengers();
 			CheckAutopromotion();
 			/*Timestep = 0; */
-			maxqs();
+			//maxqs();
 		}
 		
 		/*ExecuteDeliveryFailure();*/
@@ -538,7 +538,7 @@ void Company::increaseMaxWforall()
 //	}
 //	this->MoveToCheckUp(pBus);
 //}
-}
+
 
 
 void Company::boardPassengers()
@@ -550,8 +550,6 @@ void Company::boardPassengers()
 
 void Company::boardVIP()
 {
-	return;
-
 	Buses* pBus = nullptr;
 	int passCount = pWaitVIP.getcounter();
 	int capacity = 0;
@@ -588,7 +586,7 @@ void Company::boardVIP()
 			pEmptySp.Dequeue();
 			break;
 		}
-		pMoving.Enqueue(pBus, 1); // CHANGE PRIORITY FUNCTION
+		pMoving.Enqueue(pBus); // CHANGE PRIORITY FUNCTION
 	}
 }
 
@@ -607,7 +605,8 @@ void Company::boardSp()
 			Passengers* pPass = pWaitSp.Dequeue();
 			pBus->board(pPass);
 		}
-		pMoving.Enqueue(pBus, 1); // CHANGE PRIORITY FUNCTION
+		pEmptySp.Dequeue();
+		pMoving.Enqueue(pBus); // CHANGE PRIORITY FUNCTION
 	}
 }
 
@@ -639,12 +638,12 @@ void Company::boardNorm()
 		switch (pBus->get_bus_type())
 		{
 		case NB:
-			pEmptyVIP.Dequeue();
-			break;
-		case VB:
 			pEmptyNorm.Dequeue();
 			break;
+		case VB:
+			pEmptyVIP.Dequeue();
+			break;
 		}
-		pMoving.Enqueue(pBus, 1); // CHANGE PRIORITY FUNCTION
+		pMoving.Enqueue(pBus); // CHANGE PRIORITY FUNCTION
 	}
 }
