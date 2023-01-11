@@ -76,7 +76,7 @@ public:
 	void ExecuteDeliveryFailure();
 	void DropBus();
 
-	void boardPassengers();
+	void boardPassengers(Mode CurrentMode);
 	void boardVIP();
 	void boardSp();
 	void boardNorm();

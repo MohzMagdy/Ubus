@@ -35,9 +35,9 @@ void Company::simulate()
 	{
 		prioequation();
 		Timestep = Timestep + 1;
-
+		
 		if (Isworkinghours()) {
-			boardPassengers();
+			boardPassengers(pUI->GetCurrentMode());
 			CheckAutopromotion();
 			/*Timestep = 0; */
 			//maxqs();
@@ -555,7 +555,7 @@ void Company::prioequation()
 
 
 
-void Company::boardPassengers()
+void Company::boardPassengers(Mode CurrentMode)
 {
 	boardVIP();
 	boardSp();

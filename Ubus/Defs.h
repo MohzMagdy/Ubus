@@ -24,4 +24,5 @@ enum Mode {
 	Interactive,
 	Step,
 	Silent,
+	Immediate
 };
