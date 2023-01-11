@@ -45,6 +45,7 @@ private:
 	Time Timestep;
 	Time Autopromotionlimit;
 	int  AutopromotionNumber;
+	int no_checkup;
 	
 public:
 	Company();
@@ -80,4 +81,5 @@ public:
 	void boardSp();
 	void boardNorm();
 	void prioequation();
+	void maintinance_check();
 };

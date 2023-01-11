@@ -42,7 +42,7 @@ void Company::simulate()
 			/*Timestep = 0; */
 			//maxqs();
 		}
-		
+		maintinance_check();
 		ExecuteDeliveryFailure();
 		deliver_passengers();
 		
@@ -264,7 +264,7 @@ void Company::File_IO_Loading() {
 
 	File >> autoprom >> maxW;
 
-	
+	no_checkup = noCheckup;
 
 	for (int i = 0; i < noNbus; i++) {
 		Buses* n = new Buses(Bus_Type::NB, cNBus, Time(cdNBus), sNBus, i,5); ///MUST BE CHANGED TO BUS SIZE
@@ -492,6 +492,7 @@ void Company::deliver_passengers() {
 	while (!TempQ.isempty())
 	{
 		pMBus = TempQ.Dequeue();
+		pMBus->increase_journey();
 		pMoving.Enqueue(pMBus);
 	}
 }
@@ -653,5 +654,58 @@ void Company::boardNorm()
 			break;
 		}
 		pMoving.Enqueue(pBus); // CHANGE PRIORITY FUNCTION
+	}
+}
+
+void Company::maintinance_check()
+{
+	Node<Buses*>* pbusnor = pEmptyNorm.ReturnFront();
+	Node<Buses*>* pbussp = pEmptySp.ReturnFront();
+	Node<Buses*>* pbusvip = pEmptyVIP.ReturnFront();
+	while (pbusnor != nullptr)
+	{
+		
+		if (pbusnor->get_data()->get_journeys()%no_checkup==0)
+		{
+			Node<Buses*>* deleter = pbusnor;
+			pCheckupNorm.Enqueue(pbusnor->get_data());
+			pEmptyNorm.delete_data(deleter->get_data());
+			cout << "Normal bus moved to checkup " << endl;
+			pbusnor = pEmptyNorm.ReturnFront();
+		}
+		else
+		{
+			pbusnor = pbusnor->get_next();
+		}
+	}
+	while (pbussp!=nullptr)
+	{
+		if (pbussp->get_data()->get_journeys() % no_checkup == 0)
+		{
+			Node<Buses*>* deleter = pbussp;
+			pCheckupSp.Enqueue(pbussp->get_data());
+			pEmptySp.delete_data(deleter->get_data());
+			cout << "Special bus moved to checkup " << endl;
+			pbussp = pEmptySp.ReturnFront();
+		}
+		else
+		{
+			pbussp = pbussp->get_next();
+		}
+	}
+	while (pbusvip!=nullptr)
+	{
+		if (pbusvip->get_data()->get_journeys() % no_checkup == 0)
+		{
+			Node<Buses*>* deleter = pbusvip;
+			pCheckupVIP.Enqueue(pbusvip->get_data());
+			pEmptyVIP.delete_data(deleter->get_data());
+			cout << "VIP bus moved to checkup " << endl;
+			pbusvip = pEmptyVIP.ReturnFront();
+		}
+		else
+		{
+			pbusvip = pbusvip->get_next();
+		}
 	}
 }

@@ -55,7 +55,7 @@ void Buses::set_Delivery_interval(Time DIN) {DI = DIN;}
 	bool Buses::isfull()
 	{
 		bool x = false;
-		if (currentaboarding>=BC)
+		if (onboardCount>=BC)
 		{
 			x = true;
 			return true;
@@ -71,4 +71,19 @@ void Buses::board(Passengers* pPass)
 {
 		seats.Enqueue(pPass, -(pPass->Get_Delivery_distance()));
 		onboardCount++;
+}
+
+void Buses::increase_journey()
+{
+	no_journeys++;
+}
+
+int Buses::get_journeys()
+{
+	return no_journeys;
+}
+
+void Buses::set_journey(int x)
+{
+	no_journeys = x;
 }

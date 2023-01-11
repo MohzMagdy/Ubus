@@ -17,6 +17,7 @@ private :
 	priority_queue<Passengers*> pPass;
 	priority_queue<Passengers*> seats;
 	int onboardCount = 0;
+	int no_journeys = 12;
 public:
 	Buses();// no parameter constructor 
 	Buses(Bus_Type bType, int BC, Time Checkup_time_HS, double Bus_speed, Time DI, int currentaboarding);// constructor with parameters
@@ -40,4 +41,7 @@ public:
 	bool isfull();
 
 	void board(Passengers* pPass);
+	void increase_journey();
+	int get_journeys();
+	void set_journey(int x);
 };
