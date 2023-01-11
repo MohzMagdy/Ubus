@@ -43,6 +43,7 @@ void Company::simulate()
 
 
 		if (Isworkinghours()) {
+			boardPassengers();
 			CheckAutopromotion();
 		}
 		
@@ -342,6 +343,7 @@ void Company::CheckAutopromotion() {
 	}
 }
 
+
 bool Company::Isworkinghours()
 {
 	if (this->Timestep.operator>=(Time(Timestep.Getdays(), 4)) &&
@@ -350,4 +352,113 @@ bool Company::Isworkinghours()
 		return true;
 	}
 	else { return false; }
+}
+
+
+void Company::boardPassengers()
+{
+	boardVIP();
+	boardSp();
+	boardNorm();
+}
+
+void Company::boardVIP()
+{
+	return;
+
+	Buses* pBus = nullptr;
+	int passCount = pWaitVIP.getcounter();
+	int capacity = 0;
+
+	// Finds an available bus according to criteria
+	if (pEmptyVIP.getcounter() != 0)
+		pEmptyVIP.Peek(pBus);
+	else if (pEmptyNorm.getcounter() != 0)
+		pEmptyNorm.Peek(pBus);
+	else if (pEmptySp.getcounter() != 0)
+		pEmptySp.Peek(pBus);
+	else
+		return;
+
+	// Checks the boarding condition
+	capacity = pBus->get_bus_capacity();
+	if (passCount >= capacity)
+	{
+		for (int i = 0; i < capacity; i++)
+		{
+			Passengers* pPass = pWaitVIP.Dequeue();
+			pBus->board(pPass);
+		}
+			
+		switch (pBus->get_bus_type())
+		{
+		case VB:
+			pEmptyVIP.Dequeue();
+			break;
+		case NB:
+			pEmptyNorm.Dequeue();
+			break;
+		case SB:
+			pEmptySp.Dequeue();
+			break;
+		}
+		pMoving.Enqueue(pBus, 1); // CHANGE PRIORITY FUNCTION
+	}
+}
+
+void Company::boardSp()
+{
+	Buses* pBus = nullptr;
+	pEmptySp.Peek(pBus);
+
+	int passCount = pWaitSp.getcounter();
+	int capacity = pBus->get_bus_capacity();
+
+	if (passCount >= capacity)
+	{
+		for (int i = 0; i < capacity; i++)
+		{
+			Passengers* pPass = pWaitSp.Dequeue();
+			pBus->board(pPass);
+		}
+		pMoving.Enqueue(pBus, 1); // CHANGE PRIORITY FUNCTION
+	}
+}
+
+void Company::boardNorm()
+{
+	Buses* pBus = nullptr;
+	int passCount = pWaitNorm.getcounter();
+	int capacity = 0;
+
+	// Finds an available bus according to criteria
+	if (pEmptyNorm.getcounter() != 0)
+		pEmptyNorm.Peek(pBus);
+	else if (pEmptyVIP.getcounter() != 0)
+		pEmptyVIP.Peek(pBus);
+	else
+		return;
+
+	// Checks the boarding condition
+	capacity = pBus->get_bus_capacity();
+	if (passCount >= capacity)
+	{
+		for (int i = 0; i < capacity; i++)
+		{
+			Passengers* pPass = pWaitNorm.get_head()->get_data();
+			pWaitNorm.delete_first();
+			pBus->board(pPass);
+		}
+
+		switch (pBus->get_bus_type())
+		{
+		case NB:
+			pEmptyVIP.Dequeue();
+			break;
+		case VB:
+			pEmptyNorm.Dequeue();
+			break;
+		}
+		pMoving.Enqueue(pBus, 1); // CHANGE PRIORITY FUNCTION
+	}
 }

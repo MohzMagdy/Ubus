@@ -67,5 +67,8 @@ public:
 	void CheckAutopromotion();
 	bool Isworkinghours();
 
-
+	void boardPassengers();
+	void boardVIP();
+	void boardSp();
+	void boardNorm();
 };

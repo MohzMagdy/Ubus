@@ -29,7 +29,13 @@ void Buses::Set_Check_point(Time cH) {Checkup_time_HS = cH;}
 void Buses::Set_bus_speed(double BS) {Bus_speed = BS;}
 void Buses::set_Delivery_interval(Time DIN) {DI = DIN;}
 
-void Buses::ride(Passengers* pPass)
+int Buses::get_onboardCount()
 {
-	seats.Enqueue(pPass, -pPass->Get_Delivery_distance());
+	return onboardCount;
+}
+
+void Buses::board(Passengers* pPass)
+{
+		seats.Enqueue(pPass, -(pPass->Get_Delivery_distance()));
+		onboardCount++;
 }

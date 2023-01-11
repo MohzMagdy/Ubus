@@ -82,37 +82,7 @@ template<typename T>
 void priority_queue<T>::Enqueue(T item, double pir)
 {
 	Node<T>* NP = new Node<T>(item);
-	if (isempty())
-	{
-		Front = Rear = NP;
-	}
-	else
-	{
-		if (Rear->get_priority() > NP->get_priority())
-		{
-			Rear->set_next(NP);
-			Rear = NP;
-		}
-		else
-		{
-			Node<T>* temp = Front;
-			if (NP->get_priority() > Front->get_priority())
-			{
-				NP->set_next(Front);
-				Front = NP;
-			}
-			else
-			{
-				while (temp->get_priority() > NP->get_priority())
-				{
-					temp = temp->get_next();
-				}
-				temp->set_next(NP);
-			}
-
-		}
-	}
-	c++;
+	Enqueue(NP);;
 }
 
 template<typename T>
@@ -126,9 +96,10 @@ T priority_queue<T>::Dequeue()
 	}
 	else if (Front == Rear)
 	{
-		delete Front;
+		T valueF = Front->get_data();
 		Front = Rear = nullptr;
 		c -= 1;
+		return valueF;
 	}
 	else
 	{
