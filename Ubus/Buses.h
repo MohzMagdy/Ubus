@@ -18,6 +18,7 @@ private :
 	priority_queue<Passengers*> seats;
 	int onboardCount = 0;
 	int no_journeys = 0;
+	int inmaintinancetime = 0;
 public:
 	Buses();// no parameter constructor 
 	Buses(Bus_Type bType, int BC, Time Checkup_time_HS, double Bus_speed, Time DI, int currentaboarding);// constructor with parameters
@@ -44,4 +45,6 @@ public:
 	void increase_journey();
 	int get_journeys();
 	void set_journey(int x);
+	void increase_maintinancetime();
+	int get_maintitnance_time();
 };

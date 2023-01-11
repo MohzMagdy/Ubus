@@ -82,4 +82,5 @@ public:
 	void boardNorm();
 	void prioequation();
 	void maintinance_check();
+	void incheck();
 };

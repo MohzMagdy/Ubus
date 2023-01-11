@@ -87,3 +87,13 @@ void Buses::set_journey(int x)
 {
 	no_journeys = x;
 }
+
+void Buses::increase_maintinancetime()
+{
+	inmaintinancetime++;
+}
+
+int Buses::get_maintitnance_time()
+{
+	return inmaintinancetime;
+}

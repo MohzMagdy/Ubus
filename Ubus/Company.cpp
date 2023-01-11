@@ -31,7 +31,8 @@ bool Company::checkexitstatus() {
 
 void Company::simulate()
 {
-	while (true)
+	int n = 10;
+	while (n--)
 	{
 		prioequation();
 		Timestep = Timestep + 1;
@@ -45,7 +46,7 @@ void Company::simulate()
 		maintinance_check();
 		ExecuteDeliveryFailure();
 		deliver_passengers();
-		
+		incheck();
 		if (checkexitstatus())
 		{
 			break;
@@ -709,3 +710,62 @@ void Company::maintinance_check()
 		}
 	}
 }
+
+void Company::incheck()
+{
+	Node<Buses*>* pbusnor = pCheckupNorm.ReturnFront();
+	Node<Buses*>* pbussp = pCheckupSp.ReturnFront();
+	Node<Buses*>* pbusvip = pCheckupVIP.ReturnFront();
+	while (pbusnor!=nullptr)
+	{
+		if (pbusnor->get_data()->get_maintitnance_time()%7==0)
+		{
+			Node<Buses*>* deleter = pbusnor;
+			pEmptyNorm.Enqueue(pbusnor->get_data());
+			pCheckupNorm.delete_data(deleter->get_data());
+			cout << "Normal bus finished maintinance" << endl;
+			pbusnor = pCheckupNorm.ReturnFront();
+		}
+		else
+		{
+			pbusnor->get_data()->increase_maintinancetime();
+			pbusnor = pbusnor->get_next();
+		}
+		
+	}
+	while (pbussp != nullptr)
+	{
+		if (pbussp->get_data()->get_maintitnance_time() % 7 == 0)
+		{
+			Node<Buses*>* deleter = pbussp;
+			pEmptySp.Enqueue(pbussp->get_data());
+			pCheckupSp.delete_data(deleter->get_data());
+			cout << "Special bus finished maintinance" << endl;
+			pbussp = pCheckupSp.ReturnFront();
+		}
+		else
+		{
+			pbussp->get_data()->increase_maintinancetime();
+			pbussp = pbussp->get_next();
+		}
+		
+	}
+	while (pbusvip != nullptr)
+	{
+		if (pbusvip->get_data()->get_maintitnance_time() % 7 == 0)
+		{
+			Node<Buses*>* deleter = pbusvip;
+			pEmptyVIP.Enqueue(pbusvip->get_data());
+			pCheckupVIP.delete_data(deleter->get_data());
+			cout << "VIP bus finished maintinance" << endl;
+			pbusvip = pCheckupVIP.ReturnFront();
+		}
+		else
+		{
+			pbusvip->get_data()->increase_maintinancetime();
+			pbusvip = pbusvip->get_next();
+		}
+		
+	}
+}
+
