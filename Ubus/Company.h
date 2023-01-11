@@ -75,4 +75,5 @@ public:
 	void Setbustomovinglist();
 	void ExecuteDeliveryFailure();
 	void DropBus();
+	void prioequation();
 };

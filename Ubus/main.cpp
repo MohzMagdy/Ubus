@@ -60,15 +60,14 @@ int main()
 //	priority_queue<int> prque;
 //	prque.Enqueue(test1);
 //	prque.Enqueue(test2);
-//	prque.Enqueue(test2);
+//	prque.Enqueue(test3);
 //	prque.printlist();
 //	
-//	test3->set_priority(11);
-//	
+//	prque.ReturnFront()->set_priority(50);
+//	prque.printlist();
 //	priority_queue<int> testqueue;
-//	testqueue.Enqueue(test3);
-//	testqueue.Enqueue(test2);
-//	testqueue.Enqueue(test3);
-//	
+//	prque.Enqueue(prque.Dequeue());
+//	prque.Enqueue(prque.Dequeue());
+//	prque.Enqueue(prque.Dequeue());
 //	testqueue.printlist();
 //}

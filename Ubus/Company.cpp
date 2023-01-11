@@ -33,6 +33,7 @@ void Company::simulate()
 {
 	while (true)
 	{
+		prioequation();
 		Timestep = Timestep + 1;
 
 		if (Isworkinghours()) {
@@ -420,6 +421,19 @@ void Company::increaseMaxWforall()
 		pHelpersp->get_data()->increaseMaxwhr();
 		pHelpersp = pHelpersp->get_next();
 	}
+}
+
+void Company::prioequation()
+{
+	Node<Passengers*>* Helper = pWaitVIP.ReturnFront();
+	priority_queue<Passengers*> clone;
+	while (Helper!=nullptr)
+	{
+		Helper->set_priority((1 / Helper->get_data()->Get_Delivery_distance())+(1/Helper->get_data()->Get_ready_Time().Gettotalhours())+Helper->get_data()->Get_Cost());
+		clone.Enqueue(Helper);
+		Helper = Helper->get_next();
+	}
+	pWaitVIP = clone;
 }
 
 
