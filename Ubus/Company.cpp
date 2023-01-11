@@ -43,7 +43,7 @@ void Company::simulate()
 			//maxqs();
 		}
 		
-		/*ExecuteDeliveryFailure();*/
+		ExecuteDeliveryFailure();
 		deliver_passengers();
 		
 		if (checkexitstatus())
@@ -502,46 +502,49 @@ void Company::deliver_passengers() {
 
 //// bouns Delivery failure
 
-//void Company::ExecuteDeliveryFailure() {
-//	double probability = 0; // probability of dropping a buses
-//	int numtodrop = 0;
-//
-//	if (pMoving.getcounter() == 0) {
-//		return;
-//	}
-//
-//	if ((rand() % 100) < probability) {
-//		numtodrop = rand() % this->pMoving.getcounter() + 1;
-//		for (int i = 0; i < numtodrop; i++) {
-//			this->DropBus();
-//		}
-//	}
-//
-//}
-//void Company::DropBus() {
-//
-//	Buses* pBus;
-//	pBus = pMoving.Dequeue();
-//
-//	Passengers* pPass = nullptr;
-//	Bus_Type BT = pBus->get_bus_type();
-//	switch (BT)
-//	{
-//	case VB:
-//		pBus->passenger_Deqeue(pPass);
-//		while (pPass!=nullptr) {this->pWaitVIP.Enqueue(pPass);}
-//		break;
-//	case SB:
-//		pBus->passenger_Deqeue(pPass);
-//		while (pPass != nullptr) {this->pWaitSp.Enqueue(pPass);}
-//		break;
-//	case NB:
-//		pBus->passenger_Deqeue(pPass);
-//		while (pPass != nullptr) {this->pWaitNorm.insert_end(pPass);}
-//		break;
-//	}
+void Company::ExecuteDeliveryFailure() {
+	double probability = 5; // probability of dropping a buses
+	int numtodrop = 0;
+
+	if (pMoving.getcounter() == 0) {
+		return;
+	}
+	int smallpor = rand() % 100;
+	if (smallpor < probability) {
+		numtodrop = rand() % this->pMoving.getcounter() + 1;
+		for (int i = 0; i < numtodrop; i++) {
+			this->DropBus();
+		}
+	}
+
+}
+void Company::DropBus() {
+
+	Buses* pBus;
+	pBus = pMoving.Dequeue();
+
+	Passengers* pPass = nullptr;
+	Bus_Type BT = pBus->get_bus_type();
+	switch (BT)
+	{
+	case VB:
+		pBus->passenger_peek(pPass);
+		this->pWaitVIP.Enqueue(pPass);
+		pBus->passenger_Deqeue(pPass);
+		break;
+	case SB:
+		pBus->passenger_peek(pPass);
+		this->pWaitSp.Enqueue(pPass);
+		pBus->passenger_Deqeue(pPass);
+		break;
+	case NB:
+		pBus->passenger_peek(pPass);
+		this->pWaitNorm.insert_end(pPass);
+		pBus->passenger_Deqeue(pPass);
+		break;
+	}
 //	this->MoveToCheckUp(pBus);
-//}
+}
 
 
 
