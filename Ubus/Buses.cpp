@@ -44,12 +44,12 @@ void Buses::set_Delivery_interval(Time DIN) {DI = DIN;}
 		currentaboarding++;
 	}
 
-	void Buses::passenger_peek(Passengers* ridertopeek)	
-	{	this->pPass.Peek(ridertopeek);}
+	void Buses::passenger_peek(Passengers* &ridertopeek)	
+	{	this->seats.Peek(ridertopeek);}
 
 	void Buses::passenger_Deqeue(Passengers* ridertodeque)
 	{
-		ridertodeque = pPass.Dequeue();
+		ridertodeque = seats.Dequeue();
 	}
 
 	bool Buses::isfull()

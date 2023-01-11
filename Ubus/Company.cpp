@@ -19,9 +19,9 @@ bool Company::checkexitstatus() {
 	pWaitSp.isempty() &&
 	pWaitNorm.isempty() &&
 	pDelivered.isempty() &&
-	//pEmptyVIP.isempty() &&
-	//pEmptySp.isempty() &&
-	//pEmptyNorm.isempty() &&
+	pEmptyVIP.isempty() &&
+	pEmptySp.isempty() &&
+	pEmptyNorm.isempty() &&
 	pMoving.isempty() &&
 	pCheckupVIP.isempty() &&
 	pCheckupSp.isempty() &&
@@ -44,9 +44,7 @@ void Company::simulate()
 		}
 		
 		/*ExecuteDeliveryFailure();*/
-		/*deliver_passengers();*/
-		
-
+		deliver_passengers();
 		
 		if (checkexitstatus())
 		{
@@ -441,72 +439,64 @@ void Company::prioequation()
 }
 
 
+void Company::deliver_passengers() {
+	Buses*pBus = nullptr;
+	Passengers*pPass = nullptr ;
+	queue<Buses*> TempQ;
+	
+	while (!pMoving.isempty())
+	{
+		pBus = pMoving.Dequeue();
+		pBus->passenger_peek(pPass); 
+		while (pPass!=nullptr)
+		{
+			int readytime = pPass->Get_ready_Time().Gettotalhours();
+			int nowtimestep = this->Timestep.Gettotalhours();
+			if (nowtimestep - readytime > 0) {
+				Time TimeFromStartTheJurnyUntillNow = (this->Timestep - pPass->Get_ready_Time());
+				double deliverytime = ((pPass->Get_Delivery_distance() / pBus->get_bus_speed()) +  (pPass->Get_totalRideUnride_Time()));
+				double TimeFromStartTheJurnyUntillNo = double (TimeFromStartTheJurnyUntillNow.Gettotalhours());
 
-//// delevier passengers not completed yet
+				if (TimeFromStartTheJurnyUntillNo >= deliverytime)
+				{
+					pBus->passenger_Deqeue(pPass);
+					Passenger_Type PT = pPass->get_passanger_type();
+					switch (PT)
+					{
+					case VP:
+					pDeliveredVIP.Enqueue(pPass);
+						break;
+					case SP:
+						pDeliveredSp.Enqueue(pPass);
+						break;
+					case NP:
+						pDeliveredNorm.Enqueue(pPass);
+						break;
+					}
+					TempQ.Enqueue(pBus);
+					break;
+				}
+				else {
+					TempQ.Enqueue(pBus);
+					break;
+				}
+			}
+			else {
+				TempQ.Enqueue(pBus);
+				break;
+			}
+		}
 
-//void Company::deliver_passengers() {
-//	Buses*pBus = nullptr;
-//	Passengers*pPass = nullptr ;
-//
-//	while (!pMoving.isempty())
-//	{
-//		pBus = pMoving.Dequeue();
-//		pBus->passenger_peek(pPass); 
-//		while (pPass!=nullptr)
-//		{
-//			int readytime = pPass->Get_ready_Time().Gettotalhours();
-//			int nowtimestep = this->Timestep.Gettotalhours();
-//			if (nowtimestep - readytime > 0) {
-//				Time TimeFromStartTheJurnyUntillNow = (this->Timestep - pPass->Get_ready_Time());
-//				double deliverytime = ((pPass->Get_Delivery_distance() / pBus->get_bus_speed()) +  (pPass->Get_totalRideUnride_Time()));
-//				double TimeFromStartTheJurnyUntillNo = double (TimeFromStartTheJurnyUntillNow.Gettotalhours());
-//
-//				if (TimeFromStartTheJurnyUntillNo >= deliverytime)
-//				{
-//					pBus->passenger_Deqeue(pPass);
-//					Passenger_Type PT = pPass->get_passanger_type();
-//					switch (PT)
-//					{
-//					case VP:
-//					pDeliveredVIP.Enqueue(pPass);
-//						break;
-//					case SP:
-//						pDeliveredSp.Enqueue(pPass);
-//						break;
-//					case NP:
-//						pDeliveredNorm.Enqueue(pPass);
-//						break;
-//					}
-//				}
-//			}
-//			
-//		}
-//
-//	}
-//}
+	}
+	Buses* pMBus = nullptr;
+	while (!TempQ.isempty())
+	{
+		pMBus = TempQ.Dequeue();
+		pMoving.Enqueue(pMBus);
+	}
+}
 
 
-
-
-////////////////////  منيكة كود 
-// 
-//void Company::LoadVIP() {
-//	Passengers* pPass = nullptr;
-//	Buses* pBus = nullptr;
-//	while (!pWaitVIP.isempty())
-//	{
-//		pPass = pWaitVIP.Dequeue();
-//		pEmptyVIP.Peek(pBus);
-//		pBus->passenger_aboard(pPass);
-//	}
-//}
-
-//void Company::Setbustomovinglist() {
-//
-//pMoving.Enqueue(pEmptyVIP.Dequeue());
-//pMoving.Enqueue(pEmptyVIP.Dequeue());
-//
-//;}
 
 
 
@@ -608,19 +598,20 @@ void Company::boardSp()
 {
 	Buses* pBus = nullptr;
 	pEmptySp.Peek(pBus);
+	if (pBus) {
+		int passCount = pWaitSp.getcounter();
+		int capacity = pBus->get_bus_capacity();
 
-	int passCount = pWaitSp.getcounter();
-	int capacity = pBus->get_bus_capacity();
-
-	if (passCount >= capacity)
-	{
-		for (int i = 0; i < capacity; i++)
+		if (passCount >= capacity)
 		{
-			Passengers* pPass = pWaitSp.Dequeue();
-			pBus->board(pPass);
+			for (int i = 0; i < capacity; i++)
+			{
+				Passengers* pPass = pWaitSp.Dequeue();
+				pBus->board(pPass);
+			}
+			pEmptySp.Dequeue();
+			pMoving.Enqueue(pBus); // CHANGE PRIORITY FUNCTION
 		}
-		pEmptySp.Dequeue();
-		pMoving.Enqueue(pBus); // CHANGE PRIORITY FUNCTION
 	}
 }
 
