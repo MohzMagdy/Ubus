@@ -50,6 +50,8 @@ void Buses::set_Delivery_interval(Time DIN) {DI = DIN;}
 	void Buses::passenger_Deqeue(Passengers* ridertodeque)
 	{
 		ridertodeque = seats.Dequeue();
+		
+		if (ridertodeque != nullptr) { onboardCount--; }
 	}
 
 	bool Buses::isfull()

@@ -31,10 +31,10 @@ bool Company::checkexitstatus() {
 
 void Company::simulate()
 {
-	int n = 10;
-	while (n--)
+	
+	while (true)
 	{
-		prioequation();
+		// prioequation();
 		Timestep = Timestep + 1;
 
 		if (Isworkinghours()) {
@@ -44,7 +44,7 @@ void Company::simulate()
 			//maxqs();
 		}
 		maintinance_check();
-		ExecuteDeliveryFailure();
+		/*ExecuteDeliveryFailure();*/
 		deliver_passengers();
 		incheck();
 		if (checkexitstatus())
@@ -143,111 +143,6 @@ void Company::promoteNorm(Passengers* pPass)
 
 // Loading File
 void Company::File_IO_Loading() {
-	/*ifstream File;
-	string dataline;
-	int dataElementsCount = 0;
-	File.open("input.txt");
-	while (getline(File, dataline)) {
-		stringstream streamData(dataline);
-		string dataelement;
-		while (getline(streamData, dataelement, ' ')) {
-			dataElementsCount += 1;
-		}
-	}
-	string* loadedData;
-	loadedData = new string[dataElementsCount];
-	File.close();
-	ifstream FileLoader;
-	FileLoader.open("input.txt");
-	int index = 0;
-	while (getline(FileLoader, dataline)) {
-		stringstream streamData(dataline);
-		string dataelement;
-		while (getline(streamData, dataelement, ' ')) {
-			loadedData[index] = dataelement;
-			index += 1;
-		}
-	}
-	Autopromotionlimit.Setdays(stoi(loadedData[13])); Autopromotionlimit.Sethours(0);
-	Buses** nBuses = new Buses * [stoi(loadedData[0])];
-	Buses** sBuses = new Buses * [stoi(loadedData[1])];
-	Buses** vBuses = new Buses * [stoi(loadedData[2])];
-	for (int i = 0; i <= stoi(loadedData[0]); i++) {
-		nBuses[i] = new Buses(NB, stoi(loadedData[6]), stod(loadedData[12]), stod(loadedData[3]), 4);
-		add_empty_bus(nBuses[i]);
-	}
-	for (int i = 0; i <= stoi(loadedData[1]); i++) {
-		sBuses[i] = new Buses(SB, stoi(loadedData[7]), stod(loadedData[13]), stod(loadedData[4]), 4);
-		add_empty_bus(sBuses[i]);
-	}
-	for (int i = 0; i <= stoi(loadedData[2]); i++) {
-		vBuses[i] = new Buses(VB, stoi(loadedData[8]), stod(loadedData[14]), stod(loadedData[5]), 4);
-		add_empty_bus(vBuses[i]);
-	}
-	int numEvents = stoi(loadedData[15]);
-	int i = 15;
-	while (i < dataElementsCount - 1) {
-		if (loadedData[i + 1] == "R") {
-			Passenger_Type pType;
-			if (loadedData[i + 2] == "N") {
-				pType = Passenger_Type::NP;
-			}
-			else if (loadedData[i + 2] == "S") {
-				pType = Passenger_Type::SP;
-			}
-			else {
-				pType = Passenger_Type::VP;
-			}
-			int colonidx = 0;
-			for (int j = 0; j < loadedData[i + 3].size(); j++) {
-				if (loadedData[i + 3][j] == ':') {
-					colonidx = j;
-				}
-			}
-			int pDay = stoi(loadedData[i + 3].substr(0, colonidx));
-			int pHour = stoi(loadedData[i + 3].substr(colonidx + 1, loadedData[i + 3].size() - colonidx));
-			int id = stoi(loadedData[i + 4]);
-			double distance = stod(loadedData[i + 5]);
-			double LT = stod(loadedData[i + 6]);
-			double cost = stod(loadedData[i + 7]);
-			ReadyEvent* e = new ReadyEvent(this, pType, pDay, pHour, id, LT, distance, cost);
-			add_event(e);
-			cout << "Current Time: " << pDay << ":" << pHour << endl;
-			cout << "Added a Ready Event" << endl;
-			i += 7;
-		}
-		else if (loadedData[i + 1] == "X") {
-			int colonidx = 0;
-			for (int j = 0; j < loadedData[i + 2].size(); j++) {
-				if (loadedData[i + 2][j] == ':') {
-					colonidx = j;
-				}
-			}
-			int pDay = stoi(loadedData[i + 2].substr(0, colonidx));
-			int pHour = stoi(loadedData[i + 2].substr(colonidx + 1, loadedData[i + 2].size() - colonidx));
-			int id = stoi(loadedData[i + 3]);
-			cout << "Current Time: " << pDay << ":" << pHour << endl;
-			CancelEvent* c = new CancelEvent(this, id);
-			add_event(c);
-			i += 3;
-		}
-		else {
-			int colonidx = 0;
-			for (int j = 0; j < loadedData[i + 2].size(); j++) {
-				if (loadedData[i + 2][j] == ':') {
-					colonidx = j;
-				}
-			}
-			int pDay = stoi(loadedData[i + 2].substr(0, colonidx));
-			int pHour = stoi(loadedData[i + 2].substr(colonidx + 1, loadedData[i + 2].size() - colonidx));
-			int id = stoi(loadedData[i + 3]);
-			double extraMoney = stod(loadedData[i + 4]);
-			cout << "Current Time: " << pDay << ":" << pHour << endl;
-			PromoteEvent* p = new PromoteEvent(this, id);
-			add_event(p);
-			i += 4;
-		}
-	}*/
 	ifstream File;
 	File.open("input.txt");
 	int noNbus, noSbus, noVbus;
@@ -449,7 +344,7 @@ void Company::deliver_passengers() {
 	{
 		pBus = pMoving.Dequeue();
 		pBus->passenger_peek(pPass); 
-		while (pPass!=nullptr)
+		if (pPass!=nullptr)
 		{
 			int readytime = pPass->Get_ready_Time().Gettotalhours();
 			int nowtimestep = this->Timestep.Gettotalhours();
@@ -474,12 +369,28 @@ void Company::deliver_passengers() {
 						pDeliveredNorm.Enqueue(pPass);
 						break;
 					}
-					TempQ.Enqueue(pBus);
-					break;
+					if (pBus->get_onboardCount() == 0) {
+						Bus_Type BT = pBus->get_bus_type();
+						switch (BT)
+						{
+						case VB:
+							pEmptyVIP.Enqueue(pBus);
+							break;
+						case SB:
+							pEmptySp.Enqueue(pBus);
+							break;
+						case NB:
+							pEmptyNorm.Enqueue(pBus);
+							break;
+						}
+						
+					}
+					else {
+						TempQ.Enqueue(pBus);
+					}
 				}
 				else {
 					TempQ.Enqueue(pBus);
-					break;
 				}
 			}
 			else {

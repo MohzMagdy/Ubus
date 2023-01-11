@@ -34,7 +34,7 @@ public:
 	void Set_bus_capacity(int BCC);
 	void Set_Check_point(Time cH);
 	void Set_bus_speed(double BS);
-	void  set_Delivery_interval(Time DIN);
+	void set_Delivery_interval(Time DIN);
 	void passenger_aboard(Passengers* rider);
 	void passenger_peek(Passengers* &ridertopeek);
 	void passenger_Deqeue(Passengers* ridertodeque);
