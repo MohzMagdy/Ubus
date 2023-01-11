@@ -150,6 +150,7 @@ void priority_queue<T>::Peek(T& data)
 		return;
 	}
 	data = Front->get_data();
+
 }
 
 template<typename T>

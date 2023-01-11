@@ -45,6 +45,7 @@ private:
 	Time Timestep;
 	Time Autopromotionlimit;
 	int  AutopromotionNumber;
+	int no_checkup;
 	
 public:
 	Company();
@@ -67,12 +68,11 @@ public:
 
 	void increaseMaxWforall(); /// Still need to add VIP passengers
 	void maxqs(); /// passengers aren't removed from the queue
+	
+	
 	void CheckAutopromotion();
 	bool Isworkinghours();
 	void deliver_passengers();
-	void LoadVIP();
-
-	void Setbustomovinglist();
 	void ExecuteDeliveryFailure();
 	void DropBus();
 
@@ -81,4 +81,6 @@ public:
 	void boardSp();
 	void boardNorm();
 	void prioequation();
+	void maintinance_check();
+	void incheck();
 };

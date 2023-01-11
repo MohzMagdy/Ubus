@@ -20,7 +20,7 @@ public:
 	int getcounter();
 	void Peek(T& data) ;/// get the front data without delete from the qeue
 	Node<T>* ReturnFront(); /// returns front node
-	void delete_data(T& data);/// deletes specific data
+	void delete_data(T data);/// deletes specific data
 };
 
 
@@ -130,7 +130,7 @@ inline Node<T>* queue<T>::ReturnFront()
 }
 
 template<typename T>
-inline void queue<T>::delete_data(T& data)
+inline void queue<T>::delete_data(T data)
 {
 	if (isempty())
 	{
@@ -139,6 +139,7 @@ inline void queue<T>::delete_data(T& data)
 	if (Front->get_data() == data)
 	{
 		Dequeue();
+		return;
 	}
 	Node<T>* p = Front->get_next();
 	Node<T>* pPrev = Front;
