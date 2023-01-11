@@ -44,3 +44,31 @@ int main()
 //	h.operator+(25).PrintTime();
 //	h.operator-(4).PrintTime();
 //}
+//int main()
+//{
+//	Node<int>* test1 = new Node<int>(1);
+//	test1->set_priority(5);
+//
+//	Node<int>* test2 = new Node<int>(2);
+//	test2->set_priority(10);
+//	
+//
+//	Node<int>* test3 = new Node<int>(3);
+//	test3->set_priority(1);
+//	
+//
+//	priority_queue<int> prque;
+//	prque.Enqueue(test1);
+//	prque.Enqueue(test2);
+//	prque.Enqueue(test2);
+//	prque.printlist();
+//	
+//	test3->set_priority(11);
+//	
+//	priority_queue<int> testqueue;
+//	testqueue.Enqueue(test3);
+//	testqueue.Enqueue(test2);
+//	testqueue.Enqueue(test3);
+//	
+//	testqueue.printlist();
+//}

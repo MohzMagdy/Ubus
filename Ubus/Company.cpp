@@ -37,20 +37,20 @@ void Company::simulate()
 
 		if (Isworkinghours()) {
 			CheckAutopromotion();
-			/*Timestep = 0;*/ 
+			/*Timestep = 0; */
 			maxqs();
 		}
-
+		
 		/*ExecuteDeliveryFailure();*/
 		/*deliver_passengers();*/
 		
 
-
+		
 		if (checkexitstatus())
 		{
 			break;
 		}
-		increaseMaxWforall(); /// Tifa IDK how your code works tbh :D
+		/*increaseMaxWforall();*/ /// Tifa IDK how your code works tbh :D
 	}
 
 	
@@ -280,8 +280,8 @@ void Company::File_IO_Loading() {
 	Autopromotionlimit.Setdays(autoprom);
 	Autopromotionlimit.Sethours(0);
 
-	/*MaxW = Time(maxW);*/
-	MaxW = 0;
+	MaxW = Time(maxW);
+	
 	int numEvents;
 	
 	File >> numEvents;
@@ -410,12 +410,12 @@ void Company::increaseMaxWforall()
 {
 	Node<Passengers*>* pHelperNor = pWaitNorm.get_head();
 	Node<Passengers*>* pHelpersp = pWaitSp.ReturnFront();
-	while (pHelperNor->get_next()!=nullptr)
+	while (pHelperNor!=nullptr)
 	{
 		pHelperNor->get_data()->increaseMaxwhr();
 		pHelperNor = pHelperNor->get_next();
 	}
-	while (pHelpersp->get_next()!=nullptr)
+	while (pHelpersp!=nullptr)
 	{
 		pHelpersp->get_data()->increaseMaxwhr();
 		pHelpersp = pHelpersp->get_next();
