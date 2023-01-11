@@ -21,6 +21,7 @@ public:
 	void printlist();///print queue data
 	int getcounter();///get number of data in queue
 	void Peek(T& data);/// get the front data without delete from the qeue
+	Node<T>* ReturnFront();
 };
 
 template<typename T>
@@ -101,10 +102,10 @@ T priority_queue<T>::Dequeue()
 {
 	if (isempty())
 	{
-		T valueF = nullptr;
+		
 		cout << "The queue is empty" << endl;
 		c -= 1;
-		return valueF;
+		return NULL;
 
 	}
 	else if (Front == Rear)
@@ -150,3 +151,10 @@ void priority_queue<T>::Peek(T& data)
 	}
 	data = Front->get_data();
 }
+
+template<typename T>
+inline Node<T>* priority_queue<T>::ReturnFront()
+{
+	return Front;
+}
+

@@ -80,4 +80,5 @@ public:
 	void boardVIP();
 	void boardSp();
 	void boardNorm();
+	void prioequation();
 };
