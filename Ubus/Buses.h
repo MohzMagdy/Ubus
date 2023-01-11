@@ -17,7 +17,7 @@ private :
 	priority_queue<Passengers*> pPass;
 	priority_queue<Passengers*> seats;
 	int onboardCount = 0;
-	int no_journeys = 12;
+	int no_journeys = 0;
 public:
 	Buses();// no parameter constructor 
 	Buses(Bus_Type bType, int BC, Time Checkup_time_HS, double Bus_speed, Time DI, int currentaboarding);// constructor with parameters
