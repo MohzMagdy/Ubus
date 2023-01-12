@@ -87,6 +87,8 @@ public:
 	void immBoardSp();
 	void immBoardNorm();
 
+	bool reachedMaxW(Passengers* pPass);
+
 	void prioequation();
 
 	void MoveBuses();

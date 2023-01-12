@@ -355,10 +355,12 @@ void Company::deliver_passengers() {
 		pBus->passenger_peek(pPass);
 		if (pPass != nullptr)
 		{
-			int readytime = pPass->Get_ready_Time().Gettotalhours();
+			Time boardingTime = pPass->Get_waitTime() + pPass->Get_ready_Time();
+			int boardingTimeHr = boardingTime.Gettotalhours();
 			int nowtimestep = this->Timestep.Gettotalhours();
-			if (nowtimestep - readytime > 0) {
-				Time TimeFromStartTheJurnyUntillNow = (this->Timestep - pPass->Get_ready_Time());
+			if (nowtimestep - boardingTimeHr > 0) {
+				
+				Time TimeFromStartTheJurnyUntillNow = (this->Timestep - boardingTime);
 				double deliverytime = ((pPass->Get_Delivery_distance() / pBus->get_bus_speed()) + (pPass->Get_totalRideUnride_Time()));
 				double TimeFromStartTheJurnyUntillNo = double(TimeFromStartTheJurnyUntillNow.Gettotalhours());
 
@@ -717,6 +719,7 @@ void Company::boardVIP()
 		for (int i = 0; i < capacity; i++)
 		{
 			Passengers* pPass = pWaitVIP.Dequeue();
+			pPass->Set_waitTime(Timestep);
 			int DeliveryDistance = pPass->Get_Delivery_distance();
 			int Unridetime = pPass->Get_totalRideUnride_Time();
 			if (FarthestPassDist < DeliveryDistance) {
@@ -753,11 +756,19 @@ void Company::boardSp()
 		int capacity = pBus->get_bus_capacity();
 		int FarthestPassDist = 0;
 		int SumOfUnrideTimes = 0;
-		if (passCount >= capacity)
+		
+		// Max Wait Rule
+		Passengers* pPassTop = nullptr;
+		if (passCount > 0)
+			pWaitSp.Peek(pPassTop);
+
+		if (passCount >= capacity || reachedMaxW(pPassTop))
 		{
+			if (reachedMaxW(pPassTop)) capacity = 1;
 			for (int i = 0; i < capacity; i++)
 			{
 				Passengers* pPass = pWaitSp.Dequeue();
+				pPass->Set_waitTime(Timestep);
 				int DeliveryDistance = pPass->Get_Delivery_distance();
 				int Unridetime = pPass->Get_totalRideUnride_Time();
 				if (FarthestPassDist < DeliveryDistance) {
@@ -789,14 +800,21 @@ void Company::boardNorm()
 	else
 		return;
 
+	// Max Wait Rule
+	Passengers* pPassTop = nullptr;
+	if (passCount > 0)
+		pPassTop = pWaitNorm.get_head()->get_data();
+
 	// Checks the boarding condition
 	capacity = pBus->get_bus_capacity();
-	if (passCount >= capacity)
+	if (passCount >= capacity || reachedMaxW(pPassTop))
 	{
+		if (reachedMaxW(pPassTop)) capacity = 1;
 		for (int i = 0; i < capacity; i++)
 		{
 
 			Passengers* pPass = pWaitNorm.get_head()->get_data();
+			pPass->Set_waitTime(Timestep);
 			int DeliveryDistance = pPass->Get_Delivery_distance();
 			int Unridetime = pPass->Get_totalRideUnride_Time();
 			if (FarthestPassDist < DeliveryDistance) {
@@ -1208,4 +1226,14 @@ void Company::outputfile()
 		cout << "Unable to open file";
 	}
 	myfile.close();
+}
+
+bool Company::reachedMaxW(Passengers* pPass)
+{
+	if (!pPass) return false;
+	Time readyTime = pPass->Get_ready_Time();
+	Time waitTime(0,0);
+	if (Timestep >= readyTime)
+		 waitTime = Timestep - readyTime;
+	return (waitTime >= MaxW);
 }

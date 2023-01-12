@@ -48,7 +48,7 @@ Mode UI::GetCurrentMode()const {
 }
 
 void UI::printMessage(string Message) const {
-	if (ApplicationMode == Mode::Interactive) {
+	if (ApplicationMode == Mode::Interactive || ApplicationMode == Mode::Immediate) {
 		IntercativeModeOutput(Message);
 	}
 	if (ApplicationMode == Mode::Step) {
