@@ -87,6 +87,7 @@ template<typename T>
 void priority_queue<T>::Enqueue(T item, double pir)
 {
 	Node<T>* NP = new Node<T>(item);
+	NP->set_priority(pir);
 	Enqueue(NP);
 }
 
