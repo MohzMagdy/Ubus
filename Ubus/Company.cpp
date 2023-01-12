@@ -52,13 +52,14 @@ void Company::simulate()
 		
 		
 
-		PrintInteractiveModeData();
+		
 		deliver_passengers();
 		incheck();
 		if (checkexitstatus())
 		{
 			break;
 		}
+		PrintInteractiveModeData();
 		/*increaseMaxWforall();*/ /// Tifa IDK how your code works tbh :D
 	}
 
@@ -385,12 +386,15 @@ void Company::deliver_passengers() {
 						switch (BT)
 						{
 						case VB:
+							pBus->increase_journey();
 							pEmptyVIP.Enqueue(pBus);
 							break;
 						case SB:
+							pBus->increase_journey();
 							pEmptySp.Enqueue(pBus);
 							break;
 						case NB:
+							pBus->increase_journey();
 							pEmptyNorm.Enqueue(pBus);
 							break;
 						}
@@ -896,8 +900,12 @@ void Company::maintinance_check()
 	Node<Buses*>* pbusvip = pEmptyVIP.ReturnFront();
 	while (pbusnor != nullptr)
 	{
-		
-		if (pbusnor->get_data()->get_journeys()%no_checkup==0)
+
+		if (pbusnor->get_data()->get_journeys() == 0)
+		{
+			pbusnor = pbusnor->get_next();
+		}
+		else if (pbusnor->get_data()->get_journeys() % no_checkup == 0)
 		{
 			Node<Buses*>* deleter = pbusnor;
 			pCheckupNorm.Enqueue(pbusnor->get_data());
@@ -912,7 +920,11 @@ void Company::maintinance_check()
 	}
 	while (pbussp!=nullptr)
 	{
-		if (pbussp->get_data()->get_journeys() % no_checkup == 0)
+		if (pbussp->get_data()->get_journeys() == 0)
+		{
+			pbussp = pbussp->get_next();
+		}
+		else if (pbussp->get_data()->get_journeys() % no_checkup == 0)
 		{
 			Node<Buses*>* deleter = pbussp;
 			pCheckupSp.Enqueue(pbussp->get_data());
@@ -927,7 +939,11 @@ void Company::maintinance_check()
 	}
 	while (pbusvip!=nullptr)
 	{
-		if (pbusvip->get_data()->get_journeys() % no_checkup == 0)
+		if (pbusvip->get_data()->get_journeys() == 0)
+		{
+			pbusvip = pbusvip->get_next();
+		}
+		else if (pbusvip->get_data()->get_journeys() % no_checkup == 0)
 		{
 			Node<Buses*>* deleter = pbusvip;
 			pCheckupVIP.Enqueue(pbusvip->get_data());
@@ -943,13 +959,20 @@ void Company::maintinance_check()
 }
 
 void Company::incheck()
+
+
 {
 	Node<Buses*>* pbusnor = pCheckupNorm.ReturnFront();
 	Node<Buses*>* pbussp = pCheckupSp.ReturnFront();
 	Node<Buses*>* pbusvip = pCheckupVIP.ReturnFront();
 	while (pbusnor!=nullptr)
 	{
-		if (pbusnor->get_data()->get_maintitnance_time()%7==0)
+		if (pbusnor->get_data()->get_maintitnance_time()== 0)
+		{
+			pbusnor->get_data()->increase_maintinancetime();
+			pbusnor = pbusnor->get_next();
+		}
+		else if (pbusnor->get_data()->get_maintitnance_time()%2==0)
 		{
 			Node<Buses*>* deleter = pbusnor;
 			pEmptyNorm.Enqueue(pbusnor->get_data());
@@ -966,7 +989,12 @@ void Company::incheck()
 	}
 	while (pbussp != nullptr)
 	{
-		if (pbussp->get_data()->get_maintitnance_time() % 7 == 0)
+		if (pbussp->get_data()->get_maintitnance_time() == 0)
+		{
+			pbussp->get_data()->increase_maintinancetime();
+			pbussp = pbussp->get_next();
+		}
+		else if (pbussp->get_data()->get_maintitnance_time() % 2 == 0)
 		{
 			Node<Buses*>* deleter = pbussp;
 			pEmptySp.Enqueue(pbussp->get_data());
@@ -983,7 +1011,12 @@ void Company::incheck()
 	}
 	while (pbusvip != nullptr)
 	{
-		if (pbusvip->get_data()->get_maintitnance_time() % 7 == 0)
+		if (pbusvip->get_data()->get_maintitnance_time() == 0)
+		{
+			pbusvip->get_data()->increase_maintinancetime();
+			pbusvip = pbusvip->get_next();
+		}
+		else if (pbusvip->get_data()->get_maintitnance_time() % 2 == 0)
 		{
 			Node<Buses*>* deleter = pbusvip;
 			pEmptyVIP.Enqueue(pbusvip->get_data());
