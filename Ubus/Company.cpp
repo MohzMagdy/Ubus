@@ -152,7 +152,20 @@ void Company::promoteNorm(Passengers* pPass)
 // Loading File
 void Company::File_IO_Loading() {
 	ifstream File;
-	File.open("input.txt");
+	cin.ignore();
+	while (true)
+	{
+		string fileName;
+		cout << "Enter Text File Name (Leave blank for Sample): ";
+		getline(cin, fileName);
+		if (fileName == "") fileName = "sample";
+		fileName += ".txt";
+		File = ifstream(fileName.c_str());
+		if (File.good())
+			break;
+		else
+			cout << "Text File Doesn't Exist." << endl;
+	}
 	int noNbus, noSbus, noVbus;
 	File >> noNbus >> noSbus >> noVbus;
 	int sNBus, sSBus, sVBus;
