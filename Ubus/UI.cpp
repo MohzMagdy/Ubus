@@ -63,5 +63,5 @@ void UI::IntercativeModeOutput(string Message) const {
 
 void UI::StepByStepModeOutput(string Message) const {
 	cout << Message << endl;
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	std::this_thread::sleep_for(std::chrono::milliseconds(1));
 }
