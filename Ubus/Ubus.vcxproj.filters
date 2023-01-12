@@ -28,6 +28,9 @@
     <Filter Include="Utilities">
       <UniqueIdentifier>{fbc24d00-fb3f-4155-a4e3-c089e68d09a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input Files">
+      <UniqueIdentifier>{0fc96245-e88f-4ee6-bcba-6e5580617975}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Node.h">
@@ -104,5 +107,13 @@
     <ClCompile Include="Company.cpp">
       <Filter>Simulation Components</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="maxw test.txt">
+      <Filter>Input Files</Filter>
+    </Text>
+    <Text Include="sample.txt">
+      <Filter>Input Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
