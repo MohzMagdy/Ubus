@@ -9,7 +9,6 @@ class ReadyEvent :
 {
 private:
     Company* pComp;
-    Time EventTime;
     // Passenger Parametersp
     Passengers* pPass = nullptr;
     Passenger_Type Ptype;

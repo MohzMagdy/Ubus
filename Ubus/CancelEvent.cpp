@@ -3,10 +3,9 @@
 
 CancelEvent::CancelEvent(Company* pComp,int ID,Time EventTime)
 {
-	this->EventTime = EventTime;
+	this->ExecuteTime = EventTime;
 	this->pComp = pComp;
 	this->ID = ID;
-	Execute();
 }
 
 
@@ -25,8 +24,7 @@ void CancelEvent::Load(ifstream& File) {
 	}
 	int pDay = stoi(EventTime.substr(0, colonidx));
 	int pHour = stoi(EventTime.substr(colonidx + 1, EventTime.size() - colonidx));
-	this->EventTime = Time(pDay, pHour);
-	this->Execute();
+	this->ExecuteTime = Time(pDay, pHour);
 }
 
 
@@ -40,7 +38,6 @@ void CancelEvent::Execute()
 	}
 	else
 	{
-		cout << "Passenger with ID: " << pPass->Get_ID() << " is Cancelled" << endl;
 		pComp->pWaitNorm_delete(pPass);
 	}
 }

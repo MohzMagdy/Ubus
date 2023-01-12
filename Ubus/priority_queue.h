@@ -1,6 +1,7 @@
 #pragma once
 #include "Node.h"
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -22,6 +23,8 @@ public:
 	int getcounter();///get number of data in queue
 	void Peek(T& data);/// get the front data without delete from the qeue
 	Node<T>* ReturnFront();
+	string getInsideIDs();
+	T* getInsidePointers();
 };
 
 template<typename T>
@@ -125,6 +128,37 @@ T priority_queue<T>::Dequeue()
 	}
 
 }
+
+template<typename T>
+string priority_queue<T>::getInsideIDs() {
+	string insideIDs;
+	Node<T>* tempPtr = this->Front;
+	while (tempPtr != nullptr)
+	{
+		insideIDs += to_string(tempPtr->get_data()->Get_ID());
+		if (tempPtr->get_next() != nullptr) {
+			insideIDs += ",";
+		}
+		tempPtr = tempPtr->get_next();
+	}
+	return insideIDs;
+}
+
+
+template<typename T>
+T* priority_queue<T>::getInsidePointers() {
+	T* pointers = new T[c];
+	Node<T>* temp = Front;
+	int counter = 0;
+	while (temp != nullptr)
+	{
+		pointers[counter] = temp->get_data();
+		temp = temp->get_next();
+		counter += 1;
+	}
+	return pointers;
+}
+
 
 template<typename T>
 void priority_queue<T>::printlist()

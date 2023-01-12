@@ -9,7 +9,6 @@ class PromoteEvent :
 {
 private:
     Company* pComp = nullptr;
-    Time EventTime;
     int ID;
     int ExtraMoney;
 

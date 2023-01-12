@@ -4,11 +4,10 @@
 
 PromoteEvent::PromoteEvent(Company* pComp,int ID,Time EventTime, int ExtraMoney)
 {
-	this->EventTime = EventTime;
+	this->ExecuteTime = EventTime;
 	this->ID = ID;
 	this->pComp = pComp;
 	this->ExtraMoney = ExtraMoney;
-	Execute();
 }
 
 PromoteEvent::PromoteEvent(Company* pComp) {
@@ -26,8 +25,7 @@ void PromoteEvent::Load(ifstream& File) {
 	}
 	int pDay = stoi(EventTime.substr(0, colonidx));
 	int pHour = stoi(EventTime.substr(colonidx + 1, EventTime.size() - colonidx));
-	this->EventTime = Time(pDay, pHour);
-	this->Execute();
+	this->ExecuteTime = Time(pDay, pHour);
 }
 
 void PromoteEvent::Execute()

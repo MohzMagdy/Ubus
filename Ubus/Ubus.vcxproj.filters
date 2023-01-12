@@ -25,6 +25,9 @@
     <Filter Include="Simulation Components">
       <UniqueIdentifier>{103e4b2c-e4ab-4883-8d50-83c94ac9ad61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{fbc24d00-fb3f-4155-a4e3-c089e68d09a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Node.h">
@@ -68,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="Company.h">
       <Filter>Simulation Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities.h">
+      <Filter>Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

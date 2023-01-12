@@ -1,6 +1,7 @@
 #pragma once
 #include "Node.h"
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -23,6 +24,7 @@ public:
 	Node<T>* find(T data); // Returns a pointer to the node with the given data
 	int getcounter();
 	bool isempty();
+	string getInsideIDs();
 };
 
 template<typename T>
@@ -66,6 +68,22 @@ void LinkedList<T>::print_list()
 	}
 	cout << endl;
 }
+
+template<typename T>
+string LinkedList<T>::getInsideIDs() {
+	string insideIDs;
+	Node<T>* tempPtr = head;
+	while (tempPtr != nullptr)
+	{
+		insideIDs += to_string(tempPtr->get_data()->Get_ID());
+		if (tempPtr->get_next() != nullptr) {
+			insideIDs += ",";
+		}
+		tempPtr = tempPtr->get_next();
+	}
+	return insideIDs;
+}
+
 
 template<typename T>
 void LinkedList<T>::insert_end(Node<T>* newNodePtr)

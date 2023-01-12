@@ -9,7 +9,6 @@ class CancelEvent :
 {
 private:
     Company* pComp = nullptr;
-    Time EventTime;
     int ID;
 
 public:

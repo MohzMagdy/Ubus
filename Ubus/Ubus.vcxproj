@@ -141,6 +141,7 @@
     <ClInclude Include="ReadyEvent.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="UI.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Buses.cpp" />

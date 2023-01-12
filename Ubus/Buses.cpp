@@ -10,21 +10,24 @@ Buses::Buses()
 	DI.Setdays(0); DI.Sethours(0);
 	currentaboarding = 0;
 }
-	Buses::Buses(Bus_Type bType, int BC, Time Checkup_time_HS, double Bus_speed, Time DI, int currentaboarding) {
+	Buses::Buses(Bus_Type bType, int BC, Time Checkup_time_HS, double Bus_speed, Time DI, int currentaboarding, int ID) {
 		this->bType = bType;
 		this->BC = BC;
 		this->Checkup_time_HS = Checkup_time_HS;
 		this->Bus_speed = Bus_speed;
 		this->DI = DI;
 		this->currentaboarding = currentaboarding;
+		this->ID = ID;
 	}
 
 Bus_Type Buses:: get_bus_type() {return bType;}
 int Buses::get_bus_capacity() {return BC;}
-Time Buses::get_Check_point() {return Checkup_time_HS;}
+Time Buses::get_Check_point() {return Checkup_time_HS;}		
+int Buses::getID() { return ID; }
 double Buses::get_bus_speed() {return Bus_speed;}
+priority_queue<Passengers*> Buses::getSeats() { return seats; }
 Time Buses::get_Delivery_interval() {return DI;}
-
+void Buses::Set_Start_Moving_Time(Time t) { StartMovingTime = t; };
 void Buses::Set_bus_type(Bus_Type BT) {bType = BT;}
 void Buses::Set_bus_capacity(int BCC) {BC = BCC;}
 void Buses::Set_Check_point(Time cH) {Checkup_time_HS = cH;}

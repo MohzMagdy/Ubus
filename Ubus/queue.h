@@ -1,6 +1,7 @@
 #pragma once
 #include "Node.h"
 #include <iostream>
+#include <string>
 using namespace std;
 
 template<typename T>
@@ -15,12 +16,15 @@ public:
 	~queue();
 	void Enqueue(T data);///inserts nodes form the end
 	T Dequeue();///deque from the beginning
+	bool Dequeue(T&);
 	bool isempty();///checks if queue is empty or not
 	void printlist();///print queue data
 	int getcounter();
 	void Peek(T& data) ;/// get the front data without delete from the qeue
 	Node<T>* ReturnFront(); /// returns front node
 	void delete_data(T& data);/// deletes specific data
+	string getInsideIDs();
+	string getInsideIDsExceptFirst();
 };
 
 
@@ -93,6 +97,50 @@ T queue<T>::Dequeue()
 		count--;
 		return valueF;
 	}
+}
+
+template <typename T>
+bool queue<T>::Dequeue(T& value) {
+	if (isempty())
+		return false;
+
+	value = Front->get_data();
+	Node<T>* tempNode = Front;
+	Front = Front->get_next();
+	delete tempNode;
+	this->count -= 1;
+
+	if (this->Front == nullptr)
+		this->Rear = nullptr;
+
+	return true;
+}
+
+template<typename T>
+string queue<T>::getInsideIDs() {
+	string insideIDs;
+	Node<T>* tempPtr = this->Front;
+	while (tempPtr != nullptr)
+	{
+		insideIDs += to_string(tempPtr->get_data()->Get_ID());
+		if (tempPtr->get_next() != nullptr) {
+			insideIDs += ",";
+		}
+		tempPtr = tempPtr->get_next();
+	}
+	return insideIDs;
+}
+
+template<typename T>
+string queue<T>::getInsideIDsExceptFirst() {
+	string insideIDs;
+	Node<T>* tempPtr = this->Front;
+	while (tempPtr != nullptr)
+	{
+	insideIDs += to_string(tempPtr->get_data()->getID());
+	tempPtr = tempPtr->get_next();
+	}
+	return insideIDs;
 }
 
 template<typename T>

@@ -11,7 +11,7 @@ class Event
 {
 protected:
 	Passengers* pPass = nullptr;
-
+	Time ExecuteTime;
 public:
 	Event() {};
 	virtual void Execute() = 0;
@@ -23,6 +23,9 @@ public:
 	void set_pPass(Passengers* pPass)
 	{
 		this->pPass = pPass;
+	}
+	Time getEventTime() {
+		return ExecuteTime;
 	}
 };
 

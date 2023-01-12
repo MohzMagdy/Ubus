@@ -46,14 +46,15 @@ private:
 	Time Autopromotionlimit;
 	int  AutopromotionNumber;
 	
+	bool ExecuteAvailableEvent();
 public:
 	Company();
 	~Company();
 	bool checkexitstatus();
 	void simulate();
 	
-
-	
+	int checkQueueFront(queue<Buses*>);
+	int checkBusFrontID(queue<Buses*>);
 
 	void add_event(Event* PEvent);
 	void add_ready(Passengers* pPass);
@@ -81,4 +82,9 @@ public:
 	void boardSp();
 	void boardNorm();
 	void prioequation();
+
+	void MoveBuses();
+	int GetFarthestDeliveryDistance(queue<Passengers*>);
+	int GetSumOfUnrideTime(queue<Passengers*>);
+	void PrintInteractiveModeData();
 };
