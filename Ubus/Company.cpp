@@ -463,9 +463,21 @@ void Company::DropBus() {
 
 void Company::boardPassengers(Mode CurrentMode)
 {
-	boardVIP();
-	boardSp();
-	boardNorm();
+	switch (CurrentMode)
+	{
+	case Interactive:
+	case Step:
+	case Silent:
+		boardVIP();
+		boardSp();
+		boardNorm();
+		break;
+	case Immediate:
+		immBoardVIP();
+		immBoardSp();
+		immBoardNorm();
+		break;
+	}
 }
 
 void Company::boardVIP()
@@ -680,3 +692,190 @@ void Company::incheck()
 	}
 }
 
+void Company::immBoardVIP()
+{
+	Buses* pBus = nullptr;
+	int capacity = 0;
+
+	// Finds an available bus according to criteria
+	if (pEmptyVIP.getcounter() != 0)
+		pEmptyVIP.Peek(pBus);
+	else if (pEmptyNorm.getcounter() != 0)
+		pEmptyNorm.Peek(pBus);
+	else if (pEmptySp.getcounter() != 0)
+		pEmptySp.Peek(pBus);
+	else
+		return;
+
+	// Move passengers to bus of same type when available
+	if (pBus->get_bus_type() == VB)
+	{
+		Buses* pHelper = nullptr;
+		priority_queue<Passengers*> tempQueue;
+		int onboardCount = 0;
+		int EmptyCount = 0;
+		int busCapacity = pBus->get_bus_capacity();
+
+		for (int j = 0; j < 2; j++)
+		{
+			switch (j)
+			{
+			case 0:
+				EmptyCount = pEmptyNorm.getcounter();
+				pEmptyNorm.Peek(pHelper);
+				break;
+			case 1:
+				EmptyCount = pEmptySp.getcounter();
+				pEmptySp.Peek(pHelper);
+				break;
+			}
+
+			if (EmptyCount != 0)
+			{
+				onboardCount = pHelper->get_onboardCount();
+				for (int i = 0; i < onboardCount && pBus->get_onboardCount() < busCapacity; i++) // Check type of each boarded passenger
+				{
+					Passengers* pPass = pHelper->get_seats()->Dequeue();
+					if (pPass->get_passanger_type() == VP)
+					{
+						pBus->get_seats()->Enqueue(pPass, 0); // CHANGE PRIORITY FUNCTION
+					}
+					else
+					{
+						tempQueue.Enqueue(pPass);
+					}
+				}
+				onboardCount = tempQueue.getcounter();
+				for (int i = 0; i < onboardCount; i++)
+				{
+					pHelper->get_seats()->Enqueue(tempQueue.Dequeue());
+				}
+			}
+		}
+	}
+
+	// Board a passenger immediately
+	if (pWaitVIP.getcounter() != 0)
+	{
+		Passengers* pPass = pWaitVIP.Dequeue();
+		if (pPass == nullptr) return;
+		pBus->board(pPass);
+
+		// Move bus if full
+		if (pBus->get_onboardCount() == pBus->get_bus_capacity())
+		{
+			switch (pBus->get_bus_type())
+			{
+			case VB:
+				pEmptyVIP.Dequeue();
+				break;
+			case NB:
+				pEmptyNorm.Dequeue();
+				break;
+			case SB:
+				pEmptySp.Dequeue();
+				break;
+			}
+			pMoving.Enqueue(pBus, 0); // CHANGE PRIORITY FUNCTION
+		}
+	}
+}
+
+void Company::immBoardSp()
+{
+	Buses* pBus = nullptr;
+	if (pEmptySp.getcounter() != 0)
+		pEmptySp.Peek(pBus);
+	else
+		return;
+
+	// Board a passenger immediately
+	if (pWaitSp.getcounter() != 0)
+	{
+		Passengers* pPass = pWaitSp.Dequeue();
+		if (pPass == nullptr) return;
+		pBus->board(pPass);
+
+		// Move bus if full
+		if (pBus->get_onboardCount() == pBus->get_bus_capacity())
+		{
+			pEmptySp.Dequeue();
+			pMoving.Enqueue(pBus, 0); // CHANGE PRIORITY FUNCTION
+		}
+	}
+}
+
+void Company::immBoardNorm()
+{
+	Buses* pBus = nullptr;
+	int capacity = 0;
+
+	// Finds an available bus according to criteria
+	if (pEmptyNorm.getcounter() != 0)
+		pEmptyNorm.Peek(pBus);
+	else if (pEmptyVIP.getcounter() != 0)
+		pEmptyVIP.Peek(pBus);
+	else
+		return;
+
+	// Move passengers to bus of same type when available
+	if (pBus->get_bus_type() == NB)
+	{
+		Buses* pHelper = nullptr;
+		priority_queue<Passengers*> tempQueue;
+		int onboardCount = 0;
+		int EmptyCount = 0;
+		int busCapacity = pBus->get_bus_capacity();
+
+		
+		EmptyCount = pEmptyNorm.getcounter();
+		pEmptyNorm.Peek(pHelper);
+
+		if (EmptyCount != 0)
+		{
+			onboardCount = pHelper->get_onboardCount();
+			for (int i = 0; i < onboardCount && pBus->get_onboardCount() < busCapacity; i++) // Check type of each boarded passenger
+			{
+				Passengers* pPass = pHelper->get_seats()->Dequeue();
+				if (pPass->get_passanger_type() == NP)
+				{
+					pBus->get_seats()->Enqueue(pPass, 0); // CHANGE PRIORITY FUNCTION
+				}
+				else
+				{
+					tempQueue.Enqueue(pPass);
+				}
+			}
+			onboardCount = tempQueue.getcounter();
+			for (int i = 0; i < onboardCount; i++)
+			{
+				pHelper->get_seats()->Enqueue(tempQueue.Dequeue());
+			}
+		}
+		
+	}
+
+	// Board a passenger immediately
+	if (pWaitNorm.getcounter() != 0)
+	{
+		Passengers* pPass = pWaitNorm.get_head()->get_data();
+		pWaitNorm.delete_first();
+		if (pPass == nullptr) return;
+		pBus->board(pPass);
+
+		// Move bus if full
+		if (pBus->get_onboardCount() == pBus->get_bus_capacity())
+		{
+			switch (pBus->get_bus_type())
+			{
+			case VB:
+				pEmptyVIP.Dequeue();
+				break;
+			case NB:
+				pEmptyNorm.Dequeue();
+				break;
+			}
+			pMoving.Enqueue(pBus, 0); // CHANGE PRIORITY FUNCTION
+		}
+	}
+}

@@ -29,6 +29,7 @@ public:
 	double get_bus_speed();
 	Time get_Delivery_interval();
 	int get_onboardCount();
+	priority_queue<Passengers*>* get_seats();
 	/// parmeters setters 
 	void Set_bus_type(Bus_Type BT);
 	void Set_bus_capacity(int BCC);

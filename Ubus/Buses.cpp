@@ -99,3 +99,8 @@ int Buses::get_maintitnance_time()
 {
 	return inmaintinancetime;
 }
+
+priority_queue<Passengers*>* Buses::get_seats()
+{
+	return &seats;
+}

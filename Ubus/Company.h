@@ -76,10 +76,16 @@ public:
 	void ExecuteDeliveryFailure();
 	void DropBus();
 
+	// Boarding passengers into bus
 	void boardPassengers(Mode CurrentMode);
 	void boardVIP();
 	void boardSp();
 	void boardNorm();
+	// Immediate boarding mode
+	void immBoardVIP();
+	void immBoardSp();
+	void immBoardNorm();
+
 	void prioequation();
 	void maintinance_check();
 	void incheck();
