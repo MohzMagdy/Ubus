@@ -47,13 +47,13 @@ void Company::simulate()
 			//maxqs();
 		}
 		maintinance_check();
-		ExecuteDeliveryFailure();
+		// ExecuteDeliveryFailure();
 		deliver_passengers();
 		
 		
 
 		
-		deliver_passengers();
+		//deliver_passengers();
 		incheck();
 		if (checkexitstatus())
 		{
@@ -589,18 +589,23 @@ bool Company::ExecuteAvailableEvent() {
 		int MovingPassengersCount = 0;
 		Buses** MovingBussesPointers = pMoving.getInsidePointers();
 		for (int i = 0; i < pMoving.getcounter(); i++) {
-			MovingPassengersCount += MovingBussesPointers[i]->getSeats().getcounter();
-			if (MovingBussesPointers[i]->get_bus_type() == Bus_Type::NB) {
-				MovingPassengersString += to_string(MovingBussesPointers[i]->getID());
-				MovingPassengersString += "[ " + MovingBussesPointers[i]->getSeats().getInsideIDs() + "] ";
-			}
-			if (MovingBussesPointers[i]->get_bus_type() == Bus_Type::SB) {
-				MovingPassengersString += to_string(MovingBussesPointers[i]->getID());
-				MovingPassengersString += "( " + MovingBussesPointers[i]->getSeats().getInsideIDs() + ") ";
-			}
-			if (MovingBussesPointers[i]->get_bus_type() == Bus_Type::VB) {
-				MovingPassengersString += to_string(MovingBussesPointers[i]->getID());
-				MovingPassengersString += "{ " + MovingBussesPointers[i]->getSeats().getInsideIDs() + "} ";
+			if (MovingBussesPointers[i]!=nullptr) {
+				if (MovingBussesPointers[i]->get_onboardCount())
+				{
+					MovingPassengersCount += MovingBussesPointers[i]->getSeats().getcounter();
+					if (MovingBussesPointers[i]->get_bus_type() == Bus_Type::NB) {
+						MovingPassengersString += to_string(MovingBussesPointers[i]->getID());
+						MovingPassengersString += "[ " + MovingBussesPointers[i]->getSeats().getInsideIDs() + "] ";
+					}
+					if (MovingBussesPointers[i]->get_bus_type() == Bus_Type::SB) {
+						MovingPassengersString += to_string(MovingBussesPointers[i]->getID());
+						MovingPassengersString += "( " + MovingBussesPointers[i]->getSeats().getInsideIDs() + ") ";
+					}
+					if (MovingBussesPointers[i]->get_bus_type() == Bus_Type::VB) {
+						MovingPassengersString += to_string(MovingBussesPointers[i]->getID());
+						MovingPassengersString += "{ " + MovingBussesPointers[i]->getSeats().getInsideIDs() + "} ";
+					}
+				}
 			}
 		}
 		string FinalMovingPassengers;
@@ -929,7 +934,7 @@ void Company::incheck()
 			pbusnor->get_data()->increase_maintinancetime();
 			pbusnor = pbusnor->get_next();
 		}
-		else if (pbusnor->get_data()->get_maintitnance_time()%2==0)
+		else if (pbusnor->get_data()->get_maintitnance_time()% pbusnor->get_data()->get_Check_point().Gettotalhours() == 0)
 		{
 			Node<Buses*>* deleter = pbusnor;
 			pEmptyNorm.Enqueue(pbusnor->get_data());
@@ -951,7 +956,7 @@ void Company::incheck()
 			pbussp->get_data()->increase_maintinancetime();
 			pbussp = pbussp->get_next();
 		}
-		else if (pbussp->get_data()->get_maintitnance_time() % 2 == 0)
+		else if (pbussp->get_data()->get_maintitnance_time() % pbussp->get_data()->get_Check_point().Gettotalhours() == 0)
 		{
 			Node<Buses*>* deleter = pbussp;
 			pEmptySp.Enqueue(pbussp->get_data());
@@ -973,7 +978,7 @@ void Company::incheck()
 			pbusvip->get_data()->increase_maintinancetime();
 			pbusvip = pbusvip->get_next();
 		}
-		else if (pbusvip->get_data()->get_maintitnance_time() % 2 == 0)
+		else if (pbusvip->get_data()->get_maintitnance_time() % pbusvip->get_data()->get_Check_point().Gettotalhours() == 0)
 		{
 			Node<Buses*>* deleter = pbusvip;
 			pEmptyVIP.Enqueue(pbusvip->get_data());
