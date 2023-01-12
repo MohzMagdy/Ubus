@@ -32,6 +32,11 @@ double Passengers::Get_Delivery_distance(){return Delivery_distance;}
 double Passengers::Get_Cost(){return cost;}
 Time Passengers::Get_waitTime() { return waitTime; }
 
+Time Passengers::Get_delvTime()
+{
+	return this->delvtime;
+}
+
 Time Passengers::Get_MaxW()
 {
 	return MaxW;
@@ -43,6 +48,7 @@ void Passengers::Set_id(int id){this->ID = id;}
 void Passengers::Set_totalRideUnride_Time(double t){this-> totalRideUnride_Time = t;}
 void Passengers::Set_Delivery_distance(double Deldist){this->Delivery_distance = Deldist;}
 void Passengers::Set_Cost(double costt){this->cost = costt;}
+void Passengers::Set_delvtime(Time delvtime) { this->delvtime = delvtime; }
 
 void Passengers::Set_waitTime(Time boardingTime)
 {
@@ -64,4 +70,14 @@ void Passengers::increaseMaxwhr()
 double Passengers::calcPriority()
 {
 	return (Ready_Time.Gettotalhours()*10 + Delivery_distance + cost);
+}
+
+void Passengers::setbuspasid(int x)
+{
+	passengersbusid = x;
+}
+
+int Passengers::getbuspasid()
+{
+	return passengersbusid;
 }

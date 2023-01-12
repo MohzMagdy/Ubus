@@ -14,6 +14,10 @@ PromoteEvent::PromoteEvent(Company* pComp) {
 	this->pComp = pComp;
 }
 
+Event_Type PromoteEvent::GetType() {
+	return Event_Type::Promote;
+}
+
 void PromoteEvent::Load(ifstream& File) {
 	string EventTime;
 	File >> EventTime >> this->ID >> this->ExtraMoney;

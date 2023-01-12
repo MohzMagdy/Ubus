@@ -33,19 +33,19 @@ bool Company::checkexitstatus() {
 
 void Company::simulate()
 {
-	outputfile();
-	while (true)
+	int n = 10;
+	while (n--)
 	{
 		// prioequation();
 		Timestep = Timestep + 1;
 		
 		if (Isworkinghours()) {
-			ExecuteAvailableEvent();
-			boardPassengers(pUI->GetCurrentMode());
 			CheckAutopromotion();
 			/*Timestep = 0; */
 			//maxqs();
 		}
+		boardPassengers(pUI->GetCurrentMode(), Isworkinghours());
+		ExecuteAvailableEvent(Isworkinghours());
 		maintinance_check();
 		// ExecuteDeliveryFailure();
 		deliver_passengers();
@@ -60,9 +60,10 @@ void Company::simulate()
 			break;
 		}
 		PrintInteractiveModeData();
+		
 		/*increaseMaxWforall();*/ /// Tifa IDK how your code works tbh :D
 	}
-
+	outputfile();
 	
 }
 
@@ -167,7 +168,7 @@ void Company::File_IO_Loading() {
 		else
 			cout << "Text File Doesn't Exist." << endl;
 	}
-	int noNbus, noSbus, noVbus;
+
 	File >> noNbus >> noSbus >> noVbus;
 	int sNBus, sSBus, sVBus;
 	File >> sNBus >> sSBus >> sVBus;
@@ -311,7 +312,7 @@ void Company::CheckAutopromotion() {
 			Time limt = (this->Timestep - pPass->Get_ready_Time());
 			if (Autopromotionlimit < limt) {
 				promoteNorm(pPass);
-				cout << "the normal passanger with " << pPass->Get_ID() << " is auto promoted to vip"<<endl;
+				AutopromotionNumber += 1;
 			}
 		}
 	}
@@ -383,6 +384,11 @@ void Company::deliver_passengers() {
 				{
 					pBus->passenger_Deqeue(pPass);
 					Passenger_Type PT = pPass->get_passanger_type();
+
+					Time de;
+					de.Sethours(TimeFromStartTheJurnyUntillNow.Gettotalhours() + deliverytime);
+					pPass->Set_delvtime(de);
+					pPass->setbuspasid(pBus->getID());
 					switch (PT)
 					{
 					case VP:
@@ -500,13 +506,18 @@ void Company::DropBus() {
 }
 
 
-bool Company::ExecuteAvailableEvent() {
+bool Company::ExecuteAvailableEvent(bool isWorking) {
 	bool EventExists = false;
 	while (true) {
 		Event* tempEvent;
 		pEvents.Peek(tempEvent);
 		if (tempEvent != nullptr) {
-			if (tempEvent->getEventTime() <= Timestep) {
+			if (tempEvent->getEventTime() <= Timestep&&isWorking) {
+				tempEvent = pEvents.Dequeue();
+				tempEvent->Execute();
+				delete tempEvent;
+			}
+			else if (tempEvent->getEventTime() <= Timestep && !isWorking && tempEvent->GetType() == Event_Type::Ready&&tempEvent->GetReadyPassengerType() == Passenger_Type::NP) {
 				tempEvent = pEvents.Dequeue();
 				tempEvent->Execute();
 				delete tempEvent;
@@ -522,6 +533,16 @@ bool Company::ExecuteAvailableEvent() {
 	}
 }
 
+string Company::GetStatistcs() {
+	string Statistics = "";
+	Statistics += "Passengers: " + to_string(pDeliveredNorm.getcounter() + pDeliveredVIP.getcounter() + pDeliveredSp.getcounter())+"\n";
+	Statistics += " [N: " + to_string(pDeliveredNorm.getcounter()) + ", S: " + to_string(pDeliveredSp.getcounter()) + ", V: " + to_string(pDeliveredVIP.getcounter()) + "]\n";
+	Statistics += "Passengers Avg Wait = \n";
+	Statistics += "Auto-promoted passengers: " + to_string(AutopromotionNumber/ pDeliveredNorm.getcounter() * 100) + "%";
+	Statistics += "Buses: ";
+	Statistics += "[N: " + to_string(noNbus) + ", S: " + to_string(noSbus) + ", V: " + to_string(noVbus) + "]\n";
+	return Statistics;
+}
 
 	void Company::PrintInteractiveModeData() {
 		string InteractiveModeData = "";
@@ -537,54 +558,54 @@ bool Company::ExecuteAvailableEvent() {
 		int countRidingBusesVIP = 0;
 		Buses* TempBus;
 
-		pEmptyNorm.Peek(TempBus);
-		if (TempBus) {
-			if (pWaitNorm.getcounter() != 0) {
-				RidingBusData += "[" + to_string(TempBus->getID()) + "] ";
-				countRidingBusesNormal += 1;
-			}
+	pEmptyNorm.Peek(TempBus);
+	if (TempBus) {
+		if (pWaitNorm.getcounter() != 0) {
+			RidingBusData += "[" + to_string(TempBus->getID()) + "] ";
+			countRidingBusesNormal += 1;
 		}
+	}
 
-		pEmptySp.Peek(TempBus);
-		if (TempBus) {
-			if (pWaitSp.getcounter() != 0) {
-				RidingBusData += "(" + to_string(TempBus->getID()) + ") ";
-				countRidingBusesSp += 1;
-			}
+	pEmptySp.Peek(TempBus);
+	if (TempBus) {
+		if (pWaitSp.getcounter() != 0) {
+			RidingBusData += "(" + to_string(TempBus->getID()) + ") ";
+			countRidingBusesSp += 1;
 		}
+	}
 
-		pEmptyVIP.Peek(TempBus);
-		if (TempBus) {
-			if (pWaitVIP.getcounter() != 0) {
-				RidingBusData += "{ " + to_string(TempBus->getID()) + "} ";
-				countRidingBusesVIP += 1;
-			}
+	pEmptyVIP.Peek(TempBus);
+	if (TempBus) {
+		if (pWaitVIP.getcounter() != 0) {
+			RidingBusData += "{ " + to_string(TempBus->getID()) + "} ";
+			countRidingBusesVIP += 1;
 		}
-		countRidingBuses = countRidingBusesNormal + countRidingBusesSp + countRidingBusesVIP;
-		InteractiveModeData += to_string(countRidingBuses) + " Loading Buses: " + RidingBusData + lineSeperator;
+	}
+	countRidingBuses = countRidingBusesNormal + countRidingBusesSp + countRidingBusesVIP;
+	InteractiveModeData += to_string(countRidingBuses) + " Loading Buses: " + RidingBusData + lineSeperator;
 
-		string EmptyBuses = "";
-		EmptyBususCount = pEmptyNorm.getcounter() + pEmptySp.getcounter() + pEmptyVIP.getcounter() - countRidingBuses;
-		string IDsEmptyNormal = pEmptyNorm.getInsideIDsExceptFirst();
-		string IDsEmptySp = pEmptySp.getInsideIDsExceptFirst();
-		string IDsEmptyVIP = pEmptyVIP.getInsideIDsExceptFirst();
+	string EmptyBuses = "";
+	EmptyBususCount = pEmptyNorm.getcounter() + pEmptySp.getcounter() + pEmptyVIP.getcounter() - countRidingBuses;
+	string IDsEmptyNormal = pEmptyNorm.getInsideIDsExceptFirst();
+	string IDsEmptySp = pEmptySp.getInsideIDsExceptFirst();
+	string IDsEmptyVIP = pEmptyVIP.getInsideIDsExceptFirst();
 
-		for (int i = 0; i < IDsEmptyNormal.size(); i++) {
-			if (i == 0 && countRidingBusesNormal != 0) { continue; }
-			EmptyBuses += "[" + to_string(IDsEmptyNormal[i] - 48) + "] ";
-		}
-		for (int i = 0; i < IDsEmptySp.size(); i++) {
-			if (i == 0 && countRidingBusesSp != 0) { continue; }
-			EmptyBuses += "(" + to_string(IDsEmptySp[i] - 48) + ") ";
-		}
+	for (int i = 0; i < IDsEmptyNormal.size(); i++) {
+		if (i == 0 && countRidingBusesNormal != 0) { continue; }
+		EmptyBuses += "[" + to_string(IDsEmptyNormal[i] - 48) + "] ";
+	}
+	for (int i = 0; i < IDsEmptySp.size(); i++) {
+		if (i == 0 && countRidingBusesSp != 0) { continue; }
+		EmptyBuses += "(" + to_string(IDsEmptySp[i] - 48) + ") ";
+	}
 
-		for (int i = 0; i < IDsEmptyVIP.size(); i++) {
-			if (i == 0 && countRidingBusesVIP != 0) { continue; }
-			EmptyBuses += "{" + to_string(IDsEmptyVIP[i] - 48) + "} ";
-		}
-		InteractiveModeData += to_string(EmptyBususCount) + " Empty Buses: " + EmptyBuses + lineSeperator;
+	for (int i = 0; i < IDsEmptyVIP.size(); i++) {
+		if (i == 0 && countRidingBusesVIP != 0) { continue; }
+		EmptyBuses += "{" + to_string(IDsEmptyVIP[i] - 48) + "} ";
+	}
+	InteractiveModeData += to_string(EmptyBususCount) + " Empty Buses: " + EmptyBuses + lineSeperator;
 
-		string MovingPassengersString;
+	string MovingPassengersString;
 
 		int MovingPassengersCount = 0;
 		Buses** MovingBussesPointers = pMoving.getInsidePointers();
@@ -612,71 +633,81 @@ bool Company::ExecuteAvailableEvent() {
 		FinalMovingPassengers += to_string(MovingPassengersCount) + " Moving Passengers: " + MovingPassengersString;
 		InteractiveModeData += FinalMovingPassengers + lineSeperator;
 
-		string InCheckupBusses = "";
-		int InCheckUpCount;
-		InCheckUpCount = pCheckupNorm.getcounter() +
-			pCheckupSp.getcounter() +
-			pCheckupVIP.getcounter();
-		queue<Buses*>* TempBusses = new queue<Buses*>;
-		//Buses* TempBus;
-		while (pCheckupNorm.Dequeue(TempBus)) {
-			InCheckupBusses += "[" + to_string(TempBus->getID()) + "]";
-			TempBusses->Enqueue(TempBus);
-		}
-		while (TempBusses->Dequeue(TempBus)) {
-			pCheckupNorm.Enqueue(TempBus);
-		}
+	string InCheckupBusses = "";
+	int InCheckUpCount;
+	InCheckUpCount = pCheckupNorm.getcounter() +
+		pCheckupSp.getcounter() +
+		pCheckupVIP.getcounter();
+	queue<Buses*>* TempBusses = new queue<Buses*>;
+	//Buses* TempBus;
+	while (pCheckupNorm.Dequeue(TempBus)) {
+		InCheckupBusses += "[" + to_string(TempBus->getID()) + "]";
+		TempBusses->Enqueue(TempBus);
+	}
+	while (TempBusses->Dequeue(TempBus)) {
+		pCheckupNorm.Enqueue(TempBus);
+	}
 
-		while (pCheckupSp.Dequeue(TempBus)) {
-			InCheckupBusses += "(" + to_string(TempBus->getID()) + ")";
-			TempBusses->Enqueue(TempBus);
-		}
-		while (TempBusses->Dequeue(TempBus)) {
-			pCheckupSp.Enqueue(TempBus);
-		}
-
-
-		while (pCheckupVIP.Dequeue(TempBus)) {
-			InCheckupBusses += "{" + to_string(TempBus->getID()) + "}";
-			TempBusses->Enqueue(TempBus);
-		}
-		while (TempBusses->Dequeue(TempBus)) {
-			pCheckupVIP.Enqueue(TempBus);
-		}
-
-
-		InteractiveModeData += to_string(InCheckUpCount) + " In-Checkup Buses: " + InCheckupBusses + lineSeperator;
-
-		InteractiveModeData += to_string(pDeliveredVIP.getcounter() + pDeliveredSp.getcounter() + pDeliveredNorm.getcounter()) + " Delivered Passengers: ";
-		if (pDeliveredNorm.getcounter() > 0)
-			InteractiveModeData += "[" + pDeliveredNorm.getInsideIDs() + "] ";
-		if (pDeliveredSp.getcounter() > 0)
-			InteractiveModeData += "(" + pDeliveredSp.getInsideIDs() + ") ";
-		if (pDeliveredVIP.getcounter() > 0)
-			InteractiveModeData += "{" + pDeliveredVIP.getInsideIDs() + "}";
-		InteractiveModeData += lineSeperator;
-
-
-
-		pUI->printMessage(InteractiveModeData);
+	while (pCheckupSp.Dequeue(TempBus)) {
+		InCheckupBusses += "(" + to_string(TempBus->getID()) + ")";
+		TempBusses->Enqueue(TempBus);
+	}
+	while (TempBusses->Dequeue(TempBus)) {
+		pCheckupSp.Enqueue(TempBus);
 	}
 
 
-void Company::boardPassengers(Mode CurrentMode)
+	while (pCheckupVIP.Dequeue(TempBus)) {
+		InCheckupBusses += "{" + to_string(TempBus->getID()) + "}";
+		TempBusses->Enqueue(TempBus);
+	}
+	while (TempBusses->Dequeue(TempBus)) {
+		pCheckupVIP.Enqueue(TempBus);
+	}
+
+
+	InteractiveModeData += to_string(InCheckUpCount) + " In-Checkup Buses: " + InCheckupBusses + lineSeperator;
+
+	InteractiveModeData += to_string(pDeliveredVIP.getcounter() + pDeliveredSp.getcounter() + pDeliveredNorm.getcounter()) + " Delivered Passengers: ";
+	if (pDeliveredNorm.getcounter() > 0)
+		InteractiveModeData += "[" + pDeliveredNorm.getInsideIDs() + "] ";
+	if (pDeliveredSp.getcounter() > 0)
+		InteractiveModeData += "(" + pDeliveredSp.getInsideIDs() + ") ";
+	if (pDeliveredVIP.getcounter() > 0)
+		InteractiveModeData += "{" + pDeliveredVIP.getInsideIDs() + "}";
+	InteractiveModeData += lineSeperator;
+
+
+
+	pUI->printMessage(InteractiveModeData);
+}
+
+
+void Company::boardPassengers(Mode CurrentMode, bool isWorking)
 {
 	switch (CurrentMode)
 	{
 	case Interactive:
 	case Step:
 	case Silent:
-		boardVIP();
-		boardSp();
-		boardNorm();
+		if (isWorking) {
+			boardVIP();
+			boardSp();
+			boardNorm();
+		}
+		else {
+			boardNorm();
+		}
 		break;
 	case Immediate:
+		if (isWorking) {
 		immBoardVIP();
 		immBoardSp();
 		immBoardNorm();
+		}
+		else {
+			immBoardNorm();
+		}
 		break;
 	}
 }
@@ -1184,35 +1215,38 @@ void Company::immBoardNorm()
 }
 
 void Company::outputfile()
+
 {
 	static int copyer = 0;
 	copyer++;
 	ofstream myfile("Output.txt");
-	Node<Passengers*>* phelperVIP = pWaitVIP.ReturnFront();
-	Node<Passengers*>* phelperSP = pWaitSp.ReturnFront();
-	Node<Passengers*>* phelpernor = pWaitNorm.get_head();
+	Node<Passengers*>* phelperVIP = pDeliveredVIP.ReturnFront();
+	Node<Passengers*>* phelperSP = pDeliveredSp.ReturnFront();
+	Node<Passengers*>* phelpernor = pDeliveredNorm.ReturnFront();
 	Node<Buses*>* bhelperVIP = pEmptyVIP.ReturnFront();
 	Node<Buses*>* bhelperSP = pEmptySp.ReturnFront();
 	Node<Buses*>* bhelperNor = pEmptyNorm.ReturnFront();
+
+	
 	if (myfile.is_open())
 	{
 		myfile << "PDT\t" << "ID\t" << "RT\t" << "WT\t" << "BID\n";
 		while (phelperVIP != nullptr)
 		{
-			Time PDF(phelperVIP->get_data()->Get_totalRideUnride_Time() + (phelperVIP->get_data()->Get_Delivery_distance() / bhelperVIP->get_data()->get_bus_speed()));
-			myfile << PDF.Getdays() << ":" << PDF.Gethours() << "\t" << phelperVIP->get_data()->Get_ID() << "\t" << phelperVIP->get_data()->Get_ready_Time().Getdays() << ":" << phelperVIP->get_data()->Get_ready_Time().Gethours() << "\t" << phelperVIP->get_data()->Get_MaxW().Getdays() << ":" << phelperVIP->get_data()->Get_MaxW().Gethours() << "\t"<<bhelperVIP->get_data()->getID()<<"\n";
+			Time PDF(phelperVIP->get_data()->Get_delvTime());
+			myfile << PDF.Getdays() << ":" << PDF.Gethours() << "\t" << phelperVIP->get_data()->Get_ID() << "\t" << phelperVIP->get_data()->Get_ready_Time().Getdays() << ":" << phelperVIP->get_data()->Get_ready_Time().Gethours() << "\t" << phelperVIP->get_data()->Get_waitTime().Getdays() << ":" << phelperVIP->get_data()->Get_waitTime().Gethours() << "\t"<<phelperVIP->get_data()->getbuspasid()<<"\n";
 			phelperVIP = phelperVIP->get_next();
 		}
 		while (phelperSP != nullptr)
 		{
-			Time PDF(phelperSP->get_data()->Get_totalRideUnride_Time() + (phelperSP->get_data()->Get_Delivery_distance() / bhelperSP->get_data()->get_bus_speed()));
-			myfile << PDF.Getdays() << ":" << PDF.Gethours() << "\t" << phelperSP->get_data()->Get_ID() << "\t" << phelperSP->get_data()->Get_ready_Time().Getdays() << ":" << phelperSP->get_data()->Get_ready_Time().Gethours() << "\t" << phelperSP->get_data()->Get_MaxW().Getdays() << ":" << phelperSP->get_data()->Get_MaxW().Gethours() << "\t"<<bhelperSP->get_data()->getID()<<"\n";
+			Time PDF(phelperSP->get_data()->Get_delvTime());
+			myfile << PDF.Getdays() << ":" << PDF.Gethours() << "\t" << phelperSP->get_data()->Get_ID()<<"\t"<<phelperSP->get_data()->Get_ready_Time().Getdays()<<":"<<phelperSP->get_data()->Get_ready_Time().Gethours()<<"\t"<<phelperSP->get_data()->Get_waitTime().Getdays() << ":" << phelperSP->get_data()->Get_waitTime().Gethours() << "\t"<<phelperSP->get_data()->getbuspasid()<<"\n";
 			phelperSP = phelperSP->get_next();
 		}
 		while (phelpernor != nullptr)
 		{
-			Time PDF(phelpernor->get_data()->Get_totalRideUnride_Time() + (phelpernor->get_data()->Get_Delivery_distance() / bhelperNor->get_data()->get_bus_speed()));
-			myfile << PDF.Getdays() << ":" << PDF.Gethours() << "\t" << phelpernor->get_data()->Get_ID() << "\t" << phelpernor->get_data()->Get_ready_Time().Getdays() << ":" << phelpernor->get_data()->Get_ready_Time().Gethours() << "\t" << phelpernor->get_data()->Get_MaxW().Getdays() << ":" << phelpernor->get_data()->Get_MaxW().Gethours() << "\t"<<bhelperNor->get_data()->getID()<<"\n";
+			Time PDF(phelpernor->get_data()->Get_delvTime());
+			myfile << PDF.Getdays() << ":" << PDF.Gethours() << "\t" << phelpernor->get_data()->Get_ID() << "\t" << phelpernor->get_data()->Get_ready_Time().Getdays() << ":" << phelpernor->get_data()->Get_ready_Time().Gethours() << "\t" << phelpernor->get_data()->Get_waitTime().Getdays() << ":" << phelpernor->get_data()->Get_waitTime().Gethours() << "\t"<<phelpernor->get_data()->getbuspasid()<<"\n";
 			phelpernor = phelpernor->get_next();
 		}
 	}

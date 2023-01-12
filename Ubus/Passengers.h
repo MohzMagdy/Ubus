@@ -12,6 +12,8 @@ private:
 	double cost;
 	Time MaxW;
 	Time waitTime;
+	Time delvtime;
+	int passengersbusid;
 public:
 	Passengers();// no parameter constructor 
 	Passengers(Passenger_Type Ptype, Time Ready_Time, int ID, double totalRideUnride_Time, double  Delivery_distance, double cost);//  constructor with parameter 
@@ -24,6 +26,7 @@ public:
 	double Get_Cost();
 	Time Get_MaxW();
 	Time Get_waitTime();
+	Time Get_delvTime();
 	/// parmeters seters
 	void Set_passanger_type(Passenger_Type pT);
 	void Set_readytime(Time t);
@@ -34,6 +37,9 @@ public:
 	void Set_MaxW(int x, int y);
 	void increaseMaxwhr();
 	void Set_waitTime(Time boardingTime);
+	void Set_delvtime(Time delvtime);
 
 	double calcPriority();
+	void setbuspasid(int x);
+	int getbuspasid();
 };

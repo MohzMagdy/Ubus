@@ -27,6 +27,9 @@ void CancelEvent::Load(ifstream& File) {
 	this->ExecuteTime = Time(pDay, pHour);
 }
 
+Event_Type CancelEvent::GetType() {
+	return Event_Type::Cancel;
+}
 
 void CancelEvent::Execute()
 {

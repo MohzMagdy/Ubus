@@ -16,6 +16,12 @@ public:
 	Event() {};
 	virtual void Execute() = 0;
 	virtual void Load(std::ifstream&) = 0;
+	virtual Event_Type GetType() = 0;
+	virtual Passenger_Type GetReadyPassengerType() {
+		return Passenger_Type::NP;
+	};
+
+
 	Passengers* get_pPass()
 	{
 		return pPass;
@@ -27,5 +33,7 @@ public:
 	Time getEventTime() {
 		return ExecuteTime;
 	}
+
+	
 };
 
