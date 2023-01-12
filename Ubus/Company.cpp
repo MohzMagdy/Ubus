@@ -1247,6 +1247,8 @@ void Company::outputfile()
 			myfile << PDF.Getdays() << ":" << PDF.Gethours() << "\t" << phelpernor->get_data()->Get_ID() << "\t" << phelpernor->get_data()->Get_ready_Time().Getdays() << ":" << phelpernor->get_data()->Get_ready_Time().Gethours() << "\t" << phelpernor->get_data()->Get_waitTime().Getdays() << ":" << phelpernor->get_data()->Get_waitTime().Gethours() << "\t"<<phelpernor->get_data()->getbuspasid()<<"\n";
 			phelpernor = phelpernor->get_next();
 		}
+		string getStatisics = GetStatistcs();
+		myfile << getStatisics;
 	}
 	else
 	{
