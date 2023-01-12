@@ -90,6 +90,7 @@ template<typename T>
 void priority_queue<T>::Enqueue(T item, double pir)
 {
 	Node<T>* NP = new Node<T>(item);
+	NP->set_priority(pir);
 	Enqueue(NP);
 }
 
@@ -184,6 +185,7 @@ void priority_queue<T>::Peek(T& data)
 		return;
 	}
 	data = Front->get_data();
+
 }
 
 template<typename T>

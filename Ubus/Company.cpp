@@ -20,9 +20,9 @@ bool Company::checkexitstatus() {
 	pWaitSp.isempty() &&
 	pWaitNorm.isempty() &&
 	pDelivered.isempty() &&
-	//pEmptyVIP.isempty() &&
-	//pEmptySp.isempty() &&
-	//pEmptyNorm.isempty() &&
+	pEmptyVIP.isempty() &&
+	pEmptySp.isempty() &&
+	pEmptyNorm.isempty() &&
 	pMoving.isempty() &&
 	pCheckupVIP.isempty() &&
 	pCheckupSp.isempty() &&
@@ -33,24 +33,27 @@ bool Company::checkexitstatus() {
 
 void Company::simulate()
 {
+	
 	while (true)
 	{
-		prioequation();
+		// prioequation();
 		Timestep = Timestep + 1;
-
+		
 		if (Isworkinghours()) {
 			ExecuteAvailableEvent();
-			boardPassengers();
+			boardPassengers(pUI->GetCurrentMode());
 			CheckAutopromotion();
 			/*Timestep = 0; */
 			//maxqs();
 		}
-		
+		maintinance_check();
 		/*ExecuteDeliveryFailure();*/
 		/*deliver_passengers();*/
 		
 
 		PrintInteractiveModeData();
+		deliver_passengers();
+		incheck();
 		if (checkexitstatus())
 		{
 			break;
@@ -147,111 +150,6 @@ void Company::promoteNorm(Passengers* pPass)
 
 // Loading File
 void Company::File_IO_Loading() {
-	/*ifstream File;
-	string dataline;
-	int dataElementsCount = 0;
-	File.open("input.txt");
-	while (getline(File, dataline)) {
-		stringstream streamData(dataline);
-		string dataelement;
-		while (getline(streamData, dataelement, ' ')) {
-			dataElementsCount += 1;
-		}
-	}
-	string* loadedData;
-	loadedData = new string[dataElementsCount];
-	File.close();
-	ifstream FileLoader;
-	FileLoader.open("input.txt");
-	int index = 0;
-	while (getline(FileLoader, dataline)) {
-		stringstream streamData(dataline);
-		string dataelement;
-		while (getline(streamData, dataelement, ' ')) {
-			loadedData[index] = dataelement;
-			index += 1;
-		}
-	}
-	Autopromotionlimit.Setdays(stoi(loadedData[13])); Autopromotionlimit.Sethours(0);
-	Buses** nBuses = new Buses * [stoi(loadedData[0])];
-	Buses** sBuses = new Buses * [stoi(loadedData[1])];
-	Buses** vBuses = new Buses * [stoi(loadedData[2])];
-	for (int i = 0; i <= stoi(loadedData[0]); i++) {
-		nBuses[i] = new Buses(NB, stoi(loadedData[6]), stod(loadedData[12]), stod(loadedData[3]), 4);
-		add_empty_bus(nBuses[i]);
-	}
-	for (int i = 0; i <= stoi(loadedData[1]); i++) {
-		sBuses[i] = new Buses(SB, stoi(loadedData[7]), stod(loadedData[13]), stod(loadedData[4]), 4);
-		add_empty_bus(sBuses[i]);
-	}
-	for (int i = 0; i <= stoi(loadedData[2]); i++) {
-		vBuses[i] = new Buses(VB, stoi(loadedData[8]), stod(loadedData[14]), stod(loadedData[5]), 4);
-		add_empty_bus(vBuses[i]);
-	}
-	int numEvents = stoi(loadedData[15]);
-	int i = 15;
-	while (i < dataElementsCount - 1) {
-		if (loadedData[i + 1] == "R") {
-			Passenger_Type pType;
-			if (loadedData[i + 2] == "N") {
-				pType = Passenger_Type::NP;
-			}
-			else if (loadedData[i + 2] == "S") {
-				pType = Passenger_Type::SP;
-			}
-			else {
-				pType = Passenger_Type::VP;
-			}
-			int colonidx = 0;
-			for (int j = 0; j < loadedData[i + 3].size(); j++) {
-				if (loadedData[i + 3][j] == ':') {
-					colonidx = j;
-				}
-			}
-			int pDay = stoi(loadedData[i + 3].substr(0, colonidx));
-			int pHour = stoi(loadedData[i + 3].substr(colonidx + 1, loadedData[i + 3].size() - colonidx));
-			int id = stoi(loadedData[i + 4]);
-			double distance = stod(loadedData[i + 5]);
-			double LT = stod(loadedData[i + 6]);
-			double cost = stod(loadedData[i + 7]);
-			ReadyEvent* e = new ReadyEvent(this, pType, pDay, pHour, id, LT, distance, cost);
-			add_event(e);
-			cout << "Current Time: " << pDay << ":" << pHour << endl;
-			cout << "Added a Ready Event" << endl;
-			i += 7;
-		}
-		else if (loadedData[i + 1] == "X") {
-			int colonidx = 0;
-			for (int j = 0; j < loadedData[i + 2].size(); j++) {
-				if (loadedData[i + 2][j] == ':') {
-					colonidx = j;
-				}
-			}
-			int pDay = stoi(loadedData[i + 2].substr(0, colonidx));
-			int pHour = stoi(loadedData[i + 2].substr(colonidx + 1, loadedData[i + 2].size() - colonidx));
-			int id = stoi(loadedData[i + 3]);
-			cout << "Current Time: " << pDay << ":" << pHour << endl;
-			CancelEvent* c = new CancelEvent(this, id);
-			add_event(c);
-			i += 3;
-		}
-		else {
-			int colonidx = 0;
-			for (int j = 0; j < loadedData[i + 2].size(); j++) {
-				if (loadedData[i + 2][j] == ':') {
-					colonidx = j;
-				}
-			}
-			int pDay = stoi(loadedData[i + 2].substr(0, colonidx));
-			int pHour = stoi(loadedData[i + 2].substr(colonidx + 1, loadedData[i + 2].size() - colonidx));
-			int id = stoi(loadedData[i + 3]);
-			double extraMoney = stod(loadedData[i + 4]);
-			cout << "Current Time: " << pDay << ":" << pHour << endl;
-			PromoteEvent* p = new PromoteEvent(this, id);
-			add_event(p);
-			i += 4;
-		}
-	}*/
 	ifstream File;
 	File.open("input.txt");
 	int noNbus, noSbus, noVbus;
@@ -264,6 +162,8 @@ void Company::File_IO_Loading() {
 	File >> noCheckup >> cdNBus >> cdSBus >> cdVBus;
 	int autoprom, maxW;
 	File >> autoprom >> maxW;
+
+	no_checkup = noCheckup;
 
 	for (int i = 0; i < noNbus; i++) {
 		Buses* n = new Buses(Bus_Type::NB, cNBus, Time(cdNBus), sNBus, i,5,i+1); ///MUST BE CHANGED TO BUS SIZE
@@ -442,115 +342,127 @@ void Company::prioequation()
 }
 
 
+void Company::deliver_passengers() {
+	Buses*pBus = nullptr;
+	Passengers*pPass = nullptr ;
+	queue<Buses*> TempQ;
+	
+	while (!pMoving.isempty())
+	{
+		pBus = pMoving.Dequeue();
+		pBus->passenger_peek(pPass); 
+		if (pPass!=nullptr)
+		{
+			int readytime = pPass->Get_ready_Time().Gettotalhours();
+			int nowtimestep = this->Timestep.Gettotalhours();
+			if (nowtimestep - readytime > 0) {
+				Time TimeFromStartTheJurnyUntillNow = (this->Timestep - pPass->Get_ready_Time());
+				double deliverytime = ((pPass->Get_Delivery_distance() / pBus->get_bus_speed()) +  (pPass->Get_totalRideUnride_Time()));
+				double TimeFromStartTheJurnyUntillNo = double (TimeFromStartTheJurnyUntillNow.Gettotalhours());
 
-//// delevier passengers not completed yet
+				if (TimeFromStartTheJurnyUntillNo >= deliverytime)
+				{
+					pBus->passenger_Deqeue(pPass);
+					Passenger_Type PT = pPass->get_passanger_type();
+					switch (PT)
+					{
+					case VP:
+					pDeliveredVIP.Enqueue(pPass);
+						break;
+					case SP:
+						pDeliveredSp.Enqueue(pPass);
+						break;
+					case NP:
+						pDeliveredNorm.Enqueue(pPass);
+						break;
+					}
+					if (pBus->get_onboardCount() == 0) {
+						Bus_Type BT = pBus->get_bus_type();
+						switch (BT)
+						{
+						case VB:
+							pEmptyVIP.Enqueue(pBus);
+							break;
+						case SB:
+							pEmptySp.Enqueue(pBus);
+							break;
+						case NB:
+							pEmptyNorm.Enqueue(pBus);
+							break;
+						}
+						
+					}
+					else {
+						TempQ.Enqueue(pBus);
+					}
+				}
+				else {
+					TempQ.Enqueue(pBus);
+				}
+			}
+			else {
+				TempQ.Enqueue(pBus);
+				break;
+			}
+		}
 
-//void Company::deliver_passengers() {
-//	Buses*pBus = nullptr;
-//	Passengers*pPass = nullptr ;
-//
-//	while (!pMoving.isempty())
-//	{
-//		pBus = pMoving.Dequeue();
-//		pBus->passenger_peek(pPass); 
-//		while (pPass!=nullptr)
-//		{
-//			int readytime = pPass->Get_ready_Time().Gettotalhours();
-//			int nowtimestep = this->Timestep.Gettotalhours();
-//			if (nowtimestep - readytime > 0) {
-//				Time TimeFromStartTheJurnyUntillNow = (this->Timestep - pPass->Get_ready_Time());
-//				double deliverytime = ((pPass->Get_Delivery_distance() / pBus->get_bus_speed()) +  (pPass->Get_totalRideUnride_Time()));
-//				double TimeFromStartTheJurnyUntillNo = double (TimeFromStartTheJurnyUntillNow.Gettotalhours());
-//
-//				if (TimeFromStartTheJurnyUntillNo >= deliverytime)
-//				{
-//					pBus->passenger_Deqeue(pPass);
-//					Passenger_Type PT = pPass->get_passanger_type();
-//					switch (PT)
-//					{
-//					case VP:
-//					pDeliveredVIP.Enqueue(pPass);
-//						break;
-//					case SP:
-//						pDeliveredSp.Enqueue(pPass);
-//						break;
-//					case NP:
-//						pDeliveredNorm.Enqueue(pPass);
-//						break;
-//					}
-//				}
-//			}
-//			
-//		}
-//
-//	}
-//}
+	}
+	Buses* pMBus = nullptr;
+	while (!TempQ.isempty())
+	{
+		pMBus = TempQ.Dequeue();
+		pMBus->increase_journey();
+		pMoving.Enqueue(pMBus);
+	}
+}
 
 
-
-
-////////////////////  منيكة كود 
-// 
-//void Company::LoadVIP() {
-//	Passengers* pPass = nullptr;
-//	Buses* pBus = nullptr;
-//	while (!pWaitVIP.isempty())
-//	{
-//		pPass = pWaitVIP.Dequeue();
-//		pEmptyVIP.Peek(pBus);
-//		pBus->passenger_aboard(pPass);
-//	}
-//}
-
-//void Company::Setbustomovinglist() {
-//
-//pMoving.Enqueue(pEmptyVIP.Dequeue());
-//pMoving.Enqueue(pEmptyVIP.Dequeue());
-//
-//;}
 
 
 
 //// bouns Delivery failure
 
-//void Company::ExecuteDeliveryFailure() {
-//	double probability = 0; // probability of dropping a buses
-//	int numtodrop = 0;
-//
-//	if (pMoving.getcounter() == 0) {
-//		return;
-//	}
-//
-//	if ((rand() % 100) < probability) {
-//		numtodrop = rand() % this->pMoving.getcounter() + 1;
-//		for (int i = 0; i < numtodrop; i++) {
-//			this->DropBus();
-//		}
-//	}
-//
-//}
-//void Company::DropBus() {
-//
-//	Buses* pBus;
-//	pBus = pMoving.Dequeue();
-//
-//	Passengers* pPass = nullptr;
-//	Bus_Type BT = pBus->get_bus_type();
-//	switch (BT)
-//	{
-//	case VB:
-//		pBus->passenger_Deqeue(pPass);
-//		while (pPass!=nullptr) {this->pWaitVIP.Enqueue(pPass);}
-//		break;
-//	case SB:
-//		pBus->passenger_Deqeue(pPass);
-//		while (pPass != nullptr) {this->pWaitSp.Enqueue(pPass);}
-//		break;
-//	case NB:
-//		pBus->passenger_Deqeue(pPass);
-//		while (pPass != nullptr) {this->pWaitNorm.insert_end(pPass);}
-//		break;
-//	}
+void Company::ExecuteDeliveryFailure() {
+	double probability = 5; // probability of dropping a buses
+	int numtodrop = 0;
+
+	if (pMoving.getcounter() == 0) {
+		return;
+	}
+	int smallpor = rand() % 100;
+	if (smallpor < probability) {
+		numtodrop = rand() % this->pMoving.getcounter() + 1;
+		for (int i = 0; i < numtodrop; i++) {
+			this->DropBus();
+		}
+	}
+
+}
+void Company::DropBus() {
+
+	Buses* pBus;
+	pBus = pMoving.Dequeue();
+
+	Passengers* pPass = nullptr;
+	Bus_Type BT = pBus->get_bus_type();
+	switch (BT)
+	{
+	case VB:
+		pBus->passenger_peek(pPass);
+		this->pWaitVIP.Enqueue(pPass);
+		pBus->passenger_Deqeue(pPass);
+		break;
+	case SB:
+		pBus->passenger_peek(pPass);
+		this->pWaitSp.Enqueue(pPass);
+		pBus->passenger_Deqeue(pPass);
+		break;
+	case NB:
+		pBus->passenger_peek(pPass);
+		this->pWaitNorm.insert_end(pPass);
+		pBus->passenger_Deqeue(pPass);
+		break;
+	}
 //	this->MoveToCheckUp(pBus);
 //}
 //
@@ -743,11 +655,23 @@ void Company::PrintInteractiveModeData() {
 	pUI->printMessage(InteractiveModeData);
 }
 
-void Company::boardPassengers()
+void Company::boardPassengers(Mode CurrentMode)
 {
-	boardVIP();
-	boardSp();
-	boardNorm();
+	switch (CurrentMode)
+	{
+	case Interactive:
+	case Step:
+	case Silent:
+		boardVIP();
+		boardSp();
+		boardNorm();
+		break;
+	case Immediate:
+		immBoardVIP();
+		immBoardSp();
+		immBoardNorm();
+		break;
+	}
 }
 
 void Company::boardVIP()
@@ -804,6 +728,9 @@ void Company::boardSp()
 {
 	Buses* pBus = nullptr;
 	pEmptySp.Peek(pBus);
+	if (pBus) {
+		int passCount = pWaitSp.getcounter();
+		int capacity = pBus->get_bus_capacity();
 
 	int passCount = pWaitSp.getcounter();
 	int capacity = pBus->get_bus_capacity();
@@ -925,5 +852,303 @@ int Company::checkBusFrontID(queue<Buses*> q) {
 	}
 	else {
 		return 0;
+	}
+}
+void Company::maintinance_check()
+{
+	Node<Buses*>* pbusnor = pEmptyNorm.ReturnFront();
+	Node<Buses*>* pbussp = pEmptySp.ReturnFront();
+	Node<Buses*>* pbusvip = pEmptyVIP.ReturnFront();
+	while (pbusnor != nullptr)
+	{
+		
+		if (pbusnor->get_data()->get_journeys()%no_checkup==0)
+		{
+			Node<Buses*>* deleter = pbusnor;
+			pCheckupNorm.Enqueue(pbusnor->get_data());
+			pEmptyNorm.delete_data(deleter->get_data());
+			cout << "Normal bus moved to checkup " << endl;
+			pbusnor = pEmptyNorm.ReturnFront();
+		}
+		else
+		{
+			pbusnor = pbusnor->get_next();
+		}
+	}
+	while (pbussp!=nullptr)
+	{
+		if (pbussp->get_data()->get_journeys() % no_checkup == 0)
+		{
+			Node<Buses*>* deleter = pbussp;
+			pCheckupSp.Enqueue(pbussp->get_data());
+			pEmptySp.delete_data(deleter->get_data());
+			cout << "Special bus moved to checkup " << endl;
+			pbussp = pEmptySp.ReturnFront();
+		}
+		else
+		{
+			pbussp = pbussp->get_next();
+		}
+	}
+	while (pbusvip!=nullptr)
+	{
+		if (pbusvip->get_data()->get_journeys() % no_checkup == 0)
+		{
+			Node<Buses*>* deleter = pbusvip;
+			pCheckupVIP.Enqueue(pbusvip->get_data());
+			pEmptyVIP.delete_data(deleter->get_data());
+			cout << "VIP bus moved to checkup " << endl;
+			pbusvip = pEmptyVIP.ReturnFront();
+		}
+		else
+		{
+			pbusvip = pbusvip->get_next();
+		}
+	}
+}
+
+void Company::incheck()
+{
+	Node<Buses*>* pbusnor = pCheckupNorm.ReturnFront();
+	Node<Buses*>* pbussp = pCheckupSp.ReturnFront();
+	Node<Buses*>* pbusvip = pCheckupVIP.ReturnFront();
+	while (pbusnor!=nullptr)
+	{
+		if (pbusnor->get_data()->get_maintitnance_time()%7==0)
+		{
+			Node<Buses*>* deleter = pbusnor;
+			pEmptyNorm.Enqueue(pbusnor->get_data());
+			pCheckupNorm.delete_data(deleter->get_data());
+			cout << "Normal bus finished maintinance" << endl;
+			pbusnor = pCheckupNorm.ReturnFront();
+		}
+		else
+		{
+			pbusnor->get_data()->increase_maintinancetime();
+			pbusnor = pbusnor->get_next();
+		}
+		
+	}
+	while (pbussp != nullptr)
+	{
+		if (pbussp->get_data()->get_maintitnance_time() % 7 == 0)
+		{
+			Node<Buses*>* deleter = pbussp;
+			pEmptySp.Enqueue(pbussp->get_data());
+			pCheckupSp.delete_data(deleter->get_data());
+			cout << "Special bus finished maintinance" << endl;
+			pbussp = pCheckupSp.ReturnFront();
+		}
+		else
+		{
+			pbussp->get_data()->increase_maintinancetime();
+			pbussp = pbussp->get_next();
+		}
+		
+	}
+	while (pbusvip != nullptr)
+	{
+		if (pbusvip->get_data()->get_maintitnance_time() % 7 == 0)
+		{
+			Node<Buses*>* deleter = pbusvip;
+			pEmptyVIP.Enqueue(pbusvip->get_data());
+			pCheckupVIP.delete_data(deleter->get_data());
+			cout << "VIP bus finished maintinance" << endl;
+			pbusvip = pCheckupVIP.ReturnFront();
+		}
+		else
+		{
+			pbusvip->get_data()->increase_maintinancetime();
+			pbusvip = pbusvip->get_next();
+		}
+		
+	}
+}
+
+void Company::immBoardVIP()
+{
+	Buses* pBus = nullptr;
+	int capacity = 0;
+
+	// Finds an available bus according to criteria
+	if (pEmptyVIP.getcounter() != 0)
+		pEmptyVIP.Peek(pBus);
+	else if (pEmptyNorm.getcounter() != 0)
+		pEmptyNorm.Peek(pBus);
+	else if (pEmptySp.getcounter() != 0)
+		pEmptySp.Peek(pBus);
+	else
+		return;
+
+	// Move passengers to bus of same type when available
+	if (pBus->get_bus_type() == VB)
+	{
+		Buses* pHelper = nullptr;
+		priority_queue<Passengers*> tempQueue;
+		int onboardCount = 0;
+		int EmptyCount = 0;
+		int busCapacity = pBus->get_bus_capacity();
+
+		for (int j = 0; j < 2; j++)
+		{
+			switch (j)
+			{
+			case 0:
+				EmptyCount = pEmptyNorm.getcounter();
+				pEmptyNorm.Peek(pHelper);
+				break;
+			case 1:
+				EmptyCount = pEmptySp.getcounter();
+				pEmptySp.Peek(pHelper);
+				break;
+			}
+
+			if (EmptyCount != 0)
+			{
+				onboardCount = pHelper->get_onboardCount();
+				for (int i = 0; i < onboardCount && pBus->get_onboardCount() < busCapacity; i++) // Check type of each boarded passenger
+				{
+					Passengers* pPass = pHelper->get_seats()->Dequeue();
+					if (pPass->get_passanger_type() == VP)
+					{
+						pBus->get_seats()->Enqueue(pPass, 0); // CHANGE PRIORITY FUNCTION
+					}
+					else
+					{
+						tempQueue.Enqueue(pPass);
+					}
+				}
+				onboardCount = tempQueue.getcounter();
+				for (int i = 0; i < onboardCount; i++)
+				{
+					pHelper->get_seats()->Enqueue(tempQueue.Dequeue());
+				}
+			}
+		}
+	}
+
+	// Board a passenger immediately
+	if (pWaitVIP.getcounter() != 0)
+	{
+		Passengers* pPass = pWaitVIP.Dequeue();
+		if (pPass == nullptr) return;
+		pBus->board(pPass);
+
+		// Move bus if full
+		if (pBus->get_onboardCount() == pBus->get_bus_capacity())
+		{
+			switch (pBus->get_bus_type())
+			{
+			case VB:
+				pEmptyVIP.Dequeue();
+				break;
+			case NB:
+				pEmptyNorm.Dequeue();
+				break;
+			case SB:
+				pEmptySp.Dequeue();
+				break;
+			}
+			pMoving.Enqueue(pBus, 0); // CHANGE PRIORITY FUNCTION
+		}
+	}
+}
+
+void Company::immBoardSp()
+{
+	Buses* pBus = nullptr;
+	if (pEmptySp.getcounter() != 0)
+		pEmptySp.Peek(pBus);
+	else
+		return;
+
+	// Board a passenger immediately
+	if (pWaitSp.getcounter() != 0)
+	{
+		Passengers* pPass = pWaitSp.Dequeue();
+		if (pPass == nullptr) return;
+		pBus->board(pPass);
+
+		// Move bus if full
+		if (pBus->get_onboardCount() == pBus->get_bus_capacity())
+		{
+			pEmptySp.Dequeue();
+			pMoving.Enqueue(pBus, 0); // CHANGE PRIORITY FUNCTION
+		}
+	}
+}
+
+void Company::immBoardNorm()
+{
+	Buses* pBus = nullptr;
+	int capacity = 0;
+
+	// Finds an available bus according to criteria
+	if (pEmptyNorm.getcounter() != 0)
+		pEmptyNorm.Peek(pBus);
+	else if (pEmptyVIP.getcounter() != 0)
+		pEmptyVIP.Peek(pBus);
+	else
+		return;
+
+	// Move passengers to bus of same type when available
+	if (pBus->get_bus_type() == NB)
+	{
+		Buses* pHelper = nullptr;
+		priority_queue<Passengers*> tempQueue;
+		int onboardCount = 0;
+		int EmptyCount = 0;
+		int busCapacity = pBus->get_bus_capacity();
+
+		
+		EmptyCount = pEmptyNorm.getcounter();
+		pEmptyNorm.Peek(pHelper);
+
+		if (EmptyCount != 0)
+		{
+			onboardCount = pHelper->get_onboardCount();
+			for (int i = 0; i < onboardCount && pBus->get_onboardCount() < busCapacity; i++) // Check type of each boarded passenger
+			{
+				Passengers* pPass = pHelper->get_seats()->Dequeue();
+				if (pPass->get_passanger_type() == NP)
+				{
+					pBus->get_seats()->Enqueue(pPass, 0); // CHANGE PRIORITY FUNCTION
+				}
+				else
+				{
+					tempQueue.Enqueue(pPass);
+				}
+			}
+			onboardCount = tempQueue.getcounter();
+			for (int i = 0; i < onboardCount; i++)
+			{
+				pHelper->get_seats()->Enqueue(tempQueue.Dequeue());
+			}
+		}
+		
+	}
+
+	// Board a passenger immediately
+	if (pWaitNorm.getcounter() != 0)
+	{
+		Passengers* pPass = pWaitNorm.get_head()->get_data();
+		pWaitNorm.delete_first();
+		if (pPass == nullptr) return;
+		pBus->board(pPass);
+
+		// Move bus if full
+		if (pBus->get_onboardCount() == pBus->get_bus_capacity())
+		{
+			switch (pBus->get_bus_type())
+			{
+			case VB:
+				pEmptyVIP.Dequeue();
+				break;
+			case NB:
+				pEmptyNorm.Dequeue();
+				break;
+			}
+			pMoving.Enqueue(pBus, 0); // CHANGE PRIORITY FUNCTION
+		}
 	}
 }

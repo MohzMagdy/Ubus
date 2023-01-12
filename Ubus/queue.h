@@ -178,7 +178,7 @@ inline Node<T>* queue<T>::ReturnFront()
 }
 
 template<typename T>
-inline void queue<T>::delete_data(T& data)
+inline void queue<T>::delete_data(T data)
 {
 	if (isempty())
 	{
@@ -187,6 +187,7 @@ inline void queue<T>::delete_data(T& data)
 	if (Front->get_data() == data)
 	{
 		Dequeue();
+		return;
 	}
 	Node<T>* p = Front->get_next();
 	Node<T>* pPrev = Front;

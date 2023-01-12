@@ -47,18 +47,20 @@ void Buses::set_Delivery_interval(Time DIN) {DI = DIN;}
 		currentaboarding++;
 	}
 
-	void Buses::passenger_peek(Passengers* ridertopeek)	
-	{	this->pPass.Peek(ridertopeek);}
+	void Buses::passenger_peek(Passengers* &ridertopeek)	
+	{	this->seats.Peek(ridertopeek);}
 
 	void Buses::passenger_Deqeue(Passengers* ridertodeque)
 	{
-		ridertodeque = pPass.Dequeue();
+		ridertodeque = seats.Dequeue();
+		
+		if (ridertodeque != nullptr) { onboardCount--; }
 	}
 
 	bool Buses::isfull()
 	{
 		bool x = false;
-		if (currentaboarding>=BC)
+		if (onboardCount>=BC)
 		{
 			x = true;
 			return true;
@@ -74,4 +76,34 @@ void Buses::board(Passengers* pPass)
 {
 		seats.Enqueue(pPass, -(pPass->Get_Delivery_distance()));
 		onboardCount++;
+}
+
+void Buses::increase_journey()
+{
+	no_journeys++;
+}
+
+int Buses::get_journeys()
+{
+	return no_journeys;
+}
+
+void Buses::set_journey(int x)
+{
+	no_journeys = x;
+}
+
+void Buses::increase_maintinancetime()
+{
+	inmaintinancetime++;
+}
+
+int Buses::get_maintitnance_time()
+{
+	return inmaintinancetime;
+}
+
+priority_queue<Passengers*>* Buses::get_seats()
+{
+	return &seats;
 }

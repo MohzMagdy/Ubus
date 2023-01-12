@@ -45,6 +45,7 @@ private:
 	Time Timestep;
 	Time Autopromotionlimit;
 	int  AutopromotionNumber;
+	int no_checkup;
 	
 	bool ExecuteAvailableEvent();
 public:
@@ -68,23 +69,30 @@ public:
 
 	void increaseMaxWforall(); /// Still need to add VIP passengers
 	void maxqs(); /// passengers aren't removed from the queue
+	
+	
 	void CheckAutopromotion();
 	bool Isworkinghours();
 	void deliver_passengers();
-	void LoadVIP();
-
-	void Setbustomovinglist();
 	void ExecuteDeliveryFailure();
 	void DropBus();
 
-	void boardPassengers();
+	// Boarding passengers into bus
+	void boardPassengers(Mode CurrentMode);
 	void boardVIP();
 	void boardSp();
 	void boardNorm();
+	// Immediate boarding mode
+	void immBoardVIP();
+	void immBoardSp();
+	void immBoardNorm();
+
 	void prioequation();
 
 	void MoveBuses();
 	int GetFarthestDeliveryDistance(queue<Passengers*>);
 	int GetSumOfUnrideTime(queue<Passengers*>);
 	void PrintInteractiveModeData();
+	void maintinance_check();
+	void incheck();
 };
