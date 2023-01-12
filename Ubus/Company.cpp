@@ -33,8 +33,7 @@ bool Company::checkexitstatus() {
 
 void Company::simulate()
 {
-	int n = 10;
-	while (n--)
+	while (true)
 	{
 		// prioequation();
 		Timestep = Timestep + 1;
@@ -62,8 +61,9 @@ void Company::simulate()
 		PrintInteractiveModeData();
 		
 		/*increaseMaxWforall();*/ /// Tifa IDK how your code works tbh :D
+
+		outputfile();
 	}
-	outputfile();
 	
 }
 
@@ -385,9 +385,7 @@ void Company::deliver_passengers() {
 					pBus->passenger_Deqeue(pPass);
 					Passenger_Type PT = pPass->get_passanger_type();
 
-					Time de;
-					de.Sethours(TimeFromStartTheJurnyUntillNow.Gettotalhours() + deliverytime);
-					pPass->Set_delvtime(de);
+					pPass->Set_delvtime(TimeFromStartTheJurnyUntillNow.Gettotalhours() + int(deliverytime));
 					pPass->setbuspasid(pBus->getID());
 					switch (PT)
 					{
