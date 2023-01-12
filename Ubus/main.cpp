@@ -14,10 +14,6 @@ int main()
 	Company* pComp = new Company;
 
 	bool exit = false;
-	while (!exit)
-	{
-
-	}
 
 	delete pComp;
 

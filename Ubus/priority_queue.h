@@ -78,7 +78,16 @@ void priority_queue<T>::Enqueue(Node<T>* R)
 				{
 					temp = temp->get_next();
 				}
-				temp->set_next(NP);
+				if (temp->get_next()==nullptr)
+				{
+					temp->set_next(NP);
+					Rear = NP;
+				}
+				else
+				{
+					temp->set_next(NP);
+				}
+				
 			}
 			
 		}
@@ -149,6 +158,9 @@ string priority_queue<T>::getInsideIDs() {
 template<typename T>
 T* priority_queue<T>::getInsidePointers() {
 	T* pointers = new T[c];
+	for (int i = 0;i < c;i++) {
+		pointers[i] = nullptr;
+	}
 	Node<T>* temp = Front;
 	int counter = 0;
 	while (temp != nullptr)

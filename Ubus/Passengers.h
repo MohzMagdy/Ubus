@@ -12,7 +12,7 @@ private:
 	double cost;
 	Time MaxW;
 	Time waitTime;
-	Time delvtime;
+	double delvtime;
 	int passengersbusid;
 public:
 	Passengers();// no parameter constructor 
@@ -26,7 +26,7 @@ public:
 	double Get_Cost();
 	Time Get_MaxW();
 	Time Get_waitTime();
-	Time Get_delvTime();
+	double Get_delvTime();
 	/// parmeters seters
 	void Set_passanger_type(Passenger_Type pT);
 	void Set_readytime(Time t);
@@ -37,7 +37,7 @@ public:
 	void Set_MaxW(int x, int y);
 	void increaseMaxwhr();
 	void Set_waitTime(Time boardingTime);
-	void Set_delvtime(Time delvtime);
+	void Set_delvtime(double delvtime);
 
 	double calcPriority();
 	void setbuspasid(int x);
