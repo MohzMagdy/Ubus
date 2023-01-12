@@ -532,8 +532,9 @@ void Company::DropBus() {
 	//	}
 	//}
 
-	bool Company::ExecuteAvailableEvent() {
-		bool EventExists = false;
+bool Company::ExecuteAvailableEvent() {
+	bool EventExists = false;
+	while (true) {
 		Event* tempEvent;
 		pEvents.Peek(tempEvent);
 		if (tempEvent != nullptr) {
@@ -541,13 +542,17 @@ void Company::DropBus() {
 				tempEvent = pEvents.Dequeue();
 				tempEvent->Execute();
 				delete tempEvent;
+			}
+			else {
 				return true;
 			}
 		}
 		else {
 			return false;
 		}
+
 	}
+}
 
 
 	void Company::PrintInteractiveModeData() {
@@ -592,7 +597,7 @@ void Company::DropBus() {
 			}
 		}
 		countRidingBuses = countRidingBusesNormal + countRidingBusesSp + countRidingBusesVIP;
-		InteractiveModeData += to_string(countRidingBuses) + " Loading Trucks: " + RidingBusData + lineSeperator;
+		InteractiveModeData += to_string(countRidingBuses) + " Loading Buses: " + RidingBusData + lineSeperator;
 
 		string EmptyBuses = "";
 		EmptyBususCount = pEmptyNorm.getcounter() + pEmptySp.getcounter() + pEmptyVIP.getcounter() - countRidingBuses;
@@ -671,7 +676,7 @@ void Company::DropBus() {
 		}
 
 
-		InteractiveModeData += to_string(InCheckUpCount) + " In-Checkup Trucks: " + InCheckupBusses + lineSeperator;
+		InteractiveModeData += to_string(InCheckUpCount) + " In-Checkup Buses: " + InCheckupBusses + lineSeperator;
 
 		InteractiveModeData += to_string(pDeliveredVIP.getcounter() + pDeliveredSp.getcounter() + pDeliveredNorm.getcounter()) + " Delivered Passengers: ";
 		if (pDeliveredNorm.getcounter() > 0)
@@ -758,7 +763,13 @@ void Company::boardVIP()
 	}
 }
 
-//ff
+
+
+//string Company::GetStatistcs() {
+//
+//}
+//
+
 
 void Company::boardSp()
 {

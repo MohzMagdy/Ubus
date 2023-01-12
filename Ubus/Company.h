@@ -98,4 +98,6 @@ public:
 	void maintinance_check();
 	void incheck();
 	void outputfile();
+
+	string GetStatistcs();
 };
