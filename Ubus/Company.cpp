@@ -533,10 +533,16 @@ bool Company::ExecuteAvailableEvent(bool isWorking) {
 
 string Company::GetStatistcs() {
 	string Statistics = "";
-	Statistics += "Passengers: " + to_string(pDeliveredNorm.getcounter() + pDeliveredVIP.getcounter() + pDeliveredSp.getcounter())+"\n";
+	Statistics += "Passengers: " + to_string(pDeliveredNorm.getcounter() + pDeliveredVIP.getcounter() + pDeliveredSp.getcounter());
 	Statistics += " [N: " + to_string(pDeliveredNorm.getcounter()) + ", S: " + to_string(pDeliveredSp.getcounter()) + ", V: " + to_string(pDeliveredVIP.getcounter()) + "]\n";
-	Statistics += "Passengers Avg Wait = \n";
-	Statistics += "Auto-promoted passengers: " + to_string(AutopromotionNumber/ pDeliveredNorm.getcounter() * 100) + "%";
+	Statistics += "Passengers Avg Wait = ";
+	if (pDeliveredNorm.getcounter() != 0) {
+		Statistics += "Auto-promoted passengers: " + to_string(AutopromotionNumber / pDeliveredNorm.getcounter() * 100) + "%\n";
+	}
+	else {
+		Statistics += to_string(0) + "%\n";
+	}
+	
 	Statistics += "Buses: ";
 	Statistics += "[N: " + to_string(noNbus) + ", S: " + to_string(noSbus) + ", V: " + to_string(noVbus) + "]\n";
 	return Statistics;
