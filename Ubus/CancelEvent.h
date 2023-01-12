@@ -16,5 +16,6 @@ public:
     CancelEvent(Company*,int,Time);
     void Execute();
     void Load(std::ifstream&);
+    Event_Type GetType();
 };
 

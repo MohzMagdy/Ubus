@@ -15,8 +15,18 @@ ReadyEvent::ReadyEvent(Company* pComp,Passenger_Type pType,Time EventTime, int I
 }
 
 
+
+Passenger_Type ReadyEvent::GetReadyPassengerType() {
+	return Ptype;
+}
+
+
 ReadyEvent::ReadyEvent(Company* pComp) {
 	this->pComp = pComp;
+}
+
+Event_Type ReadyEvent::GetType() {
+	return Event_Type::Ready;
 }
 
 void ReadyEvent::Load(ifstream& File) {

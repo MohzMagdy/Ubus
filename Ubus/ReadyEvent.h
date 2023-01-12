@@ -22,5 +22,7 @@ public:
     ReadyEvent(Company*,Passenger_Type,Time,int,double, double, double);
     void Execute();
     void Load(std::ifstream&);
+    Event_Type GetType();
+    Passenger_Type GetReadyPassengerType();
 };
 

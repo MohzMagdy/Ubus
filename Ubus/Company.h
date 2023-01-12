@@ -44,10 +44,15 @@ private:
 	Time MaxW;
 	Time Timestep;
 	Time Autopromotionlimit;
+
 	int  AutopromotionNumber;
 	int no_checkup;
 	
-	bool ExecuteAvailableEvent();
+	int noNbus;
+	int noSbus;
+	int noVbus;
+
+	bool ExecuteAvailableEvent(bool);
 public:
 	Company();
 	~Company();
@@ -78,7 +83,7 @@ public:
 	void DropBus();
 
 	// Boarding passengers into bus
-	void boardPassengers(Mode CurrentMode);
+	void boardPassengers(Mode CurrentMode,bool isWorking);
 	void boardVIP();
 	void boardSp();
 	void boardNorm();

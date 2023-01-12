@@ -17,5 +17,6 @@ public:
     PromoteEvent(Company*);
     void Execute();
     void Load(std::ifstream&);
+    Event_Type GetType();
 };
 
