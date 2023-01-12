@@ -47,8 +47,8 @@ void Company::simulate()
 			//maxqs();
 		}
 		maintinance_check();
-		/*ExecuteDeliveryFailure();*/
-		/*deliver_passengers();*/
+		ExecuteDeliveryFailure();
+		deliver_passengers();
 		
 
 		PrintInteractiveModeData();
@@ -341,24 +341,25 @@ void Company::prioequation()
 	pWaitVIP = clone;
 }
 
+/// deliver_passengers
 
 void Company::deliver_passengers() {
-	Buses*pBus = nullptr;
-	Passengers*pPass = nullptr ;
+	Buses* pBus = nullptr;
+	Passengers* pPass = nullptr;
 	queue<Buses*> TempQ;
-	
+
 	while (!pMoving.isempty())
 	{
 		pBus = pMoving.Dequeue();
-		pBus->passenger_peek(pPass); 
-		if (pPass!=nullptr)
+		pBus->passenger_peek(pPass);
+		if (pPass != nullptr)
 		{
 			int readytime = pPass->Get_ready_Time().Gettotalhours();
 			int nowtimestep = this->Timestep.Gettotalhours();
 			if (nowtimestep - readytime > 0) {
 				Time TimeFromStartTheJurnyUntillNow = (this->Timestep - pPass->Get_ready_Time());
-				double deliverytime = ((pPass->Get_Delivery_distance() / pBus->get_bus_speed()) +  (pPass->Get_totalRideUnride_Time()));
-				double TimeFromStartTheJurnyUntillNo = double (TimeFromStartTheJurnyUntillNow.Gettotalhours());
+				double deliverytime = ((pPass->Get_Delivery_distance() / pBus->get_bus_speed()) + (pPass->Get_totalRideUnride_Time()));
+				double TimeFromStartTheJurnyUntillNo = double(TimeFromStartTheJurnyUntillNow.Gettotalhours());
 
 				if (TimeFromStartTheJurnyUntillNo >= deliverytime)
 				{
@@ -367,7 +368,7 @@ void Company::deliver_passengers() {
 					switch (PT)
 					{
 					case VP:
-					pDeliveredVIP.Enqueue(pPass);
+						pDeliveredVIP.Enqueue(pPass);
 						break;
 					case SP:
 						pDeliveredSp.Enqueue(pPass);
@@ -390,7 +391,7 @@ void Company::deliver_passengers() {
 							pEmptyNorm.Enqueue(pBus);
 							break;
 						}
-						
+
 					}
 					else {
 						TempQ.Enqueue(pBus);
@@ -420,7 +421,7 @@ void Company::deliver_passengers() {
 
 
 
-//// bouns Delivery failure
+//// Delivery failure
 
 void Company::ExecuteDeliveryFailure() {
 	double probability = 5; // probability of dropping a buses
@@ -448,22 +449,35 @@ void Company::DropBus() {
 	switch (BT)
 	{
 	case VB:
-		pBus->passenger_peek(pPass);
-		this->pWaitVIP.Enqueue(pPass);
-		pBus->passenger_Deqeue(pPass);
+		while (pBus->get_onboardCount() != 0)
+		{
+			pBus->passenger_peek(pPass);
+			this->pWaitVIP.Enqueue(pPass);
+			pBus->passenger_Deqeue(pPass);
+		}
+		this->pCheckupVIP.Enqueue(pBus);
 		break;
 	case SB:
-		pBus->passenger_peek(pPass);
-		this->pWaitSp.Enqueue(pPass);
-		pBus->passenger_Deqeue(pPass);
+		while (pBus->get_onboardCount() != 0)
+		{
+			pBus->passenger_peek(pPass);
+			this->pWaitSp.Enqueue(pPass);
+			pBus->passenger_Deqeue(pPass);
+		}
+		this->pCheckupSp.Enqueue(pBus);
 		break;
 	case NB:
-		pBus->passenger_peek(pPass);
-		this->pWaitNorm.insert_end(pPass);
-		pBus->passenger_Deqeue(pPass);
+		while (pBus->get_onboardCount() != 0)
+		{
+			pBus->passenger_peek(pPass);
+			this->pWaitNorm.insert_end(pPass);
+			pBus->passenger_Deqeue(pPass);
+		}
+		this->pCheckupNorm.Enqueue(pBus);
 		break;
 	}
 }
+
 	//	this->MoveToCheckUp(pBus);
 	//}
 	//
