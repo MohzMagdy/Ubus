@@ -22,7 +22,7 @@ public:
 	int getcounter();
 	void Peek(T& data) ;/// get the front data without delete from the qeue
 	Node<T>* ReturnFront(); /// returns front node
-	void delete_data(T& data);/// deletes specific data
+	void delete_data(T data);/// deletes specific data
 	string getInsideIDs();
 	string getInsideIDsExceptFirst();
 };

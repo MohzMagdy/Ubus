@@ -463,197 +463,200 @@ void Company::DropBus() {
 		pBus->passenger_Deqeue(pPass);
 		break;
 	}
-//	this->MoveToCheckUp(pBus);
-//}
-//
-//void Company::MoveBuses() {
-//	Buses* possibleBus = nullptr;
-//
-//	pEmptyNorm.Peek(possibleBus);
-//	if (possibleBus != nullptr) {
-//		if (possibleBus->isfull()) {
-//			possibleBus = pEmptyNorm.Dequeue();
-//			possibleBus->Set_Start_Moving_Time(Timestep);
-//			pMoving.Enqueue(possibleBus, possibleBus->GetTruckPriority());
-//		}
-//	}
-//
-//	this->SpecialTrucksList->peek(checkingTruck);
-//	if (checkingTruck != nullptr) {
-//		if (checkingTruck->IsLoaded()) {
-//			SpecialTrucksList->dequeue(checkingTruck);
-//			checkingTruck->SetLoading(false);
-//			checkingTruck->SetMovingStartTime(TimestepNum);
-//			checkingTruck->UpdateTruckPriority();
-//			MovingTrucks->enqueue(checkingTruck, checkingTruck->GetTruckPriority());
-//		}
-//	}
-//
-//	this->VIPTrucksList->peek(checkingTruck);
-//	if (checkingTruck != nullptr) {
-//		if (checkingTruck->IsLoaded()) {
-//			VIPTrucksList->dequeue(checkingTruck);
-//			checkingTruck->SetLoading(false);
-//			checkingTruck->SetMovingStartTime(TimestepNum);
-//			checkingTruck->UpdateTruckPriority();
-//			MovingTrucks->enqueue(checkingTruck, checkingTruck->GetTruckPriority());
-//		}
-//	}
-//}
-
-bool Company::ExecuteAvailableEvent() {
-	bool EventExists = false;
-	Event* tempEvent;
-	pEvents.Peek(tempEvent);
-	if (tempEvent != nullptr) {
-		if (tempEvent->getEventTime() <= Timestep) {
-			tempEvent = pEvents.Dequeue();
-			tempEvent->Execute();
-			delete tempEvent;
-			return true;
-		}
-	}
-	else {
-		return false;
-	}
 }
+	//	this->MoveToCheckUp(pBus);
+	//}
+	//
+	//void Company::MoveBuses() {
+	//	Buses* possibleBus = nullptr;
+	//
+	//	pEmptyNorm.Peek(possibleBus);
+	//	if (possibleBus != nullptr) {
+	//		if (possibleBus->isfull()) {
+	//			possibleBus = pEmptyNorm.Dequeue();
+	//			possibleBus->Set_Start_Moving_Time(Timestep);
+	//			pMoving.Enqueue(possibleBus, possibleBus->GetTruckPriority());
+	//		}
+	//	}
+	//
+	//	this->SpecialTrucksList->peek(checkingTruck);
+	//	if (checkingTruck != nullptr) {
+	//		if (checkingTruck->IsLoaded()) {
+	//			SpecialTrucksList->dequeue(checkingTruck);
+	//			checkingTruck->SetLoading(false);
+	//			checkingTruck->SetMovingStartTime(TimestepNum);
+	//			checkingTruck->UpdateTruckPriority();
+	//			MovingTrucks->enqueue(checkingTruck, checkingTruck->GetTruckPriority());
+	//		}
+	//	}
+	//
+	//	this->VIPTrucksList->peek(checkingTruck);
+	//	if (checkingTruck != nullptr) {
+	//		if (checkingTruck->IsLoaded()) {
+	//			VIPTrucksList->dequeue(checkingTruck);
+	//			checkingTruck->SetLoading(false);
+	//			checkingTruck->SetMovingStartTime(TimestepNum);
+	//			checkingTruck->UpdateTruckPriority();
+	//			MovingTrucks->enqueue(checkingTruck, checkingTruck->GetTruckPriority());
+	//		}
+	//	}
+	//}
 
-void Company::PrintInteractiveModeData() {
-	string InteractiveModeData = "";
-	InteractiveModeData += "Current Time(Day:Hour) : " + to_string(Timestep.Getdays()) + ":" + to_string(Timestep.Gethours()) + "\n";
-	string lineSeperator = "\n-----------------------------------------\n";
-	int WaitingPassengers, RidingBuses, EmptyBususCount, MovingPassengers, InCheckUpBuses, DeliveredPassengers;
-	WaitingPassengers = pWaitNorm.getcounter() + pWaitSp.getcounter() + pWaitVIP.getcounter();
-	InteractiveModeData += to_string(WaitingPassengers) + " Waiting passengers: [ " + pWaitNorm.getInsideIDs() + " ] (" + pWaitSp.getInsideIDs() + ") {" + pWaitVIP.getInsideIDs() + "}" + lineSeperator;
-	string RidingBusData = "";
-	int countRidingBuses = 0;
-	int countRidingBusesNormal = 0;
-	int countRidingBusesSp = 0;
-	int countRidingBusesVIP = 0;
-	//countRidingBuses = checkQueueFront(pEmptyVIP) + checkQueueFront(pEmptySp) + checkQueueFront(pEmptyNorm);
-	//RidingBusData += to_string(countRidingBuses) + " Riding Buses: ";
-	//RidingBusData += checkBusFrontID(pEmptyNorm) + " " + checkBusFrontID(pEmptySp);
-	Buses* TempBus;
-	//string RidingBusData = "";
-	
-	pEmptyNorm.Peek(TempBus);
-	if (TempBus) {
-		if (pWaitNorm.getcounter() != 0) {
-			RidingBusData += "[" +  to_string(TempBus->getID()) + "] ";
-			countRidingBusesNormal += 1;
+	bool Company::ExecuteAvailableEvent() {
+		bool EventExists = false;
+		Event* tempEvent;
+		pEvents.Peek(tempEvent);
+		if (tempEvent != nullptr) {
+			if (tempEvent->getEventTime() <= Timestep) {
+				tempEvent = pEvents.Dequeue();
+				tempEvent->Execute();
+				delete tempEvent;
+				return true;
+			}
+		}
+		else {
+			return false;
 		}
 	}
 
-	pEmptySp.Peek(TempBus);
-	if (TempBus) {
-		if (pWaitSp.getcounter() != 0) {
-			RidingBusData += "(" + to_string(TempBus->getID()) + ") ";
-			countRidingBusesSp += 1;
+
+	void Company::PrintInteractiveModeData() {
+		string InteractiveModeData = "";
+		InteractiveModeData += "Current Time(Day:Hour) : " + to_string(Timestep.Getdays()) + ":" + to_string(Timestep.Gethours()) + "\n";
+		string lineSeperator = "\n-----------------------------------------\n";
+		int WaitingPassengers, RidingBuses, EmptyBususCount, MovingPassengers, InCheckUpBuses, DeliveredPassengers;
+		WaitingPassengers = pWaitNorm.getcounter() + pWaitSp.getcounter() + pWaitVIP.getcounter();
+		InteractiveModeData += to_string(WaitingPassengers) + " Waiting passengers: [ " + pWaitNorm.getInsideIDs() + " ] (" + pWaitSp.getInsideIDs() + ") {" + pWaitVIP.getInsideIDs() + "}" + lineSeperator;
+		string RidingBusData = "";
+		int countRidingBuses = 0;
+		int countRidingBusesNormal = 0;
+		int countRidingBusesSp = 0;
+		int countRidingBusesVIP = 0;
+		//countRidingBuses = checkQueueFront(pEmptyVIP) + checkQueueFront(pEmptySp) + checkQueueFront(pEmptyNorm);
+		//RidingBusData += to_string(countRidingBuses) + " Riding Buses: ";
+		//RidingBusData += checkBusFrontID(pEmptyNorm) + " " + checkBusFrontID(pEmptySp);
+		Buses* TempBus;
+		//string RidingBusData = "";
+
+		pEmptyNorm.Peek(TempBus);
+		if (TempBus) {
+			if (pWaitNorm.getcounter() != 0) {
+				RidingBusData += "[" + to_string(TempBus->getID()) + "] ";
+				countRidingBusesNormal += 1;
+			}
 		}
-	}
 
-	pEmptyVIP.Peek(TempBus);
-	if (TempBus) {
-		if (pWaitVIP.getcounter() != 0) {
-			RidingBusData += "{ " + to_string(TempBus->getID()) + "} ";
-			countRidingBusesVIP += 1;
+		pEmptySp.Peek(TempBus);
+		if (TempBus) {
+			if (pWaitSp.getcounter() != 0) {
+				RidingBusData += "(" + to_string(TempBus->getID()) + ") ";
+				countRidingBusesSp += 1;
+			}
 		}
-	}
-	countRidingBuses = countRidingBusesNormal + countRidingBusesSp + countRidingBusesVIP;
-	InteractiveModeData += to_string(countRidingBuses) + " Loading Trucks: " + RidingBusData + lineSeperator;
 
-	string EmptyBuses = "";
-	EmptyBususCount = pEmptyNorm.getcounter() + pEmptySp.getcounter() + pEmptyVIP.getcounter() - countRidingBuses;
-	string IDsEmptyNormal = pEmptyNorm.getInsideIDsExceptFirst();
-	string IDsEmptySp = pEmptySp.getInsideIDsExceptFirst();
-	string IDsEmptyVIP = pEmptyVIP.getInsideIDsExceptFirst();
-
-	for (int i = 0; i < IDsEmptyNormal.size(); i++) {
-		if (i == 0 && countRidingBusesNormal != 0) { continue; }
-		EmptyBuses += "[" + to_string(IDsEmptyNormal[i]-48) + "] ";
-	}
-	for (int i = 0; i < IDsEmptySp.size(); i++) {
-		if (i == 0 && countRidingBusesSp != 0) { continue; }
-		EmptyBuses += "(" + to_string(IDsEmptySp[i]-48) + ") ";
-	}
-
-	for (int i = 0; i < IDsEmptyVIP.size(); i++) {
-		if (i == 0 && countRidingBusesVIP != 0) { continue; }
-		EmptyBuses += "{" + to_string(IDsEmptyVIP[i]-48) + "} ";
-	}
-	InteractiveModeData += to_string(EmptyBususCount) + " Empty Buses: " + EmptyBuses + lineSeperator;
-
-	string MovingPassengersString;
-
-	int MovingPassengersCount = 0;
-	Buses** MovingBussesPointers = pMoving.getInsidePointers();
-	for (int i = 0; i < pMoving.getcounter(); i++) {
-		MovingPassengersCount += MovingBussesPointers[i]->getSeats().getcounter();
-		if (MovingBussesPointers[i]->get_bus_type() == Bus_Type::NB) {
-			MovingPassengersString += to_string(MovingBussesPointers[i]->getID());
-			MovingPassengersString += "[ " + MovingBussesPointers[i]->getSeats().getInsideIDs() + "] ";
+		pEmptyVIP.Peek(TempBus);
+		if (TempBus) {
+			if (pWaitVIP.getcounter() != 0) {
+				RidingBusData += "{ " + to_string(TempBus->getID()) + "} ";
+				countRidingBusesVIP += 1;
+			}
 		}
-		if (MovingBussesPointers[i]->get_bus_type() == Bus_Type::SB) {
-			MovingPassengersString += to_string(MovingBussesPointers[i]->getID());
-			MovingPassengersString += "( " + MovingBussesPointers[i]->getSeats().getInsideIDs() + ") ";
+		countRidingBuses = countRidingBusesNormal + countRidingBusesSp + countRidingBusesVIP;
+		InteractiveModeData += to_string(countRidingBuses) + " Loading Trucks: " + RidingBusData + lineSeperator;
+
+		string EmptyBuses = "";
+		EmptyBususCount = pEmptyNorm.getcounter() + pEmptySp.getcounter() + pEmptyVIP.getcounter() - countRidingBuses;
+		string IDsEmptyNormal = pEmptyNorm.getInsideIDsExceptFirst();
+		string IDsEmptySp = pEmptySp.getInsideIDsExceptFirst();
+		string IDsEmptyVIP = pEmptyVIP.getInsideIDsExceptFirst();
+
+		for (int i = 0; i < IDsEmptyNormal.size(); i++) {
+			if (i == 0 && countRidingBusesNormal != 0) { continue; }
+			EmptyBuses += "[" + to_string(IDsEmptyNormal[i] - 48) + "] ";
 		}
-		if (MovingBussesPointers[i]->get_bus_type() == Bus_Type::VB) {
-			MovingPassengersString += to_string(MovingBussesPointers[i]->getID());
-			MovingPassengersString += "{ " + MovingBussesPointers[i]->getSeats().getInsideIDs() + "} ";
+		for (int i = 0; i < IDsEmptySp.size(); i++) {
+			if (i == 0 && countRidingBusesSp != 0) { continue; }
+			EmptyBuses += "(" + to_string(IDsEmptySp[i] - 48) + ") ";
 		}
+
+		for (int i = 0; i < IDsEmptyVIP.size(); i++) {
+			if (i == 0 && countRidingBusesVIP != 0) { continue; }
+			EmptyBuses += "{" + to_string(IDsEmptyVIP[i] - 48) + "} ";
+		}
+		InteractiveModeData += to_string(EmptyBususCount) + " Empty Buses: " + EmptyBuses + lineSeperator;
+
+		string MovingPassengersString;
+
+		int MovingPassengersCount = 0;
+		Buses** MovingBussesPointers = pMoving.getInsidePointers();
+		for (int i = 0; i < pMoving.getcounter(); i++) {
+			MovingPassengersCount += MovingBussesPointers[i]->getSeats().getcounter();
+			if (MovingBussesPointers[i]->get_bus_type() == Bus_Type::NB) {
+				MovingPassengersString += to_string(MovingBussesPointers[i]->getID());
+				MovingPassengersString += "[ " + MovingBussesPointers[i]->getSeats().getInsideIDs() + "] ";
+			}
+			if (MovingBussesPointers[i]->get_bus_type() == Bus_Type::SB) {
+				MovingPassengersString += to_string(MovingBussesPointers[i]->getID());
+				MovingPassengersString += "( " + MovingBussesPointers[i]->getSeats().getInsideIDs() + ") ";
+			}
+			if (MovingBussesPointers[i]->get_bus_type() == Bus_Type::VB) {
+				MovingPassengersString += to_string(MovingBussesPointers[i]->getID());
+				MovingPassengersString += "{ " + MovingBussesPointers[i]->getSeats().getInsideIDs() + "} ";
+			}
+		}
+		string FinalMovingPassengers;
+		FinalMovingPassengers += to_string(MovingPassengersCount) + " Moving Passengers: " + MovingPassengersString;
+		InteractiveModeData += FinalMovingPassengers + lineSeperator;
+
+		string InCheckupBusses = "";
+		int InCheckUpCount;
+		InCheckUpCount = pCheckupNorm.getcounter() +
+			pCheckupSp.getcounter() +
+			pCheckupVIP.getcounter();
+		queue<Buses*>* TempBusses = new queue<Buses*>;
+		//Buses* TempBus;
+		while (pCheckupNorm.Dequeue(TempBus)) {
+			InCheckupBusses += "[" + to_string(TempBus->getID()) + "]";
+			TempBusses->Enqueue(TempBus);
+		}
+		while (TempBusses->Dequeue(TempBus)) {
+			pCheckupNorm.Enqueue(TempBus);
+		}
+
+		while (pCheckupSp.Dequeue(TempBus)) {
+			InCheckupBusses += "(" + to_string(TempBus->getID()) + ")";
+			TempBusses->Enqueue(TempBus);
+		}
+		while (TempBusses->Dequeue(TempBus)) {
+			pCheckupSp.Enqueue(TempBus);
+		}
+
+
+		while (pCheckupVIP.Dequeue(TempBus)) {
+			InCheckupBusses += "{" + to_string(TempBus->getID()) + "}";
+			TempBusses->Enqueue(TempBus);
+		}
+		while (TempBusses->Dequeue(TempBus)) {
+			pCheckupVIP.Enqueue(TempBus);
+		}
+
+
+		InteractiveModeData += to_string(InCheckUpCount) + " In-Checkup Trucks: " + InCheckupBusses + lineSeperator;
+
+		InteractiveModeData += to_string(pDeliveredVIP.getcounter() + pDeliveredSp.getcounter() + pDeliveredNorm.getcounter()) + " Delivered Passengers: ";
+		if (pDeliveredNorm.getcounter() > 0)
+			InteractiveModeData += "[" + pDeliveredNorm.getInsideIDs() + "] ";
+		if (pDeliveredSp.getcounter() > 0)
+			InteractiveModeData += "(" + pDeliveredSp.getInsideIDs() + ") ";
+		if (pDeliveredVIP.getcounter() > 0)
+			InteractiveModeData += "{" + pDeliveredVIP.getInsideIDs() + "}";
+		InteractiveModeData += lineSeperator;
+
+
+
+		pUI->printMessage(InteractiveModeData);
 	}
-	string FinalMovingPassengers;
-	FinalMovingPassengers += to_string(MovingPassengersCount) + " Moving Passengers: " + MovingPassengersString;
-	InteractiveModeData += FinalMovingPassengers + lineSeperator;
 
-	string InCheckupBusses = "";
-	int InCheckUpCount;
-	InCheckUpCount = pCheckupNorm.getcounter() +
-					pCheckupSp.getcounter() +
-						pCheckupVIP.getcounter();
-	queue<Buses*>* TempBusses = new queue<Buses*>;
-	//Buses* TempBus;
-	while (pCheckupNorm.Dequeue(TempBus)) {
-		InCheckupBusses += "[" + to_string(TempBus->getID()) + "]";
-		TempBusses->Enqueue(TempBus);
-	}
-	while (TempBusses->Dequeue(TempBus)) {
-		pCheckupNorm.Enqueue(TempBus);
-	}
-
-	while (pCheckupSp.Dequeue(TempBus)) {
-		InCheckupBusses += "(" + to_string(TempBus->getID()) + ")";
-		TempBusses->Enqueue(TempBus);
-	}
-	while (TempBusses->Dequeue(TempBus)) {
-		pCheckupSp.Enqueue(TempBus);
-	}
-
-
-	while (pCheckupVIP.Dequeue(TempBus)) {
-		InCheckupBusses += "{" + to_string(TempBus->getID()) + "}";
-		TempBusses->Enqueue(TempBus);
-	}
-	while (TempBusses->Dequeue(TempBus)) {
-		pCheckupVIP.Enqueue(TempBus);
-	}
-
-
-	InteractiveModeData += to_string(InCheckUpCount) + " In-Checkup Trucks: " + InCheckupBusses + lineSeperator;
-
-	InteractiveModeData += to_string(pDeliveredVIP.getcounter()+ pDeliveredSp.getcounter()+ pDeliveredNorm.getcounter()) + " Delivered Passengers: ";
-	if (pDeliveredNorm.getcounter() > 0)
-		InteractiveModeData += "[" + pDeliveredNorm.getInsideIDs() + "] ";
-	if (pDeliveredSp.getcounter() > 0)
-		InteractiveModeData += "(" + pDeliveredSp.getInsideIDs() + ") ";
-	if (pDeliveredVIP.getcounter() > 0)
-		InteractiveModeData += "{" + pDeliveredVIP.getInsideIDs() + "}";
-	InteractiveModeData += lineSeperator;
-
-	
-
-	pUI->printMessage(InteractiveModeData);
-}
 
 void Company::boardPassengers(Mode CurrentMode)
 {
@@ -724,6 +727,8 @@ void Company::boardVIP()
 	}
 }
 
+//ff
+
 void Company::boardSp()
 {
 	Buses* pBus = nullptr;
@@ -731,30 +736,27 @@ void Company::boardSp()
 	if (pBus) {
 		int passCount = pWaitSp.getcounter();
 		int capacity = pBus->get_bus_capacity();
-
-	int passCount = pWaitSp.getcounter();
-	int capacity = pBus->get_bus_capacity();
-	int FarthestPassDist = 0;
-	int SumOfUnrideTimes = 0;
-	if (passCount >= capacity)
-	{
-		for (int i = 0; i < capacity; i++)
+		int FarthestPassDist = 0;
+		int SumOfUnrideTimes = 0;
+		if (passCount >= capacity)
 		{
-			Passengers* pPass = pWaitSp.Dequeue();
-			int DeliveryDistance = pPass->Get_Delivery_distance();
-			int Unridetime = pPass->Get_totalRideUnride_Time();
-			if (FarthestPassDist < DeliveryDistance) {
-				FarthestPassDist = DeliveryDistance;
+			for (int i = 0; i < capacity; i++)
+			{
+				Passengers* pPass = pWaitSp.Dequeue();
+				int DeliveryDistance = pPass->Get_Delivery_distance();
+				int Unridetime = pPass->Get_totalRideUnride_Time();
+				if (FarthestPassDist < DeliveryDistance) {
+					FarthestPassDist = DeliveryDistance;
+				}
+				SumOfUnrideTimes += Unridetime;
+				pBus->board(pPass);
 			}
-			SumOfUnrideTimes += Unridetime;
-			pBus->board(pPass);
+			pEmptySp.Dequeue();
+			int Priority = (FarthestPassDist / pBus->get_bus_speed()) + SumOfUnrideTimes;
+			pMoving.Enqueue(pBus, -Priority); // CHANGE PRIORITY FUNCTION
 		}
-		pEmptySp.Dequeue();
-		int Priority = (FarthestPassDist / pBus->get_bus_speed()) + SumOfUnrideTimes;
-		pMoving.Enqueue(pBus, -Priority); // CHANGE PRIORITY FUNCTION
 	}
 }
-
 
 
 void Company::boardNorm()
