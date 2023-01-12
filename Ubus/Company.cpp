@@ -33,8 +33,8 @@ bool Company::checkexitstatus() {
 
 void Company::simulate()
 {
-	outputfile();
-	while (true)
+	int n = 10;
+	while (n--)
 	{
 		// prioequation();
 		Timestep = Timestep + 1;
@@ -56,9 +56,10 @@ void Company::simulate()
 			break;
 		}
 		PrintInteractiveModeData();
+		
 		/*increaseMaxWforall();*/ /// Tifa IDK how your code works tbh :D
 	}
-
+	outputfile();
 	
 }
 
@@ -378,6 +379,11 @@ void Company::deliver_passengers() {
 				{
 					pBus->passenger_Deqeue(pPass);
 					Passenger_Type PT = pPass->get_passanger_type();
+
+					Time de;
+					de.Sethours(TimeFromStartTheJurnyUntillNow.Gettotalhours() + deliverytime);
+					pPass->Set_delvtime(de);
+					pPass->setbuspasid(pBus->getID());
 					switch (PT)
 					{
 					case VP:
@@ -1267,35 +1273,38 @@ void Company::immBoardNorm()
 }
 
 void Company::outputfile()
+
 {
 	static int copyer = 0;
 	copyer++;
 	ofstream myfile("Output.txt");
-	Node<Passengers*>* phelperVIP = pWaitVIP.ReturnFront();
-	Node<Passengers*>* phelperSP = pWaitSp.ReturnFront();
-	Node<Passengers*>* phelpernor = pWaitNorm.get_head();
+	Node<Passengers*>* phelperVIP = pDeliveredVIP.ReturnFront();
+	Node<Passengers*>* phelperSP = pDeliveredSp.ReturnFront();
+	Node<Passengers*>* phelpernor = pDeliveredNorm.ReturnFront();
 	Node<Buses*>* bhelperVIP = pEmptyVIP.ReturnFront();
 	Node<Buses*>* bhelperSP = pEmptySp.ReturnFront();
 	Node<Buses*>* bhelperNor = pEmptyNorm.ReturnFront();
+
+	
 	if (myfile.is_open())
 	{
 		myfile << "PDT\t" << "ID\t" << "RT\t" << "WT\t" << "BID\n";
 		while (phelperVIP != nullptr)
 		{
-			Time PDF(phelperVIP->get_data()->Get_totalRideUnride_Time() + (phelperVIP->get_data()->Get_Delivery_distance() / bhelperVIP->get_data()->get_bus_speed()));
-			myfile << PDF.Getdays() << ":" << PDF.Gethours() << "\t" << phelperVIP->get_data()->Get_ID() << "\t" << phelperVIP->get_data()->Get_ready_Time().Getdays() << ":" << phelperVIP->get_data()->Get_ready_Time().Gethours() << "\t" << phelperVIP->get_data()->Get_MaxW().Getdays() << ":" << phelperVIP->get_data()->Get_MaxW().Gethours() << "\t"<<bhelperVIP->get_data()->getID()<<"\n";
+			Time PDF(phelperVIP->get_data()->Get_delvTime());
+			myfile << PDF.Getdays() << ":" << PDF.Gethours() << "\t" << phelperVIP->get_data()->Get_ID() << "\t" << phelperVIP->get_data()->Get_ready_Time().Getdays() << ":" << phelperVIP->get_data()->Get_ready_Time().Gethours() << "\t" << phelperVIP->get_data()->Get_waitTime().Getdays() << ":" << phelperVIP->get_data()->Get_waitTime().Gethours() << "\t"<<phelperVIP->get_data()->getbuspasid()<<"\n";
 			phelperVIP = phelperVIP->get_next();
 		}
 		while (phelperSP != nullptr)
 		{
-			Time PDF(phelperSP->get_data()->Get_totalRideUnride_Time() + (phelperSP->get_data()->Get_Delivery_distance() / bhelperSP->get_data()->get_bus_speed()));
-			myfile << PDF.Getdays() << ":" << PDF.Gethours() << "\t" << phelperSP->get_data()->Get_ID() << "\t" << phelperSP->get_data()->Get_ready_Time().Getdays() << ":" << phelperSP->get_data()->Get_ready_Time().Gethours() << "\t" << phelperSP->get_data()->Get_MaxW().Getdays() << ":" << phelperSP->get_data()->Get_MaxW().Gethours() << "\t"<<bhelperSP->get_data()->getID()<<"\n";
+			Time PDF(phelperSP->get_data()->Get_delvTime());
+			myfile << PDF.Getdays() << ":" << PDF.Gethours() << "\t" << phelperSP->get_data()->Get_ID()<<"\t"<<phelperSP->get_data()->Get_ready_Time().Getdays()<<":"<<phelperSP->get_data()->Get_ready_Time().Gethours()<<"\t"<<phelperSP->get_data()->Get_waitTime().Getdays() << ":" << phelperSP->get_data()->Get_waitTime().Gethours() << "\t"<<phelperSP->get_data()->getbuspasid()<<"\n";
 			phelperSP = phelperSP->get_next();
 		}
 		while (phelpernor != nullptr)
 		{
-			Time PDF(phelpernor->get_data()->Get_totalRideUnride_Time() + (phelpernor->get_data()->Get_Delivery_distance() / bhelperNor->get_data()->get_bus_speed()));
-			myfile << PDF.Getdays() << ":" << PDF.Gethours() << "\t" << phelpernor->get_data()->Get_ID() << "\t" << phelpernor->get_data()->Get_ready_Time().Getdays() << ":" << phelpernor->get_data()->Get_ready_Time().Gethours() << "\t" << phelpernor->get_data()->Get_MaxW().Getdays() << ":" << phelpernor->get_data()->Get_MaxW().Gethours() << "\t"<<bhelperNor->get_data()->getID()<<"\n";
+			Time PDF(phelpernor->get_data()->Get_delvTime());
+			myfile << PDF.Getdays() << ":" << PDF.Gethours() << "\t" << phelpernor->get_data()->Get_ID() << "\t" << phelpernor->get_data()->Get_ready_Time().Getdays() << ":" << phelpernor->get_data()->Get_ready_Time().Gethours() << "\t" << phelpernor->get_data()->Get_waitTime().Getdays() << ":" << phelpernor->get_data()->Get_waitTime().Gethours() << "\t"<<phelpernor->get_data()->getbuspasid()<<"\n";
 			phelpernor = phelpernor->get_next();
 		}
 	}
