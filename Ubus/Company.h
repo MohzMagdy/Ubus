@@ -95,4 +95,5 @@ public:
 	void PrintInteractiveModeData();
 	void maintinance_check();
 	void incheck();
+	void outputfile();
 };

@@ -51,7 +51,7 @@ void Passengers::Set_MaxW(int x, int y)
 
 void Passengers::increaseMaxwhr()
 {
-	MaxW.operator+(1);
+	MaxW=MaxW.operator+(1);
 }
 
 
