@@ -109,10 +109,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="maxw test.txt">
+    <Text Include="maxw.txt">
       <Filter>Input Files</Filter>
     </Text>
     <Text Include="sample.txt">
+      <Filter>Input Files</Filter>
+    </Text>
+    <Text Include="autop.txt">
+      <Filter>Input Files</Filter>
+    </Text>
+    <Text Include="large.txt">
       <Filter>Input Files</Filter>
     </Text>
   </ItemGroup>

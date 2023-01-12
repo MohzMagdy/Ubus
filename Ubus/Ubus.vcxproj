@@ -155,8 +155,10 @@
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="autop.txt" />
+    <Text Include="large.txt" />
     <Text Include="sample.txt" />
-    <Text Include="maxw test.txt" />
+    <Text Include="maxw.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

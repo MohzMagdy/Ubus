@@ -179,16 +179,17 @@ void Company::File_IO_Loading() {
 
 	no_checkup = noCheckup;
 
-	for (int i = 0; i < noNbus; i++) {
-		Buses* n = new Buses(Bus_Type::NB, cNBus, Time(cdNBus), sNBus, i,5,i+1); ///MUST BE CHANGED TO BUS SIZE
+	int busID = 1;
+	for (int i = 0; i < noNbus; i++, busID++) {
+		Buses* n = new Buses(Bus_Type::NB, cNBus, Time(cdNBus), sNBus, i,5,busID); ///MUST BE CHANGED TO BUS SIZE
 		add_empty_bus(n);
 	}
-	for (int i = 0; i < noSbus; i++) {
-		Buses* n = new Buses(Bus_Type::SB, cSBus, Time(cdSBus), sSBus, i,5,i+1); ///MUST BE CHANGED TO BUS SIZE
+	for (int i = 0; i < noSbus; i++, busID++) {
+		Buses* n = new Buses(Bus_Type::SB, cSBus, Time(cdSBus), sSBus, i,5,busID); ///MUST BE CHANGED TO BUS SIZE
 		add_empty_bus(n);
 	}
-	for (int i = 0; i < noVbus; i++) {
-		Buses* n = new Buses(Bus_Type::VB, cVBus, Time(cdVBus), sVBus, i,5,i+1); ///MUST BE CHANGED TO BUS SIZE
+	for (int i = 0; i < noVbus; i++, busID++) {
+		Buses* n = new Buses(Bus_Type::VB, cVBus, Time(cdVBus), sVBus, i,5,busID); ///MUST BE CHANGED TO BUS SIZE
 		add_empty_bus(n);
 	}
 
@@ -494,44 +495,6 @@ void Company::DropBus() {
 	}
 }
 
-	//	this->MoveToCheckUp(pBus);
-	//}
-	//
-	//void Company::MoveBuses() {
-	//	Buses* possibleBus = nullptr;
-	//
-	//	pEmptyNorm.Peek(possibleBus);
-	//	if (possibleBus != nullptr) {
-	//		if (possibleBus->isfull()) {
-	//			possibleBus = pEmptyNorm.Dequeue();
-	//			possibleBus->Set_Start_Moving_Time(Timestep);
-	//			pMoving.Enqueue(possibleBus, possibleBus->GetTruckPriority());
-	//		}
-	//	}
-	//
-	//	this->SpecialTrucksList->peek(checkingTruck);
-	//	if (checkingTruck != nullptr) {
-	//		if (checkingTruck->IsLoaded()) {
-	//			SpecialTrucksList->dequeue(checkingTruck);
-	//			checkingTruck->SetLoading(false);
-	//			checkingTruck->SetMovingStartTime(TimestepNum);
-	//			checkingTruck->UpdateTruckPriority();
-	//			MovingTrucks->enqueue(checkingTruck, checkingTruck->GetTruckPriority());
-	//		}
-	//	}
-	//
-	//	this->VIPTrucksList->peek(checkingTruck);
-	//	if (checkingTruck != nullptr) {
-	//		if (checkingTruck->IsLoaded()) {
-	//			VIPTrucksList->dequeue(checkingTruck);
-	//			checkingTruck->SetLoading(false);
-	//			checkingTruck->SetMovingStartTime(TimestepNum);
-	//			checkingTruck->UpdateTruckPriority();
-	//			MovingTrucks->enqueue(checkingTruck, checkingTruck->GetTruckPriority());
-	//		}
-	//	}
-	//}
-
 	bool Company::ExecuteAvailableEvent() {
 		bool EventExists = false;
 		Event* tempEvent;
@@ -562,11 +525,7 @@ void Company::DropBus() {
 		int countRidingBusesNormal = 0;
 		int countRidingBusesSp = 0;
 		int countRidingBusesVIP = 0;
-		//countRidingBuses = checkQueueFront(pEmptyVIP) + checkQueueFront(pEmptySp) + checkQueueFront(pEmptyNorm);
-		//RidingBusData += to_string(countRidingBuses) + " Riding Buses: ";
-		//RidingBusData += checkBusFrontID(pEmptyNorm) + " " + checkBusFrontID(pEmptySp);
 		Buses* TempBus;
-		//string RidingBusData = "";
 
 		pEmptyNorm.Peek(TempBus);
 		if (TempBus) {
@@ -851,33 +810,6 @@ void Company::boardNorm()
 		pMoving.Enqueue(pBus, -Priority); // CHANGE PRIORITY FUNCTION
 	}
 }
-
-/*
-int Company::GetFarthestDeliveryDistance(queue<Passengers*> q) {
-	Passengers* pTemp;
-	
-	for (int i = 0; i < q.getcounter(); i++) {
-		pTemp = q.Dequeue();
-		int DeliveryDistance = pTemp->Get_Delivery_distance();
-		if (DeliveryDistance > FarthestPassDist) {
-			FarthestPassDist = DeliveryDistance;
-		}
-		q.Enqueue(pTemp);
-	}
-	return FarthestPassDist;
-}
-
-int Company::GetSumOfUnrideTime(queue<Passengers*> q) {
-	Passengers* pTemp;
-	int SumOfUnrideTimes = 0;
-	for (int i = 0; i < q.getcounter(); i++) {
-		pTemp = q.Dequeue();
-		int rideUnride = pTemp->Get_totalRideUnride_Time();
-		SumOfUnrideTimes += rideUnride;
-		q.Enqueue(pTemp);
-	}
-
-}*/
 
 
 
